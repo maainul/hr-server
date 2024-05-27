@@ -2,8 +2,16 @@ import Joi from 'joi'
 
 export const validateDepartment = (data) =>{
     const departmentSchema = Joi.object({
-         name:Joi.string().required(),
-         dptCode:Joi.string().required()
+         name:Joi.string().required().messages({
+            'string.base': 'Department name should be a type of text',
+            'string.empty': 'Department name cannot be empty',
+            'any.required': 'Department name is required'
+         }),
+         dptCode:Joi.string().required().messages({
+            'string.base': 'Department code should be a type of text',
+            'string.empty': 'Department code cannot be empty',
+            'any.required': 'Department code is required'
+         })
 
     })
 
