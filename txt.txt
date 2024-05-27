@@ -1,0 +1,97 @@
+Updated Service Function with Dynamic Sorting
+javascript
+
+
+import DepartmentModel from "../model/departmentModel.js";
+
+export const getAllDepartmentWithPaginationService = async ({ req }) => {
+    try {
+        // Extract query parameters for search and sort
+        const { search = '', sort = 'latest', page = 1, limit = 10 } = req.query;
+
+        // Conditions for searching filters
+        let queryObject = {};
+
+        // Check Search for Query
+        if (search) {
+            // Search by name or dptCode
+            queryObject = {
+                $or: [
+                    { name: { $regex: search, $options: "i" } },
+                    { dptCode: { $regex: search, $options: "i" } }
+                ]
+            };
+        }
+
+        // Build Mongoose Query Based on Search
+        let queryResult = DepartmentModel.find(queryObject);
+
+        // Dynamic Sorting
+        const sortOptions = {
+            'latest': '-createdAt',
+            'oldest': 'createdAt'
+        };
+
+        if (sort in sortOptions) {
+            queryResult = queryResult.sort(sortOptions[sort]);
+        } else {
+            const [field, order] = sort.split('-');
+            if (['a', 'z'].includes(order)) {
+                const sortOrder = order === 'a' ? '' : '-';
+                queryResult = queryResult.sort(`${sortOrder}${field}`);
+            }
+        }
+
+        // Pagination
+        const pageNumber = Number(page);
+        const limitNumber = Number(limit);
+        const skip = (pageNumber - 1) * limitNumber;
+
+        // Apply Pagination
+        queryResult = queryResult.skip(skip).limit(limitNumber);
+
+        // Per page Data Count = Total Data Count Based on Query Search
+        const currentPageDataCount = await DepartmentModel.countDocuments(queryObject);
+
+        // Total Data Count
+        const totalDataCount = await DepartmentModel.countDocuments(queryObject);
+
+        // Number of Pages
+        const numberOfPages = Math.ceil(totalDataCount / limitNumber);
+
+        // Execute Query For List of Data
+        const data = await queryResult;
+
+        return {
+            currentPageData: currentPageDataCount,
+            totalData: totalDataCount,
+            totalNumberOfPages: numberOfPages,
+            data: data,
+        };
+    } catch (error) {
+        throw new Error(`Error in getAllDepartmentWithPaginationService: ${error.message}`);
+    }
+}
+
+
+
+Explanation
+Query Parameter Extraction:
+
+Extract the search, sort, page, and limit parameters from the request query with default values.
+Query Object Construction:
+
+If the search parameter is provided, the queryObject is built to use the $or operator, allowing for searching by either name or dptCode.
+Dynamic Sorting:
+
+Define sortOptions for predefined sorting cases like latest and oldest.
+For other sorting options, split the sort parameter into field and order.
+Check if order is either 'a' (ascending) or 'z' (descending) and construct the sorting string dynamically.
+Example: dptCode-a will sort by dptCode in ascending order, and dptCode-z will sort by dptCode in descending order.
+Pagination:
+
+Apply pagination based on the page and limit query parameters.
+Data Counts and Results:
+
+Calculate the total number of documents matching the search criteria and the number of pages.
+Return the paginated results along with the current page data count, total data count, and number of pages.

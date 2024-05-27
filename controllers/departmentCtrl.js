@@ -1,5 +1,6 @@
 import {validateDepartment} from './../validations/departmentValidation.js'
  import DepartmentModel from '../model/departmentModel.js'
+import { getAllDepartmentWithPaginationService } from '../services/departmentServices.js';
 
 export const createDepartmentCtrl = async (req, res) => {
     try {
@@ -72,15 +73,19 @@ export const createDepartmentCtrl = async (req, res) => {
 
 export const getDepartmentCtrl = async (req, res) => {
     try {
-      
+        //Fetch all department from the database
+        const departments = await getAllDepartmentWithPaginationService({req});
+
         return res.status(200).json({
             success: true,
-            message: 'mainul',
+            ...departments,
+            message:'All departments retrieved successfully',
         });
     } catch (error) {
+        console.error("Error in getting all departments :", error);
         return res.status(500).json({
             success: false,
-            message: 'Error In Get All Employee List',
+            message: 'Error in getting all departments',
             error: error.message || error,
         });
     }
