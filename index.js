@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 import connectDB from './dbConnection.js';
 // import employeeRoutes from './routes/employeeRoutes.js'
 // import departmentRoutes from './routes/departmentRoutes.js'
-import divisionRoutes from "./routes/divisionRoutes.js";
+import departmentRoutes from "./routes/departmentRoutes.js";
 
 //configure env
 dotenv.config()
@@ -31,7 +31,7 @@ app.use(cors({
 // Router
 // app.use('/api/v1/employee', employeeRoutes)
 // app.use('/api/v1/department', departmentRoutes)
-app.use('/api/v1/division',divisionRoutes )
+app.use('/api/v1/department',departmentRoutes )
 
 const PORT = process.env.PORT || 8081;
 

@@ -1,5 +1,5 @@
 
-export const createDivisionCtrl = async (req, res) => {
+export const createDepartmentCtrl = async (req, res) => {
     try {
       
         return res.status(200).json({
@@ -15,7 +15,7 @@ export const createDivisionCtrl = async (req, res) => {
     }
 };
 
-export const getDivisionCtrl = async (req, res) => {
+export const getDepartmentCtrl = async (req, res) => {
     try {
       
         return res.status(200).json({

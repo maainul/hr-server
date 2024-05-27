@@ -1,5 +1,5 @@
 import express from 'express'
-import { createDivisionCtrl, getDivisionCtrl } from '../controllers/divisionController.js'
+import { createDepartmentCtrl, getDepartmentCtrl } from '../controllers/departmentCtrl.js'
 
 
 //router object
@@ -8,10 +8,10 @@ const router = express.Router()
 // routers
 
 // POST || REGISTER USER
-router.post("/create", createDivisionCtrl)
+router.post("/create", createDepartmentCtrl)
 
 // GET || GET USER
-router.get("/list", getDivisionCtrl)
+router.get("/list", getDepartmentCtrl)
 
 router.get("/", async (req, res) => {
     console.log("kutabasa");
