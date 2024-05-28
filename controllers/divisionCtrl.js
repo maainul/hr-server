@@ -52,11 +52,7 @@ export const createDivisionCtrl = async (req, res) => {
 
         //Create New DivisionModel
         const newDivision = await DivisionModel.create(value)
-        
-        console.log("###########################################");
-        console.log("New Division Created:", newDivision);
-        console.log("###########################################");
-        
+                
         return res.status(201).json({
             success:true,
             newDivision,
@@ -163,8 +159,6 @@ export const getSingleDivisionCtrl = async (req, res) => {
         if(!division){
             return res.status(404).json({error:"Division not Found"})
         }
-
-
         // Return the DivisionModel details
         return res.status(200).json({
             success:true,
