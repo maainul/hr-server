@@ -10,6 +10,9 @@ const departmentSchema = new mongoose.Schema({
      dptLocation:{
         type:String
     },
+     status:{
+        type:Number
+    },
 },{timestamps:true})
 
 export  default mongoose.model('Department',departmentSchema)

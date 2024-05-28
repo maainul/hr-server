@@ -11,7 +11,8 @@ export const validateDepartment = (data) =>{
             'string.base': 'Department code should be a type of text',
             'string.empty': 'Department code cannot be empty',
             'any.required': 'Department code is required'
-         })
+         }),
+          status:Joi.number()
 
     })
 
