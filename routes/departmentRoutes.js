@@ -1,26 +1,27 @@
 import express from 'express'
-import { createDepartmentCtrl, getDepartmentCtrl } from '../controllers/departmentCtrl.js'
+import { 
+    createDepartmentCtrl, 
+    getDepartmentCtrl,
+    updateDepartmentStatusCtrl,
+    getSingleDepartmentCtrl 
+} from '../controllers/departmentCtrl.js'
 
 
 //router object
 const router = express.Router()
 
-// routers
 
-// POST || REGISTER USER
+// CREATE 
 router.post("/create", createDepartmentCtrl)
 
-// GET || GET USER
+// UPDATE || Update Department Status
+router.get("/status", updateDepartmentStatusCtrl)
+
+// GET || ALL Department Lists
 router.get("/list", getDepartmentCtrl)
 
-router.get("/", async (req, res) => {
-    console.log("kutabasa");
-    return res.status(200).json({
-        success: true,
-        message: "Fetch data from /",
-        data: "Hi KutaBasa"
-    });
-})
+// GET || Get Single Department Details
+router.get("/:id",getSingleDepartmentCtrl)
 
 
 

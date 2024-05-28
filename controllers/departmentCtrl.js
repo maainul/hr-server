@@ -1,6 +1,7 @@
 import {validateDepartment} from './../validations/departmentValidation.js'
  import DepartmentModel from '../model/departmentModel.js'
 import { getAllDepartmentWithPaginationService } from '../services/departmentServices.js';
+import mongoose from 'mongoose';
 
 export const createDepartmentCtrl = async (req, res) => {
     try {
@@ -90,3 +91,93 @@ export const getDepartmentCtrl = async (req, res) => {
         });
     }
 };
+
+// Update Departments Status
+export const updateDepartmentStatusCtrl = async(req,res)=>{
+    try {
+        const {status,id} = req.query
+       
+        // Validate presence of id and status
+        if(!id || !status){
+            return res.status(400).json({error:"Missing id or status"})
+        }
+        
+        // Validate status is valid
+        const validStatuses = [1,2]
+        if(!validStatuses.includes(Number(status))){
+            return res.status(400).json({error:"Invalid status value"})
+        }
+
+        // Find department by id
+        const singleDepartment = await DepartmentModel.findById(id)
+        if(!singleDepartment){
+            return res.status(404).json({error:"Department Not Found"})
+        }
+
+
+        // Update the departments status
+        singleDepartment.status = status
+        await singleDepartment.save();
+
+        return res.status(200).json({
+            success:true,
+            message: "Department status updated successfully",
+            data: singleDepartment
+        })
+
+    } catch (error) {
+       console.error("Error in updateDepartmentStatusCtrl:", error);
+       return res.status(500).json({
+        success:false,
+        message:"Error in updating department status",
+        error:error.message || error
+       })
+
+    }
+}
+
+//Get Single Department Details
+export const getSingleDepartmentCtrl = async (req, res) => {
+    try {
+        const {id} = req.params
+
+        //Validate the ID
+        if(!id){
+            return res.status(400).json({error:"Department ID is Required"})
+        }
+
+        // Validate the ID format before processing 
+        /*
+        Reason : Remove or add new character in id.
+        Message: BSONError: input must be a 24 character hex string, 12 byte Uint8Array, or an integer
+
+        */
+        if(!mongoose.Types.ObjectId.isValid(id)){
+             return res.status(400).json({ success: false, error: "Invalid department ID format" });
+        }
+
+        // Find the department by ID
+        const department = await DepartmentModel.findById(id)
+        if(!department){
+            return res.status(404).json({error:"Department not Found"})
+        }
+
+
+        // Return the department details
+        return res.status(200).json({
+            success:true,
+            message:"Department Data Found",
+            data:department
+        })
+
+        
+    } catch (error) {
+        console.error("Error in getSingleDepartmentCtrl:", error);
+         return res.status(500).json({
+            success: false,
+            message: "Error in fetching department details",
+            error: error.message || error,
+        });
+    }
+
+}
