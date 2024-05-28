@@ -3,7 +3,8 @@ import {
     createDepartmentCtrl, 
     getDepartmentCtrl,
     updateDepartmentStatusCtrl,
-    getSingleDepartmentCtrl 
+    getSingleDepartmentCtrl,
+    updateDepartmentCtrl  
 } from '../controllers/departmentCtrl.js'
 
 
@@ -22,6 +23,9 @@ router.get("/list", getDepartmentCtrl)
 
 // GET || Get Single Department Details
 router.get("/:id",getSingleDepartmentCtrl)
+
+// PUT || Update Department Details
+router.put("/:id",updateDepartmentCtrl)
 
 
 

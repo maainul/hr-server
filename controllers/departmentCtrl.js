@@ -152,6 +152,7 @@ export const getSingleDepartmentCtrl = async (req, res) => {
         Message: BSONError: input must be a 24 character hex string, 12 byte Uint8Array, or an integer
 
         */
+
         if(!mongoose.Types.ObjectId.isValid(id)){
              return res.status(400).json({ success: false, error: "Invalid department ID format" });
         }
@@ -179,5 +180,51 @@ export const getSingleDepartmentCtrl = async (req, res) => {
             error: error.message || error,
         });
     }
+
+}
+
+// Update Department Details
+export const updateDepartmentCtrl = async (req, res) => {
+    try {
+        const {id} = req.params
+        const {name,dptCode} = req.body
+
+        // Validate the ID
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ success: false, error: "Invalid department ID format" });
+        }
+
+        // Check if the department exists
+         const department = await DepartmentModel.findById(id);
+        if(!department){
+            return res.status(404).json({ success: false, error: "Department not found" });
+        }
+        
+        // Update the department details
+        if (name) department.name = name
+        if(dptCode) department.dptCode = dptCode
+
+        // Save the update Department
+        await department.save()
+
+        // Return the updated department details
+        return res.status(200).json({
+            success:true,
+            department,
+            message:"Update Department Data."
+        })
+
+
+
+    } catch (error) {
+        console.error("Error in updateDepartmentCtrl:", error);
+         return res.status(500).json({
+            success: false,
+            message: "Error in updating department details",
+            error: error.message || error,
+        });
+    }
+
+
 
 }
