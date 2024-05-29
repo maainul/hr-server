@@ -1,24 +1,29 @@
-import mongoose, { mongo } from "mongoose";
-
+import mongoose from "mongoose";
 
 const employeeSchema = new mongoose.Schema({
     full_name: {
         type: String,
+        required: true
     },
     email: {
-        type: String
+        type: String,
+        required: true
     },
     phone: {
-        type: String
+        type: String,
+        required: true
     },
     present_address: {
-        type: String
+        type: String,
+        required: true
     },
     permanent_address: {
-        type: String
+        type: String,
+        required: true
     },
     date_of_joining: {
         type: Date,
+        required: true
     },
     emergency_contact_name: {
         type: String
@@ -34,7 +39,8 @@ const employeeSchema = new mongoose.Schema({
     },
     national_id: {
         type: Number,
-        unique: true
+        unique: true,
+        required: true
     },
     bank_account: {
         type: String
@@ -53,16 +59,18 @@ const employeeSchema = new mongoose.Schema({
         default: 'Single'
     },
     status: {
-        type: Number
+        type: Number,
+        required: true
     },
+    
     //Relations: one Employee ==> One Salary Grade and One Department
     department: {
-        type: mongo.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Division',
         required: true,
     },
     designation: {
-        type: mongo.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Designation',
         required: true,
     },

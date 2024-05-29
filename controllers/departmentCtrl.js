@@ -187,34 +187,33 @@ export const getSingleDepartmentCtrl = async (req, res) => {
 export const updateDepartmentCtrl = async (req, res) => {
     try {
         const {id} = req.params
-        const {name,dptCode} = req.body
+        const updatedData = req.body
 
+       
         // Validate the ID
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ success: false, error: "Invalid department ID format" });
         }
 
         // Check if the department exists
-         const department = await DepartmentModel.findById(id);
+        const department = await DepartmentModel.findById(id);
         if(!department){
             return res.status(404).json({ success: false, error: "Department not found" });
         }
         
         // Update the department details
-        if (name) department.name = name
-        if(dptCode) department.dptCode = dptCode
+        if (updatedData.name) department.name = updatedData.name
+        if(updatedData.dptCode) department.dptCode = updatedData.dptCode
 
         // Save the update Department
-        await department.save()
-
+        const data = await department.save()
+        
         // Return the updated department details
         return res.status(200).json({
             success:true,
-            department,
+            data,
             message:"Update Department Data."
         })
-
-
 
     } catch (error) {
         console.error("Error in updateDepartmentCtrl:", error);

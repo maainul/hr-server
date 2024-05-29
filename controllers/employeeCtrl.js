@@ -1,4 +1,4 @@
-import { validateEmployee } from '../validations/EmployeeValidation.js'
+import { validateEmployee } from '../validations/employeeValidation.js'
 import EmployeeModel from '../model/EmployeeModel.js'
 import { getAllEmployeeWithPaginationService } from '../services/EmployeeServices.js';
 import mongoose from 'mongoose';
@@ -27,16 +27,26 @@ export const createEmployeeCtrl = async (req, res) => {
         const phoneExists = await EmployeeModel.findOne({ 'phone': req.body.phone });
         if (phoneExists) {
             errors.push({
-                label: 'name',
+                label: 'phone',
                 message: "Employee Phone Already Exists"
             });
         }
+
         // Check if Employee email already exists
         const emailExists = await EmployeeModel.findOne({ 'email': req.body.email });
         if (emailExists) {
             errors.push({
-                label: 'name',
+                label: 'email',
                 message: "Employee email Already Exists"
+            });
+        }
+        
+        // Check if Employee email already exists
+        const nidExists = await EmployeeModel.findOne({ 'national_id': req.body.national_id });
+        if (nidExists) {
+            errors.push({
+                label: 'national_id',
+                message: "National ID Already Exists"
             });
         }
 
@@ -50,10 +60,6 @@ export const createEmployeeCtrl = async (req, res) => {
 
         //Create New Employee
         const newEmployee = await EmployeeModel.create(value)
-
-        console.log("###########################################");
-        console.log("New Employee Created:", newEmployee);
-        console.log("###########################################");
 
         return res.status(201).json({
             success: true,
@@ -180,18 +186,14 @@ export const getSingleEmployeeCtrl = async (req, res) => {
 
 }
 
-// Update Employee Details
+
+// Update Employee
 export const updateEmployeeCtrl = async (req, res) => {
     try {
-        const { id } = req.params
-        const updatedData = req.body
+        const { id } = req.params;
+        const updatedData = req.body;
 
-        console.log("########################################")
-        console.log(updatedData)
-        console.log("########################################")
-
-
-        // Validate the ID
+        // Validate the ID format
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ success: false, error: "Invalid Employee ID format" });
         }
@@ -202,22 +204,37 @@ export const updateEmployeeCtrl = async (req, res) => {
             return res.status(404).json({ success: false, error: "Employee not found" });
         }
 
-        // Update the Employee details
-        Object.keys(updatedData).forEach(key => {
-            if (employee[key] !== undefined) {
-                employee[key] = updatedData[key]
-            }
-        })
+        // updated the employee details
+        if(updatedData.full_name) employee.full_name = updatedData.full_name
+        if(updatedData.email) employee.email = updatedData.email
+        if(updatedData.phone) employee.phone = updatedData.phone
+        if(updatedData.present_address) employee.present_address = updatedData.present_address
+        if(updatedData.permanent_address) employee.permanent_address = updatedData.permanent_address
+        if(updatedData.date_of_joining) employee.date_of_joining = updatedData.date_of_joining
+        if(updatedData.emergency_contact_name) employee.emergency_contact_name = updatedData.emergency_contact_name
+        if(updatedData.emergency_contact_number_1) employee.emergency_contact_number_1 = updatedData.emergency_contact_number_1
+        if(updatedData.emergency_contact_number_2) employee.emergency_contact_number_2 = updatedData.emergency_contact_number_2
+        if(updatedData.date_of_birth) employee.date_of_birth = updatedData.date_of_birth
+        if(updatedData.national_id) employee.national_id = updatedData.national_id
+        if(updatedData.bank_account) employee.bank_account = updatedData.bank_account
+        if(updatedData.bank_name) employee.bank_name = updatedData.bank_name
+        if(updatedData.gender) employee.gender = updatedData.gender
+        if(updatedData.marital_status) employee.marital_status = updatedData.marital_status
+        if(updatedData.department) employee.department = updatedData.department
+        if(updatedData.designation) employee.designation = updatedData.designation
+        if(updatedData.salary_grade) employee.salary_grade = updatedData.salary_grade
+        if(updatedData.full_name) employee.full_name = updatedData.full_name
+        if(updatedData.status) employee.status = updatedData.status
 
-        // Save the update Employee
-        await employee.save()
+        // Save the updated Employee
+        const data = await employee.save()
 
         // Return the updated Employee details
         return res.status(200).json({
             success: true,
-            employee,
-            message: "Update Employee Data."
-        })
+            data,
+            message: "Employee details updated successfully."
+        });
 
     } catch (error) {
         console.error("Error in updateEmployeeCtrl:", error);
@@ -227,4 +244,4 @@ export const updateEmployeeCtrl = async (req, res) => {
             error: error.message || error,
         });
     }
-}
+};

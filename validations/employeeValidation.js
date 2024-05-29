@@ -1,7 +1,7 @@
 import Joi from 'joi'
 
-export const validateDepartment = (data) => {
-   const departmentSchema = Joi.object({
+export const validateEmployee = (data) => {
+   const employeeSchema = Joi.object({
       full_name: Joi.string().required().messages({
          'string.base': 'Full name should be a type of text',
          'string.empty': 'Full name cannot be empty',
@@ -10,7 +10,22 @@ export const validateDepartment = (data) => {
       email: Joi.string().required().messages({
          'string.base': 'Email code should be a type of text',
          'string.empty': 'Email code cannot be empty',
+         'string.email': 'Email must be a valid email',
          'any.required': 'Email code is required'
+      }),
+      phone: Joi.string().required().messages({
+         'string.base': 'Phone Number should be a type of text',
+         'string.empty': 'Phone Number cannot be empty',
+         'any.required': 'Phone Number is required'
+      }),
+      emergency_contact_number_2: Joi.string().optional().messages({
+        'string.base': 'Emergency contact number 2 should be a type of text',
+      }),
+      bank_account: Joi.string().required().messages({
+         'string.base': 'Bank Account Number should be a type of text',
+      }),
+      bank_name: Joi.string().required().messages({
+         'string.base': 'Bank Name should be a type of text',
       }),
       permanent_address: Joi.string().required().messages({
          'string.base': 'Permanent Address should be a type of text',
@@ -45,21 +60,35 @@ export const validateDepartment = (data) => {
          'number.empty': 'Emergency Contact date cannot be empty',
          'any.required': 'Emergency Contact code is required'
       }),
-      gender: Joi.string().required().messages({
-         'string.base': 'Gender should be a type of text',
-         'string.empty': 'Gender date cannot be empty',
-         'any.required': 'Gender is required'
+      gender: Joi.string().valid('Male', 'Female', 'Other').optional().messages({
+        'string.base': 'Gender should be a type of text',
+        'any.only': 'Gender must be one of [Male, Female, Other]',
       }),
-      marital_status: Joi.string().required().messages({
-         'string.base': 'Marital Status should be a type of text',
-         'string.empty': 'Marital Status cannot be empty',
-         'any.required': 'Marital Status is required'
+      marital_status: Joi.string().valid('Single', 'Married', 'Divorced', 'Widowed').optional().messages({
+        'string.base': 'Marital status should be a type of text',
+        'any.only': 'Marital status must be one of [Single, Married, Divorced, Widowed]',
+    }),
+      status: Joi.number(),
+    
+      //Dependent Field
+     department: Joi.string().required().messages({
+         'string.base': 'Department should be a type of text',
+         'string.empty': 'Department cannot be empty',
+         'any.required': 'Department is required'
       }),
-
-      status: Joi.number()
+      designation: Joi.string().required().messages({
+         'string.base': 'Designation should be a type of text',
+         'string.empty': 'Designation cannot be empty',
+         'any.required': 'Designation is required'
+      }),
+      salary_grade: Joi.string().required().messages({
+         'string.base': 'Salary grade should be a type of text',
+         'string.empty': 'Salary grade cannot be empty',
+         'any.required': 'Salary grade is required'
+      }),
 
    })
 
    const options = { abortEarly: false, allowUnknown: false };
-   return departmentSchema.validate(data, options);
+   return employeeSchema.validate(data, options);
 }
