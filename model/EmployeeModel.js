@@ -62,7 +62,40 @@ const employeeSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    // New Fields
+    religion: {
+        type: String
+    },
+    blood_group: {
+        type: String
+    },
+    nationality: {
+        type: String
+    },
+    number_of_children: {
+        type: String
+    },
+
+    spouse_name:{
+        type:String
+    },
+    spouse_dob:{
+        type:Date
+    },
+    spouse_profession:{
+        type:Date
+    },
+    marriage_date:{
+        type:Date
+    },
+
+    passport_date:{
+        type:Date
+    },  
     
+    passport_issue_date:{
+        type:Date
+    },   
     //Relations: one Employee ==> One Salary Grade and One Department
     department: {
         type: mongoose.Schema.Types.ObjectId,
