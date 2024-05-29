@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import express from 'express'
 import connectDB from './dbConnection.js';
 import unitRoutes from "./routes/unitRoutes.js";
+import policyRoutes from "./routes/policyRoutes.js";
 import employeeRoutes from "./routes/employeeRoutes.js";
 import divisionRoutes from "./routes/departmentRoutes.js";
 import departmentRoutes from "./routes/departmentRoutes.js";
@@ -33,6 +34,7 @@ app.use(cors({
 
 // Router
 app.use('/api/v1/unit', unitRoutes)
+app.use('/api/v1/policy', policyRoutes)
 app.use('/api/v1/division', divisionRoutes)
 app.use('/api/v1/employee', employeeRoutes)
 app.use('/api/v1/department', departmentRoutes)
