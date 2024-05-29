@@ -1,19 +1,19 @@
 import Joi from 'joi'
 
-export const validateDepartment = (data) =>{
-    const employeePolicySchema = Joi.object({
-         employee:Joi.string().required().messages({
-            'string.base': 'Department name should be a type of text',
-            'string.empty': 'Department name cannot be empty',
-            'any.required': 'Department name is required'
-         }),
-         policy:Joi.string().required().messages({
-            'string.base': 'Department code should be a type of text',
-            'string.empty': 'Department code cannot be empty',
-            'any.required': 'Department code is required'
-         }),
-    })
+export const validateEmployeePolicy = (data) => {
+   const employeePolicySchema = Joi.object({
+      employee: Joi.string().required().messages({
+         'string.base': 'Employee ID should be a type of text',
+         'string.empty': 'Employee ID cannot be empty',
+         'any.required': 'Employee ID is required'
+      }),
+      policy: Joi.string().required().messages({
+         'string.base': 'Policy ID should be a type of text',
+         'string.empty': 'Policy ID code cannot be empty',
+         'any.required': 'Policy ID code is required'
+      }),
+   })
 
-    const options = { abortEarly: false, allowUnknown: false };
-    return employeePolicySchema.validate(data, options);
+   const options = { abortEarly: false, allowUnknown: false };
+   return employeePolicySchema.validate(data, options);
 }

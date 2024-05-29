@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const employeePolicySchema = new mongoose.Schema({
-    division: {
+    employee: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Employee',
         required: true,
