@@ -64,32 +64,37 @@ const employeeSchema = new mongoose.Schema({
     },
     // New Fields
     religion: {
-        type: String
+        type: String,
+      enum: ['Muslim', 'Hindu+', 'Christan', 'Shikh'],
+        default: 'Muslim'
     },
+
     blood_group: {
-        type: String
+        type: String,
+         enum: ['O+', 'AB+', 'AB-', 'O-'],
+        default: 'O+'
     },
+
     nationality: {
         type: String
     },
+    
     number_of_children: {
-        type: String
+        type: Number
     },
 
     spouse_name:{
         type:String
     },
+    
     spouse_dob:{
         type:Date
     },
+
     spouse_profession:{
         type:Date
     },
     marriage_date:{
-        type:Date
-    },
-
-    passport_date:{
         type:Date
     },  
     

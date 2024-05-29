@@ -47,10 +47,10 @@ export const validateEmployee = (data) => {
          'date.empty': 'Birth date cannot be empty',
          'any.required': 'Birth date code is required'
       }),
-      emergency_contact_name: Joi.string().required().messages({
+      emergency_contact_name: Joi.string().optional().messages({
          'string.base': 'Emergency Contact Name should be a type of text',
       }),
-      emergency_contact_number_1: Joi.string().required().messages({
+      emergency_contact_number_1: Joi.string().optional().messages({
          'string.base': 'Emergency Contact should be a type of text',
          'string.empty': 'Emergency Contact date cannot be empty',
          'any.required': 'Emergency Contact code is required'
@@ -64,10 +64,44 @@ export const validateEmployee = (data) => {
         'string.base': 'Gender should be a type of text',
         'any.only': 'Gender must be one of [Male, Female, Other]',
       }),
+      religion: Joi.string().valid('Single', 'Married', 'Divorced', 'Widowed').optional().messages({
+        'string.base': 'religion status should be a type of text',
+        'any.only': 'religion status must be one of [Hindu, Muslim, Christan, Buddha,Shikh,Athenic]',
+    }),
+
       marital_status: Joi.string().valid('Single', 'Married', 'Divorced', 'Widowed').optional().messages({
         'string.base': 'Marital status should be a type of text',
         'any.only': 'Marital status must be one of [Single, Married, Divorced, Widowed]',
     }),
+
+  blood_group: Joi.string().optional().messages({
+         'string.base': 'blood group should be a type of text',
+          'any.only': 'blood_group must be one of [O+, B+, AB+, O-,AB-]',
+      }),
+
+ nationality: Joi.string().optional().messages({
+         'string.base': 'nationality should be a type of text',
+      }),
+ number_of_children: Joi.number().optional().messages({
+         'number.base': 'Children Number should be a type of Number',
+      }),
+
+      spouse_name: Joi.string().optional().messages({
+         'string.base': 'spouse name should be a type of text',
+      }),
+      spouse_dob: Joi.date().optional().messages({
+         'date.base': 'spouse date of birth should be a type of date',
+      }),
+      spouse_profession: Joi.string().optional().messages({
+         'string.base': 'spouse date of birth should be a type of text',
+      }),
+       marriage_date: Joi.date().optional().messages({
+         'date.base': 'marriage date of birth should be a type of date',
+      }),
+        passport_issue_date: Joi.date().optional().messages({
+         'date.base': 'passport date of birth should be a type of date',
+      }),
+
       status: Joi.number(),
     
       //Dependent Field

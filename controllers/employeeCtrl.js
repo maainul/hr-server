@@ -223,8 +223,15 @@ export const updateEmployeeCtrl = async (req, res) => {
         if(updatedData.department) employee.department = updatedData.department
         if(updatedData.designation) employee.designation = updatedData.designation
         if(updatedData.salary_grade) employee.salary_grade = updatedData.salary_grade
-        if(updatedData.full_name) employee.full_name = updatedData.full_name
-        if(updatedData.status) employee.status = updatedData.status
+        if(updatedData.religion) employee.religion = updatedData.religion
+        if(updatedData.blood_group) employee.blood_group = updatedData.blood_group
+        if(updatedData.nationality) employee.nationality = updatedData.nationality
+        if(updatedData.number_of_children) employee.number_of_children = updatedData.number_of_children
+        if(updatedData.spouse_name) employee.spouse_name = updatedData.spouse_name
+        if(updatedData.spouse_dob) employee.spouse_dob = updatedData.spouse_dob
+        if(updatedData.spouse_profession) employee.spouse_profession = updatedData.spouse_profession
+        if(updatedData.marriage_date) employee.marriage_date = updatedData.marriage_date
+        if(updatedData.passport_issue_date) employee.passport_issue_date = updatedData.passport_issue_date
 
         // Save the updated Employee
         const data = await employee.save()
