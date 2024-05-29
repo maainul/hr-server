@@ -1,8 +1,7 @@
-import { } from '../validations/employeePolicyValidation.js'
+import mongoose from 'mongoose';
 import EmployeePolicyModel from '../model/employeePolicyModel.js'
 import { validateEmployeePolicy } from '../validations/employeePolicyValidation.js'
 import { getAllemployeePolicyWithPaginationService } from '../services/employeePolicyServices.js'
-import mongoose from 'mongoose';
 
 export const createEmployeePolicyCtrl = async (req, res) => {
     try {
