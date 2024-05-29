@@ -156,6 +156,7 @@ export const getSingleUnitCtrl = async (req, res) => {
         if (!unit) {
             return res.status(404).json({ error: "Unit not Found" });
         }
+        
        
        // Return the UnitModel details along with division name
         return res.status(200).json({

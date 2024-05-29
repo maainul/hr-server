@@ -1,22 +1,23 @@
-import {validateDepartment} from './../validations/departmentValidation.js'
- import DepartmentModel from '../model/departmentModel.js'
-import { getAllDepartmentWithPaginationService } from '../services/departmentServices.js';
 import mongoose from 'mongoose';
+import DepartmentModel from '../model/departmentModel.js'
+import { validateDepartment } from './../validations/departmentValidation.js'
+import { getAllDepartmentWithPaginationService } from '../services/departmentServices.js';
 
 export const createDepartmentCtrl = async (req, res) => {
     try {
+
         //Joi Validation
-        const {error,value} = validateDepartment(req.body)
-        if(error){
-            const formattedErrors = error.details.map(detail =>{
-                return{
-                    label:detail.context.label,
+        const { error, value } = validateDepartment(req.body)
+        if (error) {
+            const formattedErrors = error.details.map(detail => {
+                return {
+                    label: detail.context.label,
                     message: detail.message.replace(/"/g, '') // Corrected the replace method
                 }
             })
             return res.status(400).json({
-                success:false,
-                error:formattedErrors
+                success: false,
+                error: formattedErrors
             })
         }
 
@@ -51,17 +52,17 @@ export const createDepartmentCtrl = async (req, res) => {
 
         //Create New Department
         const newDepartment = await DepartmentModel.create(value)
-        
+
         console.log("###########################################");
         console.log("New Department Created:", newDepartment);
         console.log("###########################################");
-        
+
         return res.status(201).json({
-            success:true,
+            success: true,
             newDepartment,
-            message:"New Department Added Successfully"
+            message: "New Department Added Successfully"
         })
-       
+
     } catch (error) {
         console.error("Error Creating Department:", error);
         return res.status(500).json({
@@ -75,12 +76,12 @@ export const createDepartmentCtrl = async (req, res) => {
 export const getDepartmentCtrl = async (req, res) => {
     try {
         //Fetch all department from the database
-        const departments = await getAllDepartmentWithPaginationService({req});
+        const departments = await getAllDepartmentWithPaginationService({ req });
 
         return res.status(200).json({
             success: true,
             ...departments,
-            message:'All departments retrieved successfully',
+            message: 'All departments retrieved successfully',
         });
     } catch (error) {
         console.error("Error in getting all departments :", error);
@@ -93,25 +94,25 @@ export const getDepartmentCtrl = async (req, res) => {
 };
 
 // Update Departments Status
-export const updateDepartmentStatusCtrl = async(req,res)=>{
+export const updateDepartmentStatusCtrl = async (req, res) => {
     try {
-        const {status,id} = req.query
-       
+        const { status, id } = req.query
+
         // Validate presence of id and status
-        if(!id || !status){
-            return res.status(400).json({error:"Missing id or status"})
+        if (!id || !status) {
+            return res.status(400).json({ error: "Missing id or status" })
         }
-        
+
         // Validate status is valid
-        const validStatuses = [1,2]
-        if(!validStatuses.includes(Number(status))){
-            return res.status(400).json({error:"Invalid status value"})
+        const validStatuses = [1, 2]
+        if (!validStatuses.includes(Number(status))) {
+            return res.status(400).json({ error: "Invalid status value" })
         }
 
         // Find department by id
         const singleDepartment = await DepartmentModel.findById(id)
-        if(!singleDepartment){
-            return res.status(404).json({error:"Department Not Found"})
+        if (!singleDepartment) {
+            return res.status(404).json({ error: "Department Not Found" })
         }
 
 
@@ -120,18 +121,18 @@ export const updateDepartmentStatusCtrl = async(req,res)=>{
         await singleDepartment.save();
 
         return res.status(200).json({
-            success:true,
+            success: true,
             message: "Department status updated successfully",
             data: singleDepartment
         })
 
     } catch (error) {
-       console.error("Error in updateDepartmentStatusCtrl:", error);
-       return res.status(500).json({
-        success:false,
-        message:"Error in updating department status",
-        error:error.message || error
-       })
+        console.error("Error in updateDepartmentStatusCtrl:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Error in updating department status",
+            error: error.message || error
+        })
 
     }
 }
@@ -139,11 +140,11 @@ export const updateDepartmentStatusCtrl = async(req,res)=>{
 //Get Single Department Details
 export const getSingleDepartmentCtrl = async (req, res) => {
     try {
-        const {id} = req.params
+        const { id } = req.params
 
         //Validate the ID
-        if(!id){
-            return res.status(400).json({error:"Department ID is Required"})
+        if (!id) {
+            return res.status(400).json({ error: "Department ID is Required" })
         }
 
         // Validate the ID format before processing 
@@ -153,28 +154,27 @@ export const getSingleDepartmentCtrl = async (req, res) => {
 
         */
 
-        if(!mongoose.Types.ObjectId.isValid(id)){
-             return res.status(400).json({ success: false, error: "Invalid department ID format" });
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ success: false, error: "Invalid department ID format" });
         }
 
         // Find the department by ID
         const department = await DepartmentModel.findById(id)
-        if(!department){
-            return res.status(404).json({error:"Department not Found"})
+        if (!department) {
+            return res.status(404).json({ error: "Department not Found" })
         }
-
 
         // Return the department details
         return res.status(200).json({
-            success:true,
-            message:"Department Data Found",
-            data:department
+            success: true,
+            message: "Department Data Found",
+            data: department
         })
 
-        
+
     } catch (error) {
         console.error("Error in getSingleDepartmentCtrl:", error);
-         return res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Error in fetching department details",
             error: error.message || error,
@@ -186,10 +186,10 @@ export const getSingleDepartmentCtrl = async (req, res) => {
 // Update Department Details
 export const updateDepartmentCtrl = async (req, res) => {
     try {
-        const {id} = req.params
+        const { id } = req.params
         const updatedData = req.body
 
-       
+
         // Validate the ID
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ success: false, error: "Invalid department ID format" });
@@ -197,27 +197,27 @@ export const updateDepartmentCtrl = async (req, res) => {
 
         // Check if the department exists
         const department = await DepartmentModel.findById(id);
-        if(!department){
+        if (!department) {
             return res.status(404).json({ success: false, error: "Department not found" });
         }
-        
+
         // Update the department details
         if (updatedData.name) department.name = updatedData.name
-        if(updatedData.dptCode) department.dptCode = updatedData.dptCode
+        if (updatedData.dptCode) department.dptCode = updatedData.dptCode
 
         // Save the update Department
         const data = await department.save()
-        
+
         // Return the updated department details
         return res.status(200).json({
-            success:true,
+            success: true,
             data,
-            message:"Update Department Data."
+            message: "Update Department Data."
         })
 
     } catch (error) {
         console.error("Error in updateDepartmentCtrl:", error);
-         return res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Error in updating department details",
             error: error.message || error,

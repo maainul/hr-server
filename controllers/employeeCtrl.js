@@ -1,5 +1,8 @@
 import { validateEmployee } from '../validations/employeeValidation.js'
 import EmployeeModel from '../model/EmployeeModel.js'
+import DepartmentModel from '../model/departmentModel.js'
+import DesignationModel from '../model/designationModel.js'
+import SalaryGradeModel from '../model/salaryGradeModel.js'
 import { getAllEmployeeWithPaginationService } from '../services/EmployeeServices.js';
 import mongoose from 'mongoose';
 
@@ -40,13 +43,40 @@ export const createEmployeeCtrl = async (req, res) => {
                 message: "Employee email Already Exists"
             });
         }
-        
+
         // Check if Employee email already exists
         const nidExists = await EmployeeModel.findOne({ 'national_id': req.body.national_id });
         if (nidExists) {
             errors.push({
                 label: 'national_id',
                 message: "National ID Already Exists"
+            });
+        }
+
+        // Check Valid Department
+        const dptExists = await DepartmentModel.findOne({ '_id': req.body.department })
+        if (!dptExists) {
+            errors.push({
+                label: 'department',
+                message: "department Not Exists"
+            });
+        }
+
+        // Check Valid Designation
+        const desExists = await DesignationModel.findOne({ '_id': req.body.designation })
+        if (!desExists) {
+            errors.push({
+                label: 'designation',
+                message: "designation Not Exists"
+            });
+        }
+
+        // Check Valid Salary Grade
+        const grdExists = await SalaryGradeModel.findOne({ '_id': req.body.salary_grade })
+        if (!grdExists) {
+            errors.push({
+                label: 'salary_grade',
+                message: "salary grade Not Exists"
             });
         }
 
@@ -205,33 +235,33 @@ export const updateEmployeeCtrl = async (req, res) => {
         }
 
         // updated the employee details
-        if(updatedData.full_name) employee.full_name = updatedData.full_name
-        if(updatedData.email) employee.email = updatedData.email
-        if(updatedData.phone) employee.phone = updatedData.phone
-        if(updatedData.present_address) employee.present_address = updatedData.present_address
-        if(updatedData.permanent_address) employee.permanent_address = updatedData.permanent_address
-        if(updatedData.date_of_joining) employee.date_of_joining = updatedData.date_of_joining
-        if(updatedData.emergency_contact_name) employee.emergency_contact_name = updatedData.emergency_contact_name
-        if(updatedData.emergency_contact_number_1) employee.emergency_contact_number_1 = updatedData.emergency_contact_number_1
-        if(updatedData.emergency_contact_number_2) employee.emergency_contact_number_2 = updatedData.emergency_contact_number_2
-        if(updatedData.date_of_birth) employee.date_of_birth = updatedData.date_of_birth
-        if(updatedData.national_id) employee.national_id = updatedData.national_id
-        if(updatedData.bank_account) employee.bank_account = updatedData.bank_account
-        if(updatedData.bank_name) employee.bank_name = updatedData.bank_name
-        if(updatedData.gender) employee.gender = updatedData.gender
-        if(updatedData.marital_status) employee.marital_status = updatedData.marital_status
-        if(updatedData.department) employee.department = updatedData.department
-        if(updatedData.designation) employee.designation = updatedData.designation
-        if(updatedData.salary_grade) employee.salary_grade = updatedData.salary_grade
-        if(updatedData.religion) employee.religion = updatedData.religion
-        if(updatedData.blood_group) employee.blood_group = updatedData.blood_group
-        if(updatedData.nationality) employee.nationality = updatedData.nationality
-        if(updatedData.number_of_children) employee.number_of_children = updatedData.number_of_children
-        if(updatedData.spouse_name) employee.spouse_name = updatedData.spouse_name
-        if(updatedData.spouse_dob) employee.spouse_dob = updatedData.spouse_dob
-        if(updatedData.spouse_profession) employee.spouse_profession = updatedData.spouse_profession
-        if(updatedData.marriage_date) employee.marriage_date = updatedData.marriage_date
-        if(updatedData.passport_issue_date) employee.passport_issue_date = updatedData.passport_issue_date
+        if (updatedData.full_name) employee.full_name = updatedData.full_name
+        if (updatedData.email) employee.email = updatedData.email
+        if (updatedData.phone) employee.phone = updatedData.phone
+        if (updatedData.present_address) employee.present_address = updatedData.present_address
+        if (updatedData.permanent_address) employee.permanent_address = updatedData.permanent_address
+        if (updatedData.date_of_joining) employee.date_of_joining = updatedData.date_of_joining
+        if (updatedData.emergency_contact_name) employee.emergency_contact_name = updatedData.emergency_contact_name
+        if (updatedData.emergency_contact_number_1) employee.emergency_contact_number_1 = updatedData.emergency_contact_number_1
+        if (updatedData.emergency_contact_number_2) employee.emergency_contact_number_2 = updatedData.emergency_contact_number_2
+        if (updatedData.date_of_birth) employee.date_of_birth = updatedData.date_of_birth
+        if (updatedData.national_id) employee.national_id = updatedData.national_id
+        if (updatedData.bank_account) employee.bank_account = updatedData.bank_account
+        if (updatedData.bank_name) employee.bank_name = updatedData.bank_name
+        if (updatedData.gender) employee.gender = updatedData.gender
+        if (updatedData.marital_status) employee.marital_status = updatedData.marital_status
+        if (updatedData.department) employee.department = updatedData.department
+        if (updatedData.designation) employee.designation = updatedData.designation
+        if (updatedData.salary_grade) employee.salary_grade = updatedData.salary_grade
+        if (updatedData.religion) employee.religion = updatedData.religion
+        if (updatedData.blood_group) employee.blood_group = updatedData.blood_group
+        if (updatedData.nationality) employee.nationality = updatedData.nationality
+        if (updatedData.number_of_children) employee.number_of_children = updatedData.number_of_children
+        if (updatedData.spouse_name) employee.spouse_name = updatedData.spouse_name
+        if (updatedData.spouse_dob) employee.spouse_dob = updatedData.spouse_dob
+        if (updatedData.spouse_profession) employee.spouse_profession = updatedData.spouse_profession
+        if (updatedData.marriage_date) employee.marriage_date = updatedData.marriage_date
+        if (updatedData.passport_issue_date) employee.passport_issue_date = updatedData.passport_issue_date
 
         // Save the updated Employee
         const data = await employee.save()

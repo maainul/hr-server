@@ -11,7 +11,7 @@ const unitSchema = new mongoose.Schema({
     },
     division: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Division',
+        ref: 'Division', // Ensure the ref matches the Division model name
         required: true,
     }
 }, { timestamps: true });
