@@ -1,7 +1,11 @@
 import mongoose from 'mongoose';
+import PolicyModel from '../model/policyModel.js'
+import EmployeeModel from '../model/EmployeeModel.js'
 import EmployeePolicyModel from '../model/employeePolicyModel.js'
 import { validateEmployeePolicy } from '../validations/employeePolicyValidation.js'
 import { getAllemployeePolicyWithPaginationService } from '../services/employeePolicyServices.js'
+import { EmployeeNotExists, InvalidEmployeeID, InvalidPolicyID, PolicyNotExists } from '../utils/errorMessage.js';
+
 
 export const createEmployeePolicyCtrl = async (req, res) => {
     try {
@@ -17,6 +21,40 @@ export const createEmployeePolicyCtrl = async (req, res) => {
             return res.status(400).json({
                 success: false,
                 error: formattedErrors
+            })
+        }
+
+        //  Check Id Valid or Not
+        if (!mongoose.Types.ObjectId.isValid(req.body.employee)) {
+            return res.status(400).json({ success: false, error: InvalidEmployeeID })
+        }
+        if (!mongoose.Types.ObjectId.isValid(req.body.policy)) {
+            return res.status(400).json({ success: false, error: InvalidPolicyID })
+        }
+
+        const errors = []
+        //check exists
+        const emp = await EmployeeModel.findOne({ '_id': req.body.employee })
+        if (!emp) {
+            errors.push({
+                label: 'emmployee',
+                message: EmployeeNotExists
+            })
+        }
+
+        const policy = await PolicyModel.findOne({ '_id': req.body.policy })
+        if (!policy) {
+            errors.push({
+                label: 'policy',
+                message: PolicyNotExists
+            })
+        }
+
+        // return error if exists
+        if (errors.length > 0) {
+            return res.status(400).json({
+                success: false,
+                error: errors
             })
         }
 
@@ -106,30 +144,30 @@ export const updateEmployeePolicyStatusCtrl = async (req, res) => {
 //Get Single EmployeePolicy Details
 export const getSingleEmployeePolicyCtrl = async (req, res) => {
     try {
-        const { id } = req.params
 
-        //Validate the ID
+        const { id } = req.params
         if (!id) {
             return res.status(400).json({ error: "EmployeePolicy ID is Required" })
         }
 
-        // Validate the ID format before processing 
-        /*
-        Reason : Remove or add new character in id.
-        Message: BSONError: input must be a 24 character hex string, 12 byte Uint8Array, or an integer
-
-        */
-
+        //Validate the ID
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ success: false, error: "Invalid employeePolicy ID format" });
         }
 
-        // Find the employeePolicy by ID
-        const employeePolicy = await EmployeePolicyModel.findById(id)
+        // Find the employeePolicy by ID and Populate Related Fields
+        const employeePolicy = await EmployeePolicyModel.findById(id).
+            populate({
+                path: 'employee',
+                model: 'Employee'
+            })
+            .populate({
+                path: 'policy',
+                model: 'Policie'
+            })
         if (!employeePolicy) {
             return res.status(404).json({ error: "EmployeePolicy not Found" })
         }
-
 
         // Return the employeePolicy details
         return res.status(200).json({
@@ -137,7 +175,6 @@ export const getSingleEmployeePolicyCtrl = async (req, res) => {
             message: "EmployeePolicy Data Found",
             data: employeePolicy
         })
-
 
     } catch (error) {
         console.error("Error in getSingleEmployeePolicyCtrl:", error);
@@ -169,8 +206,8 @@ export const updateEmployeePolicyCtrl = async (req, res) => {
         }
 
         // Update the employeePolicy details
-        if (updatedData.name) employeePolicy.name = updatedData.name
-        if (updatedData.dptCode) employeePolicy.dptCode = updatedData.dptCode
+        if (updatedData.employee) employeePolicy.employee = updatedData.empoyee
+        if (updatedData.policy) employeePolicy.policy = updatedData.policy
 
         // Save the update EmployeePolicy
         const data = await employeePolicy.save()

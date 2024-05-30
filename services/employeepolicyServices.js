@@ -1,61 +1,81 @@
 import EmployeePolicyModel from "../model/employeePolicyModel.js"
 
 
-export const getAllemployeePolicyWithPaginationService = async ({req}) =>{
+export const getAllemployeePolicyWithPaginationService = async ({ req }) => {
     try {
-          // Query Param For Search
-     const { search = '', sort = 'latest', page = 1, limit = 10 } = req.query;
+        // Query Param For Search
+        const { search = '', sort = 'latest', page = 1, limit = 10 } = req.query;
 
-    //Conditions for searching filters
-    let queryObject = {}
+        //Conditions for searching filters
+        let matchStage = {}
 
-    //Check Search for Query
-    if(search){
-        //Search by name or dptCode
-        queryObject = {
-            $or:[
-                {name:{$regex:search,$options:"i"}},
-                {dptCode:{$regex:search,$options:"i"}}
-            ]
+        //Check Search for Query
+        if (search) {
+            //Search by name or dptCode
+            matchStage = {
+                $or: [
+                    { employee: { $regex: search, $options: "i" } },
+                    { policy: { $regex: search, $options: "i" } }
+                ]
+            }
         }
-    }
 
-    // Build Mongoose Query Based on Search
-    let queryResult = EmployeePolicyModel.find(queryObject)
+        //Sorting
+        let sortStage = {}
+        if (sort === 'latest') sortStage.createdAt = -1;
+        if (sort === 'oldest') sortStage.createdAt = 1;
 
-    //Sorting
-    if(sort === 'latest') queryResult = queryResult.sort('-createdAt')
-    if(sort === 'oldest') queryResult = queryResult.sort('createdAt')
-   // if(sort === 'a-z') queryResult = queryResult.sort('name')
-   // if(sort === 'z-a') queryResult = queryResult.sort('-name')
+        //Pagination
+        const pageNumber = Number(page)
+        const limitNumber = Number(limit)
+        const skip = (pageNumber - 1) * limitNumber
 
-    //Pagination
-    const pageNumber = Number(page)
-    const limitNumber = Number(limit)
-    const skip = (pageNumber -1) * limitNumber
 
-    //Skip
-    queryResult = queryResult.skip(skip).limit(limit)
+        // Employee Policy Data
+        const emPloicy = await EmployeePolicyModel.aggregate([
+            { $match: matchStage },
+            { $sort: sortStage },
+            { $skip: skip },
+            { $limit: limitNumber },
+            {
+                $lookup: {
+                    from: 'employees',
+                    localField: 'Employee',
+                    foreignField: '_id',
+                    as: 'employeeInfo'
+                },
+                $lookup: {
+                    from: 'policies',
+                    localField: 'policy',
+                    foreignField: '_id',
+                    as: 'policyInfo'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$employee',
+                    preserveNullAndEmptyArrays: true
+                },
+                $unwind: {
+                    path: '$policy',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+        ])
 
-    //Per page Data Count = Total Data Count Based on Query Search
-    const pageDataCount = await EmployeePolicyModel.countDocuments(queryResult)
+        const totalDataCount = await EmployeePolicyModel.countDocuments(matchStage)
+        const numberOfPages = Math.ceil(totalDataCount / limitNumber)
 
-    //Total Data Count
-    const totalDataCount = await EmployeePolicyModel.countDocuments(queryObject)
 
-    //Number of Pages
-    const numberOfPages = Math.ceil(totalDataCount / limit)
-
-    // Execute Query For List of Data
-    const data = await queryResult
-
-    return {
-        "currentPageData":pageDataCount,
-        "totalData":totalDataCount,
-        "totalNumberOfPages":numberOfPages,
-        "data":data,
-    }
+        return {
+            success: true,
+            "currentPageData": emPloicy.length,
+            "totalData": totalDataCount,
+            "totalNumberOfPages": numberOfPages,
+            "data": emPloicy,
+            message: "All Employee Policy retrieve successfully"
+        }
     } catch (error) {
-          throw new Error(`Error in getAllemployeePolicyWithPaginationService: ${error.message}`);
+        throw new Error(`Error in getAllemployeePolicyWithPaginationService: ${error.message}`);
     }
 }
