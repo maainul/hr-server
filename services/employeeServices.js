@@ -1,4 +1,7 @@
 import EmployeeModel from "../model/EmployeeModel.js"
+import DepartmentModel from "../model/departmentModel.js";
+import DesignationModel from "../model/designationModel.js";
+import SalaryGradeModel from "../model/salaryGradeModel.js";
 
 
 export const getAllEmployeeWithPaginationService = async ({ req }) => {
@@ -48,6 +51,14 @@ export const getAllEmployeeWithPaginationService = async ({ req }) => {
 
         // Execute Query For List of Data
         const data = await queryResult
+
+        // Department Info
+        for (let emp of data) {
+            const deprtInfo = await DepartmentModel.findOne({ '_id': emp.department })
+            const desInfo = await DesignationModel.findOne({ '_id': emp.designation })
+            const gradeInfo = await SalaryGradeModel.findOne({ '_id': emp.salary_grade })
+            console.log(deprtInfo, gradeInfo, desInfo)
+        }
 
         return {
             "currentPageData": pageDataCount,

@@ -26,6 +26,17 @@ export const createEmployeeCtrl = async (req, res) => {
         // Collect errors
         const errors = [];
 
+        // Check Id Valid or Not
+        if (!mongoose.Types.ObjectId.isValid(req.body.department)) {
+            return res.status(400).json({ success: false, error: "Invalid Department ID format" });
+        }
+        if (!mongoose.Types.ObjectId.isValid(req.body.designation)) {
+            return res.status(400).json({ success: false, error: "Invalid Designation ID format" });
+        }
+        if (!mongoose.Types.ObjectId.isValid(req.body.salary_grade)) {
+            return res.status(400).json({ success: false, error: "Invalid Salary Grade ID format" });
+        }
+
         // Check if Employee phone already exists
         const phoneExists = await EmployeeModel.findOne({ 'phone': req.body.phone });
         if (phoneExists) {
@@ -110,11 +121,11 @@ export const createEmployeeCtrl = async (req, res) => {
 export const getEmployeeCtrl = async (req, res) => {
     try {
         //Fetch all Employee from the database
-        const Employees = await getAllEmployeeWithPaginationService({ req });
+        const employees = await getAllEmployeeWithPaginationService({ req });
 
         return res.status(200).json({
             success: true,
-            ...Employees,
+            ...employees,
             message: 'All Employees retrieved successfully',
         });
     } catch (error) {
