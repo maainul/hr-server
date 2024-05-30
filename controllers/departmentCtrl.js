@@ -5,7 +5,6 @@ import { getAllDepartmentWithPaginationService } from '../services/departmentSer
 
 export const createDepartmentCtrl = async (req, res) => {
     try {
-
         //Joi Validation
         const { error, value } = validateDepartment(req.body)
         if (error) {

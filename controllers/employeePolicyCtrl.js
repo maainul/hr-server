@@ -23,10 +23,6 @@ export const createEmployeePolicyCtrl = async (req, res) => {
         //Create New EmployeePolicy
         const newEmployeePolicy = await EmployeePolicyModel.create(value)
 
-        console.log("###########################################");
-        console.log("New EmployeePolicy Created:", newEmployeePolicy);
-        console.log("###########################################");
-
         return res.status(201).json({
             success: true,
             newEmployeePolicy,

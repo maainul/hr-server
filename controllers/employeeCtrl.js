@@ -3,7 +3,7 @@ import EmployeeModel from '../model/EmployeeModel.js'
 import DepartmentModel from '../model/departmentModel.js'
 import DesignationModel from '../model/designationModel.js'
 import SalaryGradeModel from '../model/salaryGradeModel.js'
-import { getAllEmployeeWithPaginationService } from '../services/EmployeeServices.js';
+import { getAllEmployeeWithPaginationService, getSingleEmployeeService } from '../services/EmployeeServices.js';
 import mongoose from 'mongoose';
 
 export const createEmployeeCtrl = async (req, res) => {
@@ -191,30 +191,36 @@ export const getSingleEmployeeCtrl = async (req, res) => {
             return res.status(400).json({ error: "Employee ID is Required" })
         }
 
-        // Validate the ID format before processing 
-        /*
-        Reason : Remove or add new character in id.
-        Message: BSONError: input must be a 24 character hex string, 12 byte Uint8Array, or an integer
-
-        */
-
+        // Validate the ID format
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ success: false, error: "Invalid Employee ID format" });
         }
 
         // Find the Employee by ID
-        const Employee = await EmployeeModel.findById(id)
-        if (!Employee) {
-            return res.status(404).json({ error: "Employee not Found" })
+        const employee = await EmployeeModel.findById(id)
+            .populate({
+                path: 'department',
+                model: 'Department'
+            })
+            .populate({
+                path: 'designation',
+                model: 'Designation'
+            })
+            .populate({
+                path: 'salary_grade',
+                model: 'SalaryGrade'
+            });
+
+        if (!employee) {
+            return res.status(404).json({ error: "Employee not Found" });
         }
 
         // Return the Employee details
         return res.status(200).json({
             success: true,
             message: "Employee Data Found",
-            data: Employee
+            data: employee
         })
-
 
     } catch (error) {
         console.error("Error in getSingleEmployeeCtrl:", error);

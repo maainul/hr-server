@@ -1,4 +1,4 @@
-import {validatePolicy} from '../validations/policyValidation.js'
+import { validatePolicy } from '../validations/policyValidation.js'
 import PolicyModel from '../model/policyModel.js'
 import { getAllpolicyWithPaginationService } from '../services/policyServices.js';
 import mongoose from 'mongoose';
@@ -6,17 +6,18 @@ import mongoose from 'mongoose';
 export const createPolicyCtrl = async (req, res) => {
     try {
         //Joi Validation
-        const {error,value} = validatePolicy(req.body)
-        if(error){
-            const formattedErrors = error.details.map(detail =>{
-                return{
-                    label:detail.context.label,
+        const { error, value } = validatePolicy(req.body)
+        if (error) {
+            const formattedErrors = error.details.map(detail => {
+                return {
+                    label: detail.context.label,
                     message: detail.message.replace(/"/g, '') // Corrected the replace method
                 }
             })
+
             return res.status(400).json({
-                success:false,
-                error:formattedErrors
+                success: false,
+                error: formattedErrors
             })
         }
 
@@ -42,13 +43,13 @@ export const createPolicyCtrl = async (req, res) => {
 
         //Create New PolicyModel
         const newPolicy = await PolicyModel.create(value)
-                
+
         return res.status(201).json({
-            success:true,
+            success: true,
             newPolicy,
-            message:"New Policy Added Successfully"
+            message: "New Policy Added Successfully"
         })
-       
+
     } catch (error) {
         console.error("Error Creating Policy:", error);
         return res.status(500).json({
@@ -62,12 +63,12 @@ export const createPolicyCtrl = async (req, res) => {
 export const getPolicyCtrl = async (req, res) => {
     try {
         //Fetch all PolicyModel from the database
-        const policys = await getAllpolicyWithPaginationService({req});
+        const policys = await getAllpolicyWithPaginationService({ req });
 
         return res.status(200).json({
             success: true,
             ...policys,
-            message:'All Policys retrieved successfully',
+            message: 'All Policys retrieved successfully',
         });
     } catch (error) {
         console.error("Error in getting all Policy :", error);
@@ -80,25 +81,25 @@ export const getPolicyCtrl = async (req, res) => {
 };
 
 // Update PolicyModels Status
-export const updatePolicyStatusCtrl = async(req,res)=>{
+export const updatePolicyStatusCtrl = async (req, res) => {
     try {
-        const {status,id} = req.query
-       
+        const { status, id } = req.query
+
         // Validate presence of id and status
-        if(!id || !status){
-            return res.status(400).json({error:"Missing id or status"})
+        if (!id || !status) {
+            return res.status(400).json({ error: "Missing id or status" })
         }
-        
+
         // Validate status is valid
-        const validStatuses = [1,2]
-        if(!validStatuses.includes(Number(status))){
-            return res.status(400).json({error:"Invalid status value"})
+        const validStatuses = [1, 2]
+        if (!validStatuses.includes(Number(status))) {
+            return res.status(400).json({ error: "Invalid status value" })
         }
 
         // Find PolicyModel by id
         const singlePolicy = await PolicyModel.findById(id)
-        if(!singlePolicy){
-            return res.status(404).json({error:"Policy Not Found"})
+        if (!singlePolicy) {
+            return res.status(404).json({ error: "Policy Not Found" })
         }
 
 
@@ -107,18 +108,18 @@ export const updatePolicyStatusCtrl = async(req,res)=>{
         await singlePolicy.save();
 
         return res.status(200).json({
-            success:true,
+            success: true,
             message: "Policy status updated successfully",
             data: singlePolicy
         })
 
     } catch (error) {
-       console.error("Error in updatePolicyStatusCtrl:", error);
-       return res.status(500).json({
-        success:false,
-        message:"Error in updating Policy status",
-        error:error.message || error
-       })
+        console.error("Error in updatePolicyStatusCtrl:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Error in updating Policy status",
+            error: error.message || error
+        })
 
     }
 }
@@ -126,11 +127,11 @@ export const updatePolicyStatusCtrl = async(req,res)=>{
 //Get Single PolicyModel Details
 export const getSinglePolicyCtrl = async (req, res) => {
     try {
-        const {id} = req.params
+        const { id } = req.params
 
         //Validate the ID
-        if(!id){
-            return res.status(400).json({error:"Policy ID is Required"})
+        if (!id) {
+            return res.status(400).json({ error: "Policy ID is Required" })
         }
 
         // Validate the ID format before processing 
@@ -139,26 +140,26 @@ export const getSinglePolicyCtrl = async (req, res) => {
         Message: BSONError: input must be a 24 character hex string, 12 byte Uint8Array, or an integer
 
         */
-        if(!mongoose.Types.ObjectId.isValid(id)){
-             return res.status(400).json({ success: false, error: "Invalid Policy ID format" });
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ success: false, error: "Invalid Policy ID format" });
         }
 
         // Find the PolicyModel by ID
         const policy = await PolicyModel.findById(id)
-        if(!policy){
-            return res.status(404).json({error:"Policy not Found"})
+        if (!policy) {
+            return res.status(404).json({ error: "Policy not Found" })
         }
         // Return the PolicyModel details
         return res.status(200).json({
-            success:true,
-            message:"Policy Data Found",
-            data:policy
+            success: true,
+            message: "Policy Data Found",
+            data: policy
         })
 
-        
+
     } catch (error) {
         console.error("Error in getSinglePolicyCtrl:", error);
-         return res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Error in fetching Policy details",
             error: error.message || error,
@@ -170,8 +171,8 @@ export const getSinglePolicyCtrl = async (req, res) => {
 // Update Policy Details
 export const updatePolicyCtrl = async (req, res) => {
     try {
-        const {id} = req.params
-        const {name,benefit,value} = req.body
+        const { id } = req.params
+        const { name, benefit, value } = req.body
 
         // Validate the ID
         if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -179,31 +180,31 @@ export const updatePolicyCtrl = async (req, res) => {
         }
 
         // Check if the Policy exists
-         const policy = await PolicyModel.findById(id);
-        if(!policy){
+        const policy = await PolicyModel.findById(id);
+        if (!policy) {
             return res.status(404).json({ success: false, error: "Policy not found" });
         }
-        
+
         // Update the PolicyModel details
         if (name) policy.name = name
-        if(benefit) policy.benefit = benefit
-        if(value) policy.value = value
+        if (benefit) policy.benefit = benefit
+        if (value) policy.value = value
 
         // Save the update PolicyModel
         await policy.save()
 
         // Return the updated PolicyModel details
         return res.status(200).json({
-            success:true,
-        policy,
-            message:"Update Policy Data."
+            success: true,
+            policy,
+            message: "Update Policy Data."
         })
 
 
 
     } catch (error) {
         console.error("Error in updatePolicyCtrl:", error);
-         return res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Error in updating Policy details",
             error: error.message || error,

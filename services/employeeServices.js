@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import EmployeeModel from "../model/EmployeeModel.js"
 import DepartmentModel from "../model/departmentModel.js";
 import DesignationModel from "../model/designationModel.js";
@@ -111,6 +112,8 @@ export const getAllEmployeeWithPaginationService = async ({ req }) => {
 
 
 
+
+
 /******************************************** DOC *************************************
 
 ### Explanation:
@@ -133,3 +136,88 @@ export const getAllEmployeeWithPaginationService = async ({ req }) => {
 6. **Project Stage**:
    Reshapes the documents to include only the necessary fields from the related collections. This example assumes you only need `name` and `status` from `departmentInfo`, and similar selective fields from `designationInfo` and `salaryGradeInfo`.
 ***********/
+
+export const getSingleEmployeeService = async (id) => {
+    try {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            throw new Error("Invalid Employee ID format");
+        }
+
+        const employee = await EmployeeModel.aggregate([
+            { $match: { _id: mongoose.Types.ObjectId(id) } },
+            {
+                $lookup: {
+                    from: 'departments',
+                    localField: 'department',
+                    foreignField: '_id',
+                    as: 'departmentInfo'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'designations',
+                    localField: 'designation',
+                    foreignField: '_id',
+                    as: 'designationInfo'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'salarygrades',
+                    localField: 'salary_grade',
+                    foreignField: '_id',
+                    as: 'salaryGradeInfo'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$departmentInfo',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $unwind: {
+                    path: '$designationInfo',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $unwind: {
+                    path: '$salaryGradeInfo',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $addFields: {
+                    "departmentInfo.name": "$departmentInfo.name",
+                    "departmentInfo.status": "$departmentInfo.status",
+                    "designationInfo.name": "$designationInfo.name",
+                    "designationInfo.status": "$designationInfo.status",
+                    "salaryGradeInfo.grade_name": "$salaryGradeInfo.grade_name",
+                    "salaryGradeInfo.min_salary": "$salaryGradeInfo.min_salary",
+                    "salaryGradeInfo.max_salary": "$salaryGradeInfo.max_salary",
+                    "salaryGradeInfo.status": "$salaryGradeInfo.status"
+                }
+            },
+            {
+                $project: {
+                    name: 1,
+                    dptCode: 1,
+                    createdAt: 1,
+                    full_name: 1,
+                    departmentInfo: 1,
+                    designationInfo: 1,
+                    salaryGradeInfo: 1
+                }
+            }
+        ]);
+
+        if (employee.length === 0) {
+            throw new Error("Employee not found");
+        }
+
+        return employee[0];
+    } catch (error) {
+        return Error(error.message);
+    }
+};
