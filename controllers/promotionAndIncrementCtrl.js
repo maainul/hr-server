@@ -133,7 +133,7 @@ export const getSinglePromotionsAndIncrementCtrl = async (req, res) => {
 export const updatePromotionsAndIncrementCtrl = async (req, res) => {
     try {
         const { id } = req.params
-
+        const updatedData = req.body
         // Validate the ID
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ success: false, error: "Invalid PromotionsAndIncrement ID format" });
@@ -146,12 +146,27 @@ export const updatePromotionsAndIncrementCtrl = async (req, res) => {
         }
 
         // Update the PromotionsAndIncrementModel details
-        if (previous_designation) promotionsAndIncrement.previous_designation = previous_designation
-        if (new_designation) promotionsAndIncrement.new_designation = new_designation
-        if (employee) promotionsAndIncrement.employee = employee
-        if (promotion_date) promotionsAndIncrement.promotion_date = promotion_date
-        if (remarks) promotionsAndIncrement.remarks = remarks
-
+        if (updatedData.previous_designation) promotionsAndIncrement.previous_designation = updatedData.previous_designation
+        if (updatedData.new_designation) promotionsAndIncrement.new_designation = updatedData.new_designation
+        if (updatedData.employee) promotionsAndIncrement.employee = updatedData.employee
+        if (updatedData.promotion_date) promotionsAndIncrement.promotion_date = updatedData.promotion_date
+        if (updatedData.remarks) promotionsAndIncrement.remarks = updatedData.remarks
+        if (updatedData.basic) promotionsAndIncrement.basic = updatedData.basic
+        if (updatedData.houseRent) promotionsAndIncrement.houseRent = updatedData.houseRent
+        if (updatedData.conveyance) promotionsAndIncrement.conveyance = updatedData.conveyance
+        if (updatedData.medicalAllowance) promotionsAndIncrement.medicalAllowance = updatedData.medicalAllowance
+        if (updatedData.fuelAllowance) promotionsAndIncrement.fuelAllowance = updatedData.fuelAllowance
+        if (updatedData.specialAllowance) promotionsAndIncrement.specialAllowance = updatedData.specialAllowance
+        if (updatedData.grossSalary) promotionsAndIncrement.grossSalary = updatedData.grossSalary
+        if (updatedData.overtimePayment) promotionsAndIncrement.overtimePayment = updatedData.overtimePayment
+        if (updatedData.arrearAdjustment) promotionsAndIncrement.arrearAdjustment = updatedData.arrearAdjustment
+        if (updatedData.compensation) promotionsAndIncrement.compensation = updatedData.compensation
+        if (updatedData.festivalAllowance) promotionsAndIncrement.festivalAllowance = updatedData.festivalAllowance
+        if (updatedData.utilityAllowance) promotionsAndIncrement.utilityAllowance = updatedData.utilityAllowance
+        if (updatedData.leaveEncashment) promotionsAndIncrement.leaveEncashment = updatedData.leaveEncashment
+        if (updatedData.otherAdjustment) promotionsAndIncrement.otherAdjustment = updatedData.otherAdjustment
+        if (updatedData.grossPay) promotionsAndIncrement.grossPay = updatedData.grossPay
+        
         // Save the update PromotionsAndIncrementModel
         await promotionsAndIncrement.save()
 
