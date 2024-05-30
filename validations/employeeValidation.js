@@ -19,7 +19,7 @@ export const validateEmployee = (data) => {
          'any.required': 'Phone Number is required'
       }),
       emergency_contact_number_2: Joi.string().optional().messages({
-        'string.base': 'Emergency contact number 2 should be a type of text',
+         'string.base': 'Emergency contact number 2 should be a type of text',
       }),
       bank_account: Joi.string().required().messages({
          'string.base': 'Bank Account Number should be a type of text',
@@ -61,28 +61,28 @@ export const validateEmployee = (data) => {
          'any.required': 'Emergency Contact code is required'
       }),
       gender: Joi.string().valid('Male', 'Female', 'Other').optional().messages({
-        'string.base': 'Gender should be a type of text',
-        'any.only': 'Gender must be one of [Male, Female, Other]',
+         'string.base': 'Gender should be a type of text',
+         'any.only': 'Gender must be one of [Male, Female, Other]',
       }),
       religion: Joi.string().valid('Single', 'Married', 'Divorced', 'Widowed').optional().messages({
-        'string.base': 'religion status should be a type of text',
-        'any.only': 'religion status must be one of [Hindu, Muslim, Christan, Buddha,Shikh,Athenic]',
-    }),
+         'string.base': 'religion status should be a type of text',
+         'any.only': 'religion status must be one of [Hindu, Muslim, Christan, Buddha,Shikh,Athenic]',
+      }),
 
       marital_status: Joi.string().valid('Single', 'Married', 'Divorced', 'Widowed').optional().messages({
-        'string.base': 'Marital status should be a type of text',
-        'any.only': 'Marital status must be one of [Single, Married, Divorced, Widowed]',
-    }),
-
-  blood_group: Joi.string().optional().messages({
-         'string.base': 'blood group should be a type of text',
-          'any.only': 'blood_group must be one of [O+, B+, AB+, O-,AB-]',
+         'string.base': 'Marital status should be a type of text',
+         'any.only': 'Marital status must be one of [Single, Married, Divorced, Widowed]',
       }),
 
- nationality: Joi.string().optional().messages({
+      blood_group: Joi.string().optional().messages({
+         'string.base': 'blood group should be a type of text',
+         'any.only': 'blood_group must be one of [O+, B+, AB+, O-,AB-]',
+      }),
+
+      nationality: Joi.string().optional().messages({
          'string.base': 'nationality should be a type of text',
       }),
- number_of_children: Joi.number().optional().messages({
+      number_of_children: Joi.number().optional().messages({
          'number.base': 'Children Number should be a type of Number',
       }),
 
@@ -95,17 +95,17 @@ export const validateEmployee = (data) => {
       spouse_profession: Joi.string().optional().messages({
          'string.base': 'spouse date of birth should be a type of text',
       }),
-       marriage_date: Joi.date().optional().messages({
+      marriage_date: Joi.date().optional().messages({
          'date.base': 'marriage date of birth should be a type of date',
       }),
-        passport_issue_date: Joi.date().optional().messages({
+      passport_issue_date: Joi.date().optional().messages({
          'date.base': 'passport date of birth should be a type of date',
       }),
 
       status: Joi.number(),
-    
+
       //Dependent Field
-     department: Joi.string().required().messages({
+      department: Joi.string().required().messages({
          'string.base': 'Department should be a type of text',
          'string.empty': 'Department cannot be empty',
          'any.required': 'Department is required'

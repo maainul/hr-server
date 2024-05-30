@@ -65,42 +65,42 @@ const employeeSchema = new mongoose.Schema({
     // New Fields
     religion: {
         type: String,
-      enum: ['Muslim', 'Hindu+', 'Christan', 'Shikh'],
+        enum: ['Muslim', 'Hindu+', 'Christan', 'Shikh'],
         default: 'Muslim'
     },
 
     blood_group: {
         type: String,
-         enum: ['O+', 'AB+', 'AB-', 'O-'],
+        enum: ['O+', 'AB+', 'AB-', 'O-'],
         default: 'O+'
     },
 
     nationality: {
         type: String
     },
-    
+
     number_of_children: {
         type: Number
     },
 
-    spouse_name:{
-        type:String
-    },
-    
-    spouse_dob:{
-        type:Date
+    spouse_name: {
+        type: String
     },
 
-    spouse_profession:{
-        type:Date
+    spouse_dob: {
+        type: Date
     },
-    marriage_date:{
-        type:Date
-    },  
-    
-    passport_issue_date:{
-        type:Date
-    },   
+
+    spouse_profession: {
+        type: Date
+    },
+    marriage_date: {
+        type: Date
+    },
+
+    passport_issue_date: {
+        type: Date
+    },
     //Relations: one Employee ==> One Salary Grade and One Department
     department: {
         type: mongoose.Schema.Types.ObjectId,

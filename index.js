@@ -8,6 +8,7 @@ import connectDB from './dbConnection.js';
 import unitRoutes from "./routes/unitRoutes.js";
 import policyRoutes from "./routes/policyRoutes.js";
 import employeeRoutes from "./routes/employeeRoutes.js";
+import documentRoutes from "./routes/documentRoutes.js";
 import divisionRoutes from "./routes/departmentRoutes.js";
 import departmentRoutes from "./routes/departmentRoutes.js";
 import designationRoutes from "./routes/designationRoutes.js";
@@ -38,6 +39,7 @@ app.use('/api/v1/unit', unitRoutes)
 app.use('/api/v1/policy', policyRoutes)
 app.use('/api/v1/division', divisionRoutes)
 app.use('/api/v1/employee', employeeRoutes)
+app.use('/api/v1/document', documentRoutes)
 app.use('/api/v1/department', departmentRoutes)
 app.use('/api/v1/designation', designationRoutes)
 app.use('/api/v1/salary-grade', salaryGradeRoutes)

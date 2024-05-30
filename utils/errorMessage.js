@@ -6,6 +6,7 @@ export const InvalidUnitID = 'Invalid Unit ID formate'
 export const InvalidPolicyID = 'Invalid Policy ID formate'
 export const InvalidDivisionID = 'Invalid Division ID formate'
 export const InvalidSalaryGradeID = 'Invalid Salary Grade ID formate'
+export const InvalidDocumentID = 'Invalid Document ID formate'
 
 
 
@@ -21,4 +22,6 @@ export const DesignationNotExists = 'Designation Not Exists'
 export const DivisioNotExists = 'Division Not Exists'
 export const PolicyNotExists = 'Policy Not Exists'
 export const EmployeePolicyNotExists = 'Employee Policy Not Exists'
-export const SalryGradeNotExists = 'Salary Grade Not Exists' 
+export const SalryGradeNotExists = 'Salary Grade Not Exists'
+export const UnitNotExists = 'Unit Not Exists'
+export const DocumentNotExists = 'Document Not Exists' 
