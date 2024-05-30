@@ -9,64 +9,127 @@ export const getAllEmployeeWithPaginationService = async ({ req }) => {
         // Query Param For Search
         const { search = '', sort = 'latest', page = 1, limit = 10 } = req.query;
 
-        //Conditions for searching filters
-        let queryObject = {}
-
-        //Check Search for Query
+        //Search
+        let matchStage = {}
         if (search) {
-            //Search by name or dptCode
-            queryObject = {
-                $or: [
-                    { name: { $regex: search, $options: "i" } },
-                    { dptCode: { $regex: search, $options: "i" } }
-                ]
+            const isNumeric = !isNaN(search)
+
+            if (isNumeric) {
+                matchStage = {
+                    $or: [
+                        { national_id: Number(search) },
+                    ]
+                }
+            } else {
+                matchStage = {
+                    $or: [
+                        { full_name: { $regex: search, $options: "i" } },
+                        { phone: { $regex: search, $options: "i" } },
+                        { email: { $regex: search, $options: "i" } },
+                    ]
+                }
             }
         }
 
-        // Build Mongoose Query Based on Search
-        let queryResult = EmployeeModel.find(queryObject)
-
         //Sorting
-        if (sort === 'latest') queryResult = queryResult.sort('-createdAt')
-        if (sort === 'oldest') queryResult = queryResult.sort('createdAt')
-        if (sort === 'a-z') queryResult = queryResult.sort('full_name')
-        if (sort === 'z-a') queryResult = queryResult.sort('-full_name')
+        let sortStage = {}
+        if (sort === 'latest') sortStage.createdAt = -1;
+        if (sort === 'oldest') sortStage.createdAt = 1;
+        if (sort === 'a-z') sortStage.full_name = 1;
+        if (sort === 'z-a') sortStage.full_name = -1;
+
 
         //Pagination
         const pageNumber = Number(page)
         const limitNumber = Number(limit)
         const skip = (pageNumber - 1) * limitNumber
 
-        //Skip
-        queryResult = queryResult.skip(skip).limit(limit)
+        const employees = await EmployeeModel.aggregate([
+            { $match: matchStage },
+            { $sort: sortStage },
+            { $skip: skip },
+            { $limit: limitNumber },
+            {
+                $lookup: {
+                    from: 'departments',
+                    localField: 'department',
+                    foreignField: '_id',
+                    as: 'departmentInfo'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'designations',
+                    localField: 'designation',
+                    foreignField: '_id',
+                    as: 'designationInfo'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'salarygrades',
+                    localField: 'salary_grade',
+                    foreignField: '_id',
+                    as: 'salaryGradeInfo'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$departmentInfo',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $unwind: {
+                    path: '$designationInfo',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $unwind: {
+                    path: '$salaryGradeInfo',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+        ])
 
-        //Per page Data Count = Total Data Count Based on Query Search
-        const pageDataCount = await EmployeeModel.countDocuments(queryResult)
-
-        //Total Data Count
-        const totalDataCount = await EmployeeModel.countDocuments(queryObject)
-
-        //Number of Pages
-        const numberOfPages = Math.ceil(totalDataCount / limit)
-
-        // Execute Query For List of Data
-        const data = await queryResult
-
-        // Department Info
-        for (let emp of data) {
-            const deprtInfo = await DepartmentModel.findOne({ '_id': emp.department })
-            const desInfo = await DesignationModel.findOne({ '_id': emp.designation })
-            const gradeInfo = await SalaryGradeModel.findOne({ '_id': emp.salary_grade })
-            console.log(deprtInfo, gradeInfo, desInfo)
-        }
+        const totalDataCount = await EmployeeModel.countDocuments(matchStage)
+        const numberOfPages = Math.ceil(totalDataCount / limitNumber)
 
         return {
-            "currentPageData": pageDataCount,
+            success: true,
+            "currentPageData": employees.length,
             "totalData": totalDataCount,
             "totalNumberOfPages": numberOfPages,
-            "data": data,
+            "data": employees,
+            message: "All Employees retrieved successfully"
         }
     } catch (error) {
         throw new Error(`Error in getAllEmployeeWithPaginationService: ${error.message}`);
     }
 }
+
+
+
+/******************************************** DOC *************************************
+
+### Explanation:
+1. **Match Stage**:
+   Filters employees based on the search query.
+
+2. **Sort Stage**:
+   Sorts the results based on the `sort` parameter.
+
+3. **Pagination**:
+   Skips and limits the number of results based on the `page` and `limit` parameters.
+
+4. **Lookup Stages**:
+   Joins the `EmployeeModel` with `DepartmentModel`, `DesignationModel`, and `SalaryGradeModel` using the `$lookup` aggregation stage.
+
+5. **Unwind Stages**:
+   Ensures that each document in the arrays resulting from `$lookup` stages is converted to a single document. 
+   `preserveNullAndEmptyArrays` ensures employees without related documents still appear in the result.
+
+6. **Project Stage**:
+   Reshapes the documents to include only the necessary fields from the related collections. This example assumes you only need `name` and `status` from `departmentInfo`, and similar selective fields from `designationInfo` and `salaryGradeInfo`.
+***********/
