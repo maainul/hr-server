@@ -40,6 +40,15 @@ export const createUnitCtrl = async (req, res) => {
         }
 
 
+        // check Division Exists of not
+        const divExists = await DivisionModel.findOne({ _id: division })
+        if (!divExists) {
+            errors.push({
+                label: 'division',
+                message: 'Division Not Exists'
+            })
+        }
+
         // If there are errors, return them
         if (errors.length > 0) {
             return res.status(400).json({
@@ -141,18 +150,15 @@ export const getSingleUnitCtrl = async (req, res) => {
         }
 
         // Validate the ID format before processing 
-        /*
-        Reason : Remove or add new character in id.
-        Message: BSONError: input must be a 24 character hex string, 12 byte Uint8Array, or an integer
-
-        */
-
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ success: false, error: "Invalid Unit ID format" });
         }
 
         // Find the UnitModel by ID and populate the 'division' field to get division details
-        const unit = await UnitModel.findById(id)
+        const unit = await UnitModel.findById(id).populate({
+            path: 'division',
+            model: 'Division'
+        })
 
         if (!unit) {
             return res.status(404).json({ error: "Unit not Found" });
@@ -209,8 +215,6 @@ export const updateUnitCtrl = async (req, res) => {
             unit,
             message: "Update Unit Data."
         })
-
-
 
     } catch (error) {
         console.error("Error in updateUnitCtrl:", error);

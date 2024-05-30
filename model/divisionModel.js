@@ -5,7 +5,7 @@ const divisionSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    dptCode: {
+    code: {
         type: String,
         required: true,
     }

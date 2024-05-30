@@ -24,11 +24,11 @@ export const createDivisionCtrl = async (req, res) => {
         const errors = [];
 
         // Check if Division name already exists
-        const nameExists = await DivisionModel.findOne({ 'name': req.body.code });
+        const nameExists = await DivisionModel.findOne({ 'name': req.body.name });
         if (nameExists) {
             errors.push({
                 label: 'name',
-                message: "Division Nme Already Exists"
+                message: "Division Name Already Exists"
             });
         }
 

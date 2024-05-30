@@ -1,61 +1,73 @@
 import UnitModel from "../model/unitModel.js"
 
 
-export const getAllUnitWithPaginationService = async ({req}) =>{
+export const getAllUnitWithPaginationService = async ({ req }) => {
     try {
-          // Query Param For Search
-     const { search = '', sort = 'latest', page = 1, limit = 10 } = req.query;
+        // Query Param For Search
+        const { search = '', sort = 'latest', page = 1, limit = 10 } = req.query;
 
-    //Conditions for searching filters
-    let queryObject = {}
+        //Conditions for searching filters
+        let matchStage = {}
 
-    //Check Search for Query
-    if(search){
-        //Search by name or code
-        queryObject = {
-            $or:[
-                {name:{$regex:search,$options:"i"}},
-                {code:{$regex:search,$options:"i"}}
-            ]
+        //Check Search for Query
+        if (search) {
+            //Search by name or code
+            matchStage = {
+                $or: [
+                    { name: { $regex: search, $options: "i" } },
+                ]
+            }
         }
-    }
 
-    // Build Mongoose Query Based on Search
-    let queryResult = UnitModel.find(queryObject)
+        // Build Mongoose Query Based on Search
+        let sortStage = {}
 
-    //Sorting
-    if(sort === 'latest') queryResult = queryResult.sort('-createdAt')
-    if(sort === 'oldest') queryResult = queryResult.sort('createdAt')
-    if(sort === 'a-z') queryResult = queryResult.sort('name')
-    if(sort === 'z-a') queryResult = queryResult.sort('-name')
+        //Sorting
+        if (sort === 'latest') sortStage.createdAt = -1
+        if (sort === 'oldest') sortStage.createdAt = 1
+        if (sort === 'a-z') sortStage.name = 1
+        if (sort === 'z-a') sortStage.name = -1
 
-    //Pagination
-    const pageNumber = Number(page)
-    const limitNumber = Number(limit)
-    const skip = (pageNumber -1) * limitNumber
+        //Pagination
+        const pageNumber = Number(page)
+        const limitNumber = Number(limit)
+        const skip = (pageNumber - 1) * limitNumber
 
-    //Skip
-    queryResult = queryResult.skip(skip).limit(limit)
 
-    //Per page Data Count = Total Data Count Based on Query Search
-    const pageDataCount = await UnitModel.countDocuments(queryResult)
+        // unit data fetch
+        const unit = await UnitModel.aggregate([
+            { $match: matchStage },
+            { $sort: sortStage },
+            { $skip: skip },
+            { $limit: limitNumber },
+            {
+                $lookup: {
+                    from: 'divisions',
+                    localField: 'division',
+                    foreignField: '_id',
+                    as: 'division'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$division',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+        ])
 
-    //Total Data Count
-    const totalDataCount = await UnitModel.countDocuments(queryObject)
+        const totalDataCount = await UnitModel.countDocuments(matchStage)
+        const numberOfPages = Math.ceil(totalDataCount / limitNumber)
 
-    //Number of Pages
-    const numberOfPages = Math.ceil(totalDataCount / limit)
-
-    // Execute Query For List of Data
-    const data = await queryResult
-
-    return {
-        "currentPageData":pageDataCount,
-        "totalData":totalDataCount,
-        "totalNumberOfPages":numberOfPages,
-        "data":data,
-    }
+        return {
+            success: true,
+            "currentPageData": unit.length,
+            "totalData": totalDataCount,
+            "totalNumberOfPages": numberOfPages,
+            "data": unit,
+            message: "All Employee retrieve successfully"
+        }
     } catch (error) {
-          throw new Error(`Error in getAllUnitWithPaginationService: ${error.message}`);
+        throw new Error(`Error in getAllUnitWithPaginationService: ${error.message}`);
     }
 }
