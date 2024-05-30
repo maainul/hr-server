@@ -14,6 +14,7 @@ import departmentRoutes from "./routes/departmentRoutes.js";
 import designationRoutes from "./routes/designationRoutes.js";
 import salaryGradeRoutes from "./routes/salaryGradeRoutes.js";
 import employeePolicyRoutes from "./routes/employeePolicyRoutes.js";
+import promotionAndIncrementRoutes from "./routes/promotionAndIncrementRoutes.js";
 
 //configure env
 dotenv.config()
@@ -44,6 +45,7 @@ app.use('/api/v1/department', departmentRoutes)
 app.use('/api/v1/designation', designationRoutes)
 app.use('/api/v1/salary-grade', salaryGradeRoutes)
 app.use('/api/v1/employee-policy', employeePolicyRoutes)
+app.use('/api/v1/promotion-increment', promotionAndIncrementRoutes)
 
 const PORT = process.env.PORT || 8081;
 
