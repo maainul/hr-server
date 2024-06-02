@@ -37,7 +37,7 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.use(cors({
-    origin: ["http://localhost:3003", "https://hr.netlify.app"],
+    origin: ["http://localhost:3000", "https://hr.netlify.app"],
     credentials: true,
 }))
 
