@@ -77,6 +77,7 @@ export const createEmployeePolicyCtrl = async (req, res) => {
     }
 };
 
+
 export const getEmployeePolicyCtrl = async (req, res) => {
     try {
         //Fetch all employeePolicy from the database

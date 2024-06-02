@@ -52,10 +52,6 @@ export const createDepartmentCtrl = async (req, res) => {
         //Create New Department
         const newDepartment = await DepartmentModel.create(value)
 
-        console.log("###########################################");
-        console.log("New Department Created:", newDepartment);
-        console.log("###########################################");
-
         return res.status(201).json({
             success: true,
             newDepartment,

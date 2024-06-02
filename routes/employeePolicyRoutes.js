@@ -1,10 +1,10 @@
 import express from 'express'
-import { 
-    createEmployeePolicyCtrl, 
+import {
+    createEmployeePolicyCtrl,
     getEmployeePolicyCtrl,
     updateEmployeePolicyStatusCtrl,
     getSingleEmployeePolicyCtrl,
-    updateEmployeePolicyCtrl  
+    updateEmployeePolicyCtrl
 } from '../controllers/employeePolicyCtrl.js'
 
 
@@ -22,10 +22,10 @@ router.get("/status", updateEmployeePolicyStatusCtrl)
 router.get("/list", getEmployeePolicyCtrl)
 
 // GET || Get Single EmployeePolicy Details
-router.get("/:id",getSingleEmployeePolicyCtrl)
+router.get("/:id", getSingleEmployeePolicyCtrl)
 
 // PUT || Update EmployeePolicy Details
-router.put("/:id",updateEmployeePolicyCtrl)
+router.put("/:id", updateEmployeePolicyCtrl)
 
 
 

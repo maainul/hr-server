@@ -1,16 +1,15 @@
 import express from 'express'
-import { 
-    createSalaryGradeCtrl, 
+import {
+    createSalaryGradeCtrl,
     getSalaryGradeCtrl,
     updateSalaryGradeStatusCtrl,
     getSingleSalaryGradeCtrl,
-    updateSalaryGradeCtrl  
+    updateSalaryGradeCtrl
 } from '../controllers/salaryGradeCtrl.js'
 
 
 //router object
 const router = express.Router()
-
 
 // CREATE 
 router.post("/create", createSalaryGradeCtrl)
@@ -22,10 +21,10 @@ router.get("/status", updateSalaryGradeStatusCtrl)
 router.get("/list", getSalaryGradeCtrl)
 
 // GET || Get Single SalaryGrade Details
-router.get("/:id",getSingleSalaryGradeCtrl)
+router.get("/:id", getSingleSalaryGradeCtrl)
 
 // PUT || Update SalaryGrade Details
-router.put("/:id",updateSalaryGradeCtrl)
+router.put("/:id", updateSalaryGradeCtrl)
 
 
 

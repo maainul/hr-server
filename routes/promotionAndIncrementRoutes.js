@@ -10,6 +10,7 @@ import {
 //router object
 const router = express.Router()
 
+
 // CREATE 
 router.post("/create", createPromotionsAndIncrementCtrl)
 

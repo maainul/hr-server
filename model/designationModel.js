@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
 const designationSchema = new mongoose.Schema({
-    name:{
-        type:String,
+    name: {
+        type: String,
     },
-    status:{
-        type:Number
+    status: {
+        type: Number
     },
-},{timestamps:true})
+}, { timestamps: true })
 
-export  default mongoose.model('Designation',designationSchema)
+export default mongoose.model('Designation', designationSchema)

@@ -166,7 +166,7 @@ export const updatePromotionsAndIncrementCtrl = async (req, res) => {
         if (updatedData.leaveEncashment) promotionsAndIncrement.leaveEncashment = updatedData.leaveEncashment
         if (updatedData.otherAdjustment) promotionsAndIncrement.otherAdjustment = updatedData.otherAdjustment
         if (updatedData.grossPay) promotionsAndIncrement.grossPay = updatedData.grossPay
-        
+
         // Save the update PromotionsAndIncrementModel
         await promotionsAndIncrement.save()
 

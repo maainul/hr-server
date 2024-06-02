@@ -1,11 +1,11 @@
 import express from 'express'
 import {
-    createDivisionCtrl,
-    getDivisionCtrl,
-    updateDivisionStatusCtrl,
-    getSingleDivisionCtrl,
-    updateDivisionCtrl
-} from '../controllers/divisionCtrl.js'
+    createDepartmentCtrl,
+    getDepartmentCtrl,
+    updateDepartmentStatusCtrl,
+    getSingleDepartmentCtrl,
+    updateDepartmentCtrl
+} from '../controllers/departmentCtrl.js'
 
 
 //router object
@@ -13,19 +13,19 @@ const router = express.Router()
 
 
 // CREATE 
-router.post("/create", createDivisionCtrl)
+router.post("/create", createDepartmentCtrl)
 
-// UPDATE || Update Division Status
-router.get("/status", updateDivisionStatusCtrl)
+// UPDATE || Update Department Status
+router.get("/status", updateDepartmentStatusCtrl)
 
-// GET || ALL Division Lists
-router.get("/list", getDivisionCtrl)
+// GET || ALL Department Lists
+router.get("/list", getDepartmentCtrl)
 
-// GET || Get Single Division Details
-router.get("/:id", getSingleDivisionCtrl)
+// GET || Get Single Department Details
+router.get("/:id", getSingleDepartmentCtrl)
 
-// PUT || Update Division Details
-router.put("/:id", updateDivisionCtrl)
+// PUT || Update Department Details
+router.put("/:id", updateDepartmentCtrl)
 
 
 

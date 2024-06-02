@@ -99,6 +99,7 @@ export const createDocumentCtrl = async (req, res) => {
                 });
             }
         }
+
         // Check Unit
         if (req.body.division) {
             const diviExists = await DivisionModel.findOne({ '_id': req.body.division });

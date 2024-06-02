@@ -1,16 +1,15 @@
 import express from 'express'
-import { 
-    createUnitCtrl, 
+import {
+    createUnitCtrl,
     getUnitCtrl,
     updateUnitStatusCtrl,
     getSingleUnitCtrl,
-    updateUnitCtrl  
+    updateUnitCtrl
 } from '../controllers/unitCtrl.js'
 
 
 //router object
 const router = express.Router()
-
 
 // CREATE 
 router.post("/create", createUnitCtrl)
@@ -22,10 +21,10 @@ router.get("/status", updateUnitStatusCtrl)
 router.get("/list", getUnitCtrl)
 
 // GET || Get Single Unit Details
-router.get("/:id",getSingleUnitCtrl)
+router.get("/:id", getSingleUnitCtrl)
 
 // PUT || Update Unit Details
-router.put("/:id",updateUnitCtrl)
+router.put("/:id", updateUnitCtrl)
 
 
 

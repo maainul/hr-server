@@ -1,16 +1,15 @@
 import express from 'express'
-import { 
-    createDesignationCtrl, 
+import {
+    createDesignationCtrl,
     getDesignationCtrl,
     updateDesignationStatusCtrl,
     getSingleDesignationCtrl,
-    updateDesignationCtrl  
+    updateDesignationCtrl
 } from '../controllers/designationCtrl.js'
 
 
 //router object
 const router = express.Router()
-
 
 // CREATE 
 router.post("/create", createDesignationCtrl)
@@ -22,10 +21,10 @@ router.get("/status", updateDesignationStatusCtrl)
 router.get("/list", getDesignationCtrl)
 
 // GET || Get Single Designation Details
-router.get("/:id",getSingleDesignationCtrl)
+router.get("/:id", getSingleDesignationCtrl)
 
 // PUT || Update Designation Details
-router.put("/:id",updateDesignationCtrl)
+router.put("/:id", updateDesignationCtrl)
 
 
 

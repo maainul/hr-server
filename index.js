@@ -7,6 +7,7 @@ import express from 'express'
 import connectDB from './dbConnection.js';
 import unitRoutes from "./routes/unitRoutes.js";
 import policyRoutes from "./routes/policyRoutes.js";
+import userRoutes from './auth/routes/userRoutes.js'
 import employeeRoutes from "./routes/employeeRoutes.js";
 import documentRoutes from "./routes/documentRoutes.js";
 import divisionRoutes from "./routes/departmentRoutes.js";
@@ -14,8 +15,9 @@ import departmentRoutes from "./routes/departmentRoutes.js";
 import designationRoutes from "./routes/designationRoutes.js";
 import salaryGradeRoutes from "./routes/salaryGradeRoutes.js";
 import employeePolicyRoutes from "./routes/employeePolicyRoutes.js";
-import promotionAndIncrementRoutes from "./routes/promotionAndIncrementRoutes.js";
 import employeeSalaryRoutes from "./routes/employeeSalaryRoutes.js";
+import promotionAndIncrementRoutes from "./routes/promotionAndIncrementRoutes.js";
+
 
 //configure env
 dotenv.config()
@@ -42,6 +44,7 @@ app.use('/api/v1/policy', policyRoutes)
 app.use('/api/v1/division', divisionRoutes)
 app.use('/api/v1/employee', employeeRoutes)
 app.use('/api/v1/document', documentRoutes)
+app.use('/api/v1/auth', userRoutes)
 app.use('/api/v1/department', departmentRoutes)
 app.use('/api/v1/designation', designationRoutes)
 app.use('/api/v1/salary-grade', salaryGradeRoutes)

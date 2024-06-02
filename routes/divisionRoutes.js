@@ -1,10 +1,10 @@
 import express from 'express'
-import { 
-    createDivisionCtrl, 
+import {
+    createDivisionCtrl,
     getDivisionCtrl,
     updateDivisionStatusCtrl,
     getSingleDivisionCtrl,
-    updateDivisionCtrl  
+    updateDivisionCtrl
 } from '../controllers/divisionCtrl.js'
 
 
@@ -22,10 +22,10 @@ router.get("/status", updateDivisionStatusCtrl)
 router.get("/list", getDivisionCtrl)
 
 // GET || Get Single Division Details
-router.get("/:id",getSingleDivisionCtrl)
+router.get("/:id", getSingleDivisionCtrl)
 
 // PUT || Update Division Details
-router.put("/:id",updateDivisionCtrl)
+router.put("/:id", updateDivisionCtrl)
 
 
 

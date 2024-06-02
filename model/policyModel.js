@@ -1,19 +1,19 @@
 import mongoose from "mongoose";
 
 const policySchema = new mongoose.Schema({
-    name:{
-        type:String,
+    name: {
+        type: String,
     },
-    benefit:{
-        type:String
+    benefit: {
+        type: String
     },
-    value:{
-        type:String
+    value: {
+        type: String
     },
-     status:{
-        type:Number
+    status: {
+        type: Number
     },
 
-},{timestamps:true})
+}, { timestamps: true })
 
-export  default mongoose.model('Policie',policySchema)
+export default mongoose.model('Policie', policySchema)

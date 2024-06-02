@@ -7,7 +7,6 @@ export const validateEmployeeSalary = (data) => {
          'string.empty': 'employee name cannot be empty',
          'any.required': 'employee name is required'
       }),
-
       basic: Joi.number().optional().message({
          'number.base': ' allowance should be a type of number',
       }),

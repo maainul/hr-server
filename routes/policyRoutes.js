@@ -1,16 +1,15 @@
 import express from 'express'
-import { 
-    createPolicyCtrl, 
+import {
+    createPolicyCtrl,
     getPolicyCtrl,
     updatePolicyStatusCtrl,
     getSinglePolicyCtrl,
-    updatePolicyCtrl  
+    updatePolicyCtrl
 } from '../controllers/policyCtrl.js'
 
 
 //router object
 const router = express.Router()
-
 
 // CREATE 
 router.post("/create", createPolicyCtrl)
@@ -22,10 +21,10 @@ router.get("/status", updatePolicyStatusCtrl)
 router.get("/list", getPolicyCtrl)
 
 // GET || Get Single Policy Details
-router.get("/:id",getSinglePolicyCtrl)
+router.get("/:id", getSinglePolicyCtrl)
 
 // PUT || Update Policy Details
-router.put("/:id",updatePolicyCtrl)
+router.put("/:id", updatePolicyCtrl)
 
 
 
