@@ -164,6 +164,7 @@ export const loggedInCtrl = async (req, res) => {
     try {
         const token = req.cookies.token
         if (!token) return res.json(false)
+
         jwt.verify(token, process.env.JWT_PRIVATE_KEY)
         res.send(true)
     } catch (error) {
