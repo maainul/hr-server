@@ -17,7 +17,8 @@ import salaryGradeRoutes from "./routes/salaryGradeRoutes.js";
 import employeePolicyRoutes from "./routes/employeePolicyRoutes.js";
 import employeeSalaryRoutes from "./routes/employeeSalaryRoutes.js";
 import promotionAndIncrementRoutes from "./routes/promotionAndIncrementRoutes.js";
-
+import cookieParser from 'cookie-parser';
+import auth from './auth/middleware/authMiddleware.js';
 
 //configure env
 dotenv.config()
@@ -33,24 +34,26 @@ const app = express()
 app.use(morgan('dev'))
 app.use(express.json())
 
+app.use(cookieParser())
+
 app.use(cors({
     origin: ["http://localhost:3003", "https://hr.netlify.app"],
     credentials: true,
 }))
 
 // Router
-app.use('/api/v1/unit', unitRoutes)
-app.use('/api/v1/policy', policyRoutes)
-app.use('/api/v1/division', divisionRoutes)
-app.use('/api/v1/employee', employeeRoutes)
-app.use('/api/v1/document', documentRoutes)
 app.use('/api/v1/auth', userRoutes)
-app.use('/api/v1/department', departmentRoutes)
-app.use('/api/v1/designation', designationRoutes)
-app.use('/api/v1/salary-grade', salaryGradeRoutes)
-app.use('/api/v1/employee-policy', employeePolicyRoutes)
-app.use('/api/v1/employee-salary', employeeSalaryRoutes)
-app.use('/api/v1/promotion-increment', promotionAndIncrementRoutes)
+app.use('/api/v1/unit', auth, unitRoutes)
+app.use('/api/v1/policy', auth, policyRoutes)
+app.use('/api/v1/division', auth, divisionRoutes)
+app.use('/api/v1/employee', auth, employeeRoutes)
+app.use('/api/v1/document', auth, documentRoutes)
+app.use('/api/v1/department', auth, departmentRoutes)
+app.use('/api/v1/designation', auth, designationRoutes)
+app.use('/api/v1/salary-grade', auth, salaryGradeRoutes)
+app.use('/api/v1/employee-policy', auth, employeePolicyRoutes)
+app.use('/api/v1/employee-salary', auth, employeeSalaryRoutes)
+app.use('/api/v1/promotion-increment', auth, promotionAndIncrementRoutes)
 
 const PORT = process.env.PORT || 8081;
 
