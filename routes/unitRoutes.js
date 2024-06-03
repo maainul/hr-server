@@ -15,7 +15,7 @@ const router = express.Router()
 router.post("/create", createUnitCtrl)
 
 // UPDATE || Update Unit Status
-router.get("/status", updateUnitStatusCtrl)
+router.put("/status", updateUnitStatusCtrl)
 
 // GET || ALL Unit Lists
 router.get("/list", getUnitCtrl)

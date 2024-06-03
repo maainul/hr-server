@@ -96,7 +96,7 @@ export const getUnitCtrl = async (req, res) => {
 // Update UnitModels Status
 export const updateUnitStatusCtrl = async (req, res) => {
     try {
-        const { status, id } = req.query
+        const { status, id } = req.body
 
         // Validate presence of id and status
         if (!id || !status) {
@@ -104,7 +104,7 @@ export const updateUnitStatusCtrl = async (req, res) => {
         }
 
         // Validate status is valid
-        const validStatuses = [1, 2]
+        const validStatuses = [0, 1, 2]
         if (!validStatuses.includes(Number(status))) {
             return res.status(400).json({ error: "Invalid status value" })
         }
