@@ -16,7 +16,7 @@ const router = express.Router()
 router.post("/create", createDivisionCtrl)
 
 // UPDATE || Update Division Status
-router.get("/status", updateDivisionStatusCtrl)
+router.put("/status/:id", updateDivisionStatusCtrl)
 
 // GET || ALL Division Lists
 router.get("/list", getDivisionCtrl)

@@ -10,7 +10,7 @@ import policyRoutes from "./routes/policyRoutes.js";
 import userRoutes from './auth/routes/userRoutes.js'
 import employeeRoutes from "./routes/employeeRoutes.js";
 import documentRoutes from "./routes/documentRoutes.js";
-import divisionRoutes from "./routes/departmentRoutes.js";
+import divisionRoutes from "./routes/divisionRoutes.js";
 import departmentRoutes from "./routes/departmentRoutes.js";
 import designationRoutes from "./routes/designationRoutes.js";
 import salaryGradeRoutes from "./routes/salaryGradeRoutes.js";

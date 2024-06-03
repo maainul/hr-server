@@ -92,7 +92,13 @@ export const getDivisionCtrl = async (req, res) => {
 // Update DivisionModels Status
 export const updateDivisionStatusCtrl = async (req, res) => {
     try {
-        const { status, id } = req.query
+        const { id } = req.params
+
+        const { status } = req.body
+
+        console.log("########################")
+        console.log(id, status)
+        console.log("########################")
 
         // Validate presence of id and status
         if (!id || !status) {
@@ -100,7 +106,7 @@ export const updateDivisionStatusCtrl = async (req, res) => {
         }
 
         // Validate status is valid
-        const validStatuses = [1, 2]
+        const validStatuses = [0, 1, 2]
         if (!validStatuses.includes(Number(status))) {
             return res.status(400).json({ error: "Invalid status value" })
         }
@@ -113,13 +119,13 @@ export const updateDivisionStatusCtrl = async (req, res) => {
 
 
         // Update the DivisionModels status
-        singleDivision.status = status
-        await singleDivision.save();
+        if (status) singleDivision.status = status
+        const data = await singleDivision.save();
 
         return res.status(200).json({
             success: true,
             message: "Division status updated successfully",
-            data: singleDivision
+            data: data
         })
 
     } catch (error) {
@@ -182,7 +188,7 @@ export const getSingleDivisionCtrl = async (req, res) => {
 export const updateDivisionCtrl = async (req, res) => {
     try {
         const { id } = req.params
-        const { name, code } = req.body
+        const updatedData = req.body
 
         // Validate the ID
         if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -195,21 +201,20 @@ export const updateDivisionCtrl = async (req, res) => {
             return res.status(404).json({ success: false, error: "Division not found" });
         }
 
-        // Update the DivisionModel details
-        if (name) division.name = name
-        if (code) division.dptCode = code
+        // Update the Division details
+        if (updatedData.name) division.name = updatedData.name
+        if (updatedData.code) division.code = updatedData.code
+        if (updatedData.status) division.status = updatedData.status
 
         // Save the update DivisionModel
-        await division.save()
+        const data = await division.save()
 
         // Return the updated DivisionModel details
         return res.status(200).json({
             success: true,
-            division,
+            data,
             message: "Update Division Data."
         })
-
-
 
     } catch (error) {
         console.error("Error in updateDivisionCtrl:", error);
