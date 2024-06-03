@@ -199,6 +199,7 @@ export const updateDepartmentCtrl = async (req, res) => {
         // Update the department details
         if (updatedData.name) department.name = updatedData.name
         if (updatedData.dptCode) department.dptCode = updatedData.dptCode
+        if (updatedData.status) department.status = updatedData.status
 
         // Save the update Department
         const data = await department.save()
