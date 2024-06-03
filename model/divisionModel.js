@@ -8,6 +8,10 @@ const divisionSchema = new mongoose.Schema({
     code: {
         type: String,
         required: true,
+    },
+    status: {
+        type: Number,
+        required: true,
     }
 }, { timestamps: true });
 
