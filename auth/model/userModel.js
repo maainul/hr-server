@@ -8,8 +8,11 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         require: true
-    }
+    },
+    group: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Group',
+    }]
 }, { timestamps: true })
 
 export default mongoose.model('User', userSchema)
-

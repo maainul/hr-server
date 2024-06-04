@@ -11,7 +11,6 @@ import policyRoutes from "./routes/policyRoutes.js";
 import userRoutes from './auth/routes/userRoutes.js'
 import auth from './auth/middleware/authMiddleware.js';
 import groupRoutes from "./auth/routes/groupRoutes.js";
-import userGroupRoutes from "./auth/routes/userGroupRoutes.js";
 import employeeRoutes from "./routes/employeeRoutes.js";
 import documentRoutes from "./routes/documentRoutes.js";
 import divisionRoutes from "./routes/divisionRoutes.js";
@@ -49,7 +48,6 @@ app.use('/api/v1/auth', userRoutes)
 app.use('/api/v1/unit', auth, unitRoutes)
 app.use('/api/v1/policy', auth, policyRoutes)
 app.use('/api/v1/auth/group', auth, groupRoutes)
-app.use('/api/v1/auth/user-group', auth, userGroupRoutes)
 app.use('/api/v1/division', auth, divisionRoutes)
 app.use('/api/v1/employee', auth, employeeRoutes)
 app.use('/api/v1/document', auth, documentRoutes)

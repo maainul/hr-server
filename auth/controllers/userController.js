@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import UserModel from "../model/userModel.js"
 import { validateUser } from "../validations/userValidation.js"
 import bcrypt from 'bcryptjs'
@@ -5,9 +6,10 @@ import jwt from 'jsonwebtoken';
 
 export const registerUserCtrl = async (req, res) => {
     try {
-        const { name, password, passwordVerify } = req.body
+        const { name, password, passwordVerify, group } = req.body
 
         const { error, value } = validateUser(req.body)
+
         if (error) {
             const formattedErrors = error.details.map(detail => {
                 return {
@@ -54,6 +56,7 @@ export const registerUserCtrl = async (req, res) => {
         const newUser = new UserModel({
             name,
             password: passwordHash,
+            group: group
         })
 
         const savedUser = await newUser.save()
@@ -170,4 +173,26 @@ export const loggedInCtrl = async (req, res) => {
     } catch (error) {
         res.json(false)
     }
+}
+
+export const userListCtrl = async(req,res)=>{
+    try {
+
+        const list = await UserModel.find()
+
+        return res.status(200).json({
+            success: true,
+            list,
+            message: 'User List ',
+        });
+        
+    } catch (error) {
+        console.error("Error User List", error);
+        return res.status(500).json({
+            success: false,
+            message: "Error in User List",
+            error: error.message
+        });
+    }
+
 }
