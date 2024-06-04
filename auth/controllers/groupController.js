@@ -1,8 +1,9 @@
 import GroupModel from "../model/groupModel.js"
+import PermissionModel from "../model/permissionModel.js"
 
 export const createGroupCtrl = async (req, res) => {
     try {
-        const { name, code } = req.body
+        const { name, code, permissions } = req.body
 
         //Collect errors
         const errors = []
@@ -21,7 +22,7 @@ export const createGroupCtrl = async (req, res) => {
             })
         }
 
-        const newGroup = GroupModel({ name, code })
+        const newGroup = GroupModel({ name, code, permissions: permissions })
         const savedGroup = await newGroup.save()
 
         return res.status(201).json({
@@ -48,6 +49,41 @@ export const listGroupCtrl = async (req, res) => {
             success: true,
             plist,
             message: "All Group Get Successfully"
+        })
+
+    } catch (error) {
+        console.error("Error Get Group", error);
+        return res.status(500).json({
+            success: false,
+            message: "Error Get Group",
+            error: error.message
+        });
+    }
+}
+
+export const getGroupCtrl = async (req, res) => {
+    try {
+
+        const { id } = req.params
+
+        const getGrp = await GroupModel.findOne({ "_id": id })
+        if (!getGrp) {
+            return res.status(404).json({
+                success: false,
+                message: "Group not found."
+            });
+        }
+
+        // Fetch permission details
+        const permissions = await PermissionModel.find({ '_id': { $in: getGrp.permissions } })
+
+        return res.status(201).json({
+            success: true,
+            getGrp: {
+                ...getGrp.toObject(),
+                permissions: permissions
+            },
+            message: "All Group Details Successfully."
         })
 
     } catch (error) {

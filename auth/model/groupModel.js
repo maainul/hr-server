@@ -8,7 +8,11 @@ const groupSchema = new mongoose.Schema({
     code: {
         type: String,
         require: true
-    }
+    },
+    permissions: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Permission' // Reference to Permission model
+    }]
 }, { timestamps: true })
 
 export default mongoose.model('Group', groupSchema)
