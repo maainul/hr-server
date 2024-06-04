@@ -7,7 +7,7 @@ import mongoose from 'mongoose';
 
 export const createUnitCtrl = async (req, res) => {
     try {
-        const { name, status, division } = req.body;
+        const { name, division } = req.body;
 
         //Joi Validation
         const { error, value } = validateUnit(req.body)
