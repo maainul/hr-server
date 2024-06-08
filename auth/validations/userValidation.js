@@ -17,8 +17,9 @@ export const validateUser = (data) => {
             'string.empty': 'Password verification cannot be empty',
             'any.required': 'Password verification is required'
         }),
-        group: Joi.string().optional().messages({
-            'string.base': 'Group should be a type of text',
+        group: Joi.array().items(Joi.string()).optional().messages({
+            'array.base': 'Group should be an array',
+            'string.base': 'Each group item should be a type of text',
         })
     });
 

@@ -4,7 +4,8 @@ import {
     loginUserCtrl,
     logoutCtrl,
     loggedInCtrl,
-    userListCtrl
+    userListCtrl,
+    getUserProfileCtrl
 } from '../controllers/userController.js'
 
 
@@ -16,6 +17,9 @@ router.get('/user/list', userListCtrl)
 router.post('/login', loginUserCtrl)
 router.get('/logout', logoutCtrl)
 router.get('/loggedin', loggedInCtrl)
+
+// User Profile
+router.get('/profile/:id', getUserProfileCtrl)
 
 
 export default router

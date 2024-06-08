@@ -3,6 +3,8 @@ import UserModel from "../model/userModel.js"
 import { validateUser } from "../validations/userValidation.js"
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken';
+import GroupModel from "../model/groupModel.js";
+
 
 export const registerUserCtrl = async (req, res) => {
     try {
@@ -168,14 +170,15 @@ export const loggedInCtrl = async (req, res) => {
         const token = req.cookies.token
         if (!token) return res.json(false)
 
-        jwt.verify(token, process.env.JWT_PRIVATE_KEY)
-        res.send(true)
+        const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY)
+        const userId = decoded.user
+        res.json({ loggedIn: true, userId })
     } catch (error) {
-        res.json(false)
+        res.json({ loggedIn: false })
     }
 }
 
-export const userListCtrl = async(req,res)=>{
+export const userListCtrl = async (req, res) => {
     try {
 
         const list = await UserModel.find()
@@ -185,7 +188,7 @@ export const userListCtrl = async(req,res)=>{
             list,
             message: 'User List ',
         });
-        
+
     } catch (error) {
         console.error("Error User List", error);
         return res.status(500).json({
@@ -195,4 +198,60 @@ export const userListCtrl = async(req,res)=>{
         });
     }
 
+}
+
+
+export const getUserProfileCtrl = async (req, res) => {
+    try {
+        const { id } = req.params
+
+        const userInfo = await UserModel.findById(id)
+            .populate({
+                path: 'group',
+                model: 'Group',
+                populate: {
+                    path: 'permissions',
+                    model: 'Permission'
+                }
+            });
+
+        // Check if userInfo exists and has groups
+        if (userInfo && userInfo.group) {
+            // Format the data to include permission details
+            const formattedUserInfo = {
+                _id: userInfo._id,
+                name: userInfo.name,
+                group: userInfo.group.map(group => ({
+                    _id: group._id,
+                    name: group.name,
+                    code: group.code,
+                    permissions: group.permissions.map(permission => ({
+                        resource: permission.resource,
+                        action: permission.action
+                    })),
+                })),
+                createdAt: userInfo.createdAt,
+                updatedAt: userInfo.updatedAt,
+                __v: userInfo.__v
+            };
+
+            return res.status(200).json({
+                success: true,
+                data: formattedUserInfo
+            });
+        } else {
+            return res.status(404).json({
+                success: false,
+                message: "User not found or user has no groups"
+            });
+        }
+
+    } catch (error) {
+        console.error("Error User Profile", error);
+        return res.status(500).json({
+            success: false,
+            message: "Error in User Profile",
+            error: error.message
+        });
+    }
 }

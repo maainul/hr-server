@@ -96,10 +96,6 @@ export const updateDivisionStatusCtrl = async (req, res) => {
 
         const { status } = req.body
 
-        console.log("########################")
-        console.log(id, status)
-        console.log("########################")
-
         // Validate presence of id and status
         if (!id || !status) {
             return res.status(400).json({ error: "Missing id or status" })
