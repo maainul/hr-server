@@ -6,25 +6,26 @@ import {
     getSingleDesignationCtrl,
     updateDesignationCtrl
 } from '../controllers/designationCtrl.js'
+import { checkPermission } from '../auth/middleware/checkPermission.js'
 
 
 //router object
 const router = express.Router()
 
 // CREATE 
-router.post("/create", createDesignationCtrl)
+router.post("/create", checkPermission('designation', 'create'), createDesignationCtrl)
 
 // UPDATE || Update Designation Status
-router.get("/status", updateDesignationStatusCtrl)
+router.get("/status", checkPermission('designation', 'status'), updateDesignationStatusCtrl)
 
 // GET || ALL Designation Lists
-router.get("/list", getDesignationCtrl)
+router.get("/list", checkPermission('designation', 'list'), getDesignationCtrl)
 
 // GET || Get Single Designation Details
-router.get("/:id", getSingleDesignationCtrl)
+router.get("/:id", checkPermission('designation', 'details'), getSingleDesignationCtrl)
 
 // PUT || Update Designation Details
-router.put("/:id", updateDesignationCtrl)
+router.put("/:id", checkPermission('designation', 'update'), updateDesignationCtrl)
 
 
 

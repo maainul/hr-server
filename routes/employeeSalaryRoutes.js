@@ -5,22 +5,23 @@ import {
     getSingleEmployeeSalaryCtrl,
     updateEmployeeSalaryCtrl
 } from '../controllers/employeeSalaryCtrl.js'
+import { checkPermission } from '../auth/middleware/checkPermission.js'
 
 
 //router object
 const router = express.Router()
 
 // CREATE 
-router.post("/create", createEmployeeSalaryCtrl)
+router.post("/create", checkPermission('employeeSalary', 'create'), createEmployeeSalaryCtrl)
 
 // GET || ALL EmployeeSalary Lists
-router.get("/list", getEmployeeSalaryCtrl)
+router.get("/list", checkPermission('employeeSalary', 'list'), getEmployeeSalaryCtrl)
 
 // GET || Get Single EmployeeSalary Details
-router.get("/:id", getSingleEmployeeSalaryCtrl)
+router.get("/:id", checkPermission('employeeSalary', 'details'), getSingleEmployeeSalaryCtrl)
 
 // PUT || Update EmployeeSalary Details
-router.put("/:id", updateEmployeeSalaryCtrl)
+router.put("/:id", checkPermission('employeeSalary', 'update'), updateEmployeeSalaryCtrl)
 
 
 

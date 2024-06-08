@@ -6,6 +6,7 @@ import {
     getSingleDepartmentCtrl,
     updateDepartmentCtrl
 } from '../controllers/departmentCtrl.js'
+import { checkPermission } from '../auth/middleware/checkPermission.js'
 
 
 //router object
@@ -13,19 +14,19 @@ const router = express.Router()
 
 
 // CREATE 
-router.post("/create", createDepartmentCtrl)
+router.post("/create", checkPermission('department', 'create'), createDepartmentCtrl)
 
 // UPDATE || Update Department Status
-router.get("/status", updateDepartmentStatusCtrl)
+router.get("/status", checkPermission('department', 'status'), updateDepartmentStatusCtrl)
 
 // GET || ALL Department Lists
-router.get("/list", getDepartmentCtrl)
+router.get("/list", checkPermission('department', 'list'), getDepartmentCtrl)
 
 // GET || Get Single Department Details
-router.get("/:id", getSingleDepartmentCtrl)
+router.get("/:id", checkPermission('department', 'details'), getSingleDepartmentCtrl)
 
 // PUT || Update Department Details
-router.put("/:id", updateDepartmentCtrl)
+router.put("/:id", checkPermission('department', 'update'), updateDepartmentCtrl)
 
 
 

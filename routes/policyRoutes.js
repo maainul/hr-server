@@ -6,25 +6,26 @@ import {
     getSinglePolicyCtrl,
     updatePolicyCtrl
 } from '../controllers/policyCtrl.js'
+import { checkPermission } from '../auth/middleware/checkPermission.js'
 
 
 //router object
 const router = express.Router()
 
 // CREATE 
-router.post("/create", createPolicyCtrl)
+router.post("/create", checkPermission('policy', 'create'), createPolicyCtrl)
 
 // UPDATE || Update Policy Status
-router.get("/status", updatePolicyStatusCtrl)
+router.get("/status", checkPermission('policy', 'status'), updatePolicyStatusCtrl)
 
 // GET || ALL Policy Lists
-router.get("/list", getPolicyCtrl)
+router.get("/list", checkPermission('policy', 'list'), getPolicyCtrl)
 
 // GET || Get Single Policy Details
-router.get("/:id", getSinglePolicyCtrl)
+router.get("/:id", checkPermission('policy', 'details'), getSinglePolicyCtrl)
 
 // PUT || Update Policy Details
-router.put("/:id", updatePolicyCtrl)
+router.put("/:id", checkPermission('policy', 'update'), updatePolicyCtrl)
 
 
 

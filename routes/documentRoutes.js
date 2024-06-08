@@ -6,6 +6,7 @@ import {
     getSingleDocumentCtrl,
     updateDocumentCtrl
 } from '../controllers/documentCtrl.js'
+import { checkPermission } from '../auth/middleware/checkPermission.js'
 
 
 //router object
@@ -13,19 +14,19 @@ const router = express.Router()
 
 
 // CREATE 
-router.post("/create", createDocumentCtrl)
+router.post("/create", checkPermission('document', 'create'), createDocumentCtrl)
 
 // UPDATE || Update Document Status
-router.get("/status", updateDocumentStatusCtrl)
+router.get("/status", checkPermission('document', 'status'), updateDocumentStatusCtrl)
 
 // GET || ALL Document Lists
-router.get("/list", getDocumentCtrl)
+router.get("/list", checkPermission('document', 'list'), getDocumentCtrl)
 
 // GET || Get Single Document Details
-router.get("/:id", getSingleDocumentCtrl)
+router.get("/:id", checkPermission('document', 'details'), getSingleDocumentCtrl)
 
 // PUT || Update Document Details
-router.put("/:id", updateDocumentCtrl)
+router.put("/:id", checkPermission('document', 'update'), updateDocumentCtrl)
 
 
 
