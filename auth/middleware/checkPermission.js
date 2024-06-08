@@ -16,15 +16,6 @@ export const checkPermission = (resource, action) => {
 
             if (!user) return res.status(401).send('User not found');
 
-            // Log each permission
-            user.group.forEach(group => {
-                group.permissions.forEach(permission => {
-                    console.log(`Resource: ${permission.resource}`);
-                    console.log(`Action: ${permission.action}`);
-                });
-            });
-
-
             // Check if the user has the required permission
             let hasPermission = false
 
