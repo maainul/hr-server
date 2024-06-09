@@ -91,7 +91,7 @@ export const updatePolicyStatusCtrl = async (req, res) => {
         }
 
         // Validate status is valid
-        const validStatuses = [1, 2]
+        const validStatuses = [1, 2, 0]
         if (!validStatuses.includes(Number(status))) {
             return res.status(400).json({ error: "Invalid status value" })
         }
@@ -134,12 +134,6 @@ export const getSinglePolicyCtrl = async (req, res) => {
             return res.status(400).json({ error: "Policy ID is Required" })
         }
 
-        // Validate the ID format before processing 
-        /*
-        Reason : Remove or add new character in id.
-        Message: BSONError: input must be a 24 character hex string, 12 byte Uint8Array, or an integer
-
-        */
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ success: false, error: "Invalid Policy ID format" });
         }
@@ -172,7 +166,7 @@ export const getSinglePolicyCtrl = async (req, res) => {
 export const updatePolicyCtrl = async (req, res) => {
     try {
         const { id } = req.params
-        const { name, benefit, value } = req.body
+        const { name, benefit, value, status } = req.body
 
         // Validate the ID
         if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -187,8 +181,9 @@ export const updatePolicyCtrl = async (req, res) => {
 
         // Update the PolicyModel details
         if (name) policy.name = name
-        if (benefit) policy.benefit = benefit
         if (value) policy.value = value
+        if (status) policy.status = status
+        if (benefit) policy.benefit = benefit
 
         // Save the update PolicyModel
         await policy.save()
