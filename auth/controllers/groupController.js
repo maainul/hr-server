@@ -1,3 +1,4 @@
+import mongoose from "mongoose"
 import GroupModel from "../model/groupModel.js"
 import PermissionModel from "../model/permissionModel.js"
 
@@ -92,6 +93,53 @@ export const getGroupCtrl = async (req, res) => {
             success: false,
             message: "Error Get Group",
             error: error.message
+        });
+    }
+}
+
+export const updateGroupCtrl = async (req, res) => {
+    try {
+        const { id } = req.params
+        const { name, code, permissions } = req.body
+
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ success: false, error: "Invalid Group ID format" });
+        }
+
+        const group = await GroupModel.findById(id)
+
+        if (!group) {
+            return res.status(404).json({ success: false, error: 'Group Not Found' })
+        }
+
+        for (let permission of permissions) {
+            const validPermissionId = await PermissionModel.findOne({ "_id": permission })
+            if (!validPermissionId) {
+                return res.status(404).json({ success: false, error: "Permission Not found" });
+            }
+        }
+
+
+        if (name) group.name = name
+        if (code) group.code = code
+        if (permissions) group.permissions = permissions
+
+
+        await group.save()
+
+        return res.status(200).json({
+            success: true,
+            group,
+            message: "Group Updatd Successfully"
+        })
+
+    } catch (error) {
+        console.error("Error in updateGroupCtrl:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Error in updating Group details",
+            error: error.message || error,
         });
     }
 }
