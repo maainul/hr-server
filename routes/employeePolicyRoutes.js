@@ -16,7 +16,7 @@ const router = express.Router()
 router.post("/create", checkPermission('employeePolicy', 'create'), createEmployeePolicyCtrl)
 
 // UPDATE || Update EmployeePolicy Status
-router.get("/status", checkPermission('employeePolicy', 'status'), updateEmployeePolicyStatusCtrl)
+router.get("/status", checkPermission('employeePolicy', 'statusUpdate'), updateEmployeePolicyStatusCtrl)
 
 // GET || ALL EmployeePolicy Lists
 router.get("/list", checkPermission('employeePolicy', 'list'), getEmployeePolicyCtrl)

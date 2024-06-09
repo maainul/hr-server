@@ -16,7 +16,7 @@ const router = express.Router()
 router.post("/create", checkPermission('designation', 'create'), createDesignationCtrl)
 
 // UPDATE || Update Designation Status
-router.get("/status", checkPermission('designation', 'status'), updateDesignationStatusCtrl)
+router.get("/status", checkPermission('designation', 'statusUpdate'), updateDesignationStatusCtrl)
 
 // GET || ALL Designation Lists
 router.get("/list", checkPermission('designation', 'list'), getDesignationCtrl)

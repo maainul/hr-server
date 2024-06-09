@@ -16,7 +16,7 @@ const router = express.Router()
 router.post("/create", checkPermission('policy', 'create'), createPolicyCtrl)
 
 // UPDATE || Update Policy Status
-router.get("/status", checkPermission('policy', 'status'), updatePolicyStatusCtrl)
+router.get("/status", checkPermission('policy', 'statusUpdate'), updatePolicyStatusCtrl)
 
 // GET || ALL Policy Lists
 router.get("/list", checkPermission('policy', 'list'), getPolicyCtrl)

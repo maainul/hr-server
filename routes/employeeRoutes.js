@@ -17,7 +17,7 @@ const router = express.Router()
 router.post("/create", checkPermission('employee', 'create'), createEmployeeCtrl)
 
 // UPDATE || Update Employee Status
-router.get("/status", checkPermission('employee', 'status'), updateEmployeeStatusCtrl)
+router.get("/status", checkPermission('employee', 'statusUpdate'), updateEmployeeStatusCtrl)
 
 // GET || ALL Employee Lists
 router.get("/list", checkPermission('employee', 'list'), getEmployeeCtrl)

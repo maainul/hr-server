@@ -29,8 +29,7 @@ export const checkPermission = (resource, action) => {
                 if (hasPermission) break
             }
 
-            if (!hasPermission) return res.status(403).send('Forbidden')
-
+            if (!hasPermission) return res.status(403).send(`You Don't Have Permission In this API`)
 
             next(); // Add this line to proceed to the next middleware/controller
 

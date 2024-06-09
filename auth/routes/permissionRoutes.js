@@ -6,8 +6,8 @@ import { checkPermission } from '../middleware/checkPermission.js'
 const router = express.Router()
 
 
-router.post('/create', checkPermission('permission', 'create'), createPermissionCtrl)
-router.get('/list', checkPermission('permission', 'list'), listPermissionCtrl)
+router.post('/create',  createPermissionCtrl)
+router.get('/list', listPermissionCtrl)
 
 
 

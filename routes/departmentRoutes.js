@@ -17,7 +17,7 @@ const router = express.Router()
 router.post("/create", checkPermission('department', 'create'), createDepartmentCtrl)
 
 // UPDATE || Update Department Status
-router.get("/status", checkPermission('department', 'status'), updateDepartmentStatusCtrl)
+router.get("/status", checkPermission('department', 'statusUpdate'), updateDepartmentStatusCtrl)
 
 // GET || ALL Department Lists
 router.get("/list", checkPermission('department', 'list'), getDepartmentCtrl)

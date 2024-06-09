@@ -17,7 +17,7 @@ const router = express.Router()
 router.post("/create", checkPermission('document', 'create'), createDocumentCtrl)
 
 // UPDATE || Update Document Status
-router.get("/status", checkPermission('document', 'status'), updateDocumentStatusCtrl)
+router.get("/status", checkPermission('document', 'statusUpdate'), updateDocumentStatusCtrl)
 
 // GET || ALL Document Lists
 router.get("/list", checkPermission('document', 'list'), getDocumentCtrl)

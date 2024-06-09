@@ -16,7 +16,7 @@ const router = express.Router()
 router.post("/create", checkPermission('unit', 'create'), createUnitCtrl)
 
 // UPDATE || Update Unit Status
-router.put("/status", checkPermission('unit', 'status'), updateUnitStatusCtrl)
+router.put("/status", checkPermission('unit', 'statusUpdate'), updateUnitStatusCtrl)
 
 // GET || ALL Unit Lists
 router.get("/list", checkPermission('unit', 'list'), getUnitCtrl)

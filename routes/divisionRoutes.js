@@ -17,7 +17,7 @@ const router = express.Router()
 router.post("/create", checkPermission('division', 'create'), createDivisionCtrl)
 
 // UPDATE || Update Division Status
-router.put("/status/:id", checkPermission('division', 'updateStatus'), updateDivisionStatusCtrl)
+router.put("/status/:id", checkPermission('division', 'statusUpdate'), updateDivisionStatusCtrl)
 
 // GET || ALL Division Lists
 router.get("/list", checkPermission('division', 'list'), getDivisionCtrl)
