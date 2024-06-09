@@ -187,7 +187,7 @@ export const getSingleUnitCtrl = async (req, res) => {
 export const updateUnitCtrl = async (req, res) => {
     try {
         const { id } = req.params
-        const { name, code } = req.body
+        const { name, status, division } = req.body
 
         // Validate the ID
         if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -202,7 +202,8 @@ export const updateUnitCtrl = async (req, res) => {
 
         // Update the UnitModel details
         if (name) unit.name = name
-        if (code) unit.dptCode = code
+        if (status) unit.status = status
+        if (division) unit.division = division
 
         // Save the update UnitModel
         await unit.save()
