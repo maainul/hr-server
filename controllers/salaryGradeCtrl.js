@@ -184,7 +184,7 @@ export const getSingleSalaryGradeCtrl = async (req, res) => {
 export const updateSalaryGradeCtrl = async (req, res) => {
     try {
         const { id } = req.params
-        const { grade_name, max_salary, min_salary } = req.body
+        const { grade_name, max_salary, min_salary, status } = req.body
 
         // Validate the ID
         if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -206,9 +206,10 @@ export const updateSalaryGradeCtrl = async (req, res) => {
         }
 
         // Update the salaryGrade details
-        if (grade_name) salaryGrade.name = grade_name
-        if (max_salary) salaryGrade.dptCode = max_salary
-        if (min_salary) salaryGrade.dptCode = min_salary
+        if (grade_name) salaryGrade.grade_name = grade_name
+        if (min_salary) salaryGrade.min_salary = min_salary
+        if (max_salary) salaryGrade.max_salary = max_salary
+        if (status) salaryGrade.status = status
 
         // Save the update SalaryGrade
         await salaryGrade.save()
