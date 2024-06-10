@@ -232,3 +232,55 @@ export const updateEmployeePolicyCtrl = async (req, res) => {
 
 
 }
+
+//Get Single Employee Policy By Employee ID
+export const getSingleEmployeePolicyByEmployeeIDCtrl = async (req, res) => {
+    try {
+
+        const { id } = req.params
+        if (!id) {
+            return res.status(400).json({ error: "EmployeePolicy ID is Required" })
+        }
+
+        //Validate the ID
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ success: false, error: "Invalid employeePolicy ID format" });
+        }
+
+        // Find the employeePolicy by ID and Populate Related Fields
+        const employeePolicies = await EmployeePolicyModel.find({ "employee": id }).
+            populate({
+                path: 'employee',
+                model: 'Employee'
+            })
+            .populate({
+                path: 'policy',
+                model: 'Policie'
+            })
+
+        if (!employeePolicies || employeePolicies.length === 0) {
+            return res.status(404).json({ error: "EmployeePolicy not Found" })
+        }
+
+        // Transform the response data to include only necessary fields
+        const response = employeePolicies.map(policy => ({
+            employeeId: policy.employee._id,
+            policy: policy.policy
+        }))
+
+        // Return the employeePolicy details
+        return res.status(200).json({
+            success: true,
+            message: "EmployeePolicy Data Found",
+            data: response
+        })
+
+    } catch (error) {
+        console.error("Error in getSingleEmployeePolicyCtrl:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Error in fetching employeePolicy details",
+            error: error.message || error,
+        });
+    }
+}

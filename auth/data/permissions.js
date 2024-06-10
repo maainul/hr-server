@@ -34,12 +34,14 @@ export const permission = [
     { resource: 'document', action: 'update' },
     { resource: 'document', action: 'details' },
     { resource: 'document', action: 'statusUpdate' },
+    
     // Employee Policy
     { resource: 'employeePolicy', action: 'create' },
     { resource: 'employeePolicy', action: 'list' },
     { resource: 'employeePolicy', action: 'update' },
     { resource: 'employeePolicy', action: 'details' },
     { resource: 'employeePolicy', action: 'statusUpdate' },
+    { resource: 'employeePolicy', action: 'getByEmpID' },
     // Employee 
     { resource: 'employee', action: 'create' },
     { resource: 'employee', action: 'list' },

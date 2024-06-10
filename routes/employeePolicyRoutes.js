@@ -7,6 +7,7 @@ import {
     updateEmployeePolicyCtrl
 } from '../controllers/employeePolicyCtrl.js'
 import { checkPermission } from '../auth/middleware/checkPermission.js'
+import { getSingleEmployeePolicyByEmployeeIDCtrl } from '../controllers/employeePolicyCtrl.js'
 
 
 //router object
@@ -26,6 +27,8 @@ router.get("/:id", checkPermission('employeePolicy', 'details'), getSingleEmploy
 
 // PUT || Update EmployeePolicy Details
 router.put("/:id", checkPermission('employeePolicy', 'update'), updateEmployeePolicyCtrl)
+// checkPermission('employeePolicy', 'getByEmpID'),
+router.get("/by/:id", getSingleEmployeePolicyByEmployeeIDCtrl)
 
 
 export default router
