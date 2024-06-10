@@ -18,9 +18,7 @@ export const validateEmployee = (data) => {
          'string.empty': 'Phone Number cannot be empty',
          'any.required': 'Phone Number is required'
       }),
-      emergency_contact_number_2: Joi.string().optional().messages({
-         'string.base': 'Emergency contact number 2 should be a type of text',
-      }),
+
       bank_account: Joi.string().required().messages({
          'string.base': 'Bank Account Number should be a type of text',
       }),
@@ -55,16 +53,20 @@ export const validateEmployee = (data) => {
          'string.empty': 'Emergency Contact date cannot be empty',
          'any.required': 'Emergency Contact code is required'
       }),
-      national_id: Joi.number().required().messages({
-         'number.base': 'Emergency Contact should be a type of text',
-         'number.empty': 'Emergency Contact date cannot be empty',
-         'any.required': 'Emergency Contact code is required'
+      emergency_contact_number_2: Joi.string().optional().messages({
+         'string.base': 'Emergency contact number 2 should be a type of text',
+      }),
+      national_id: Joi.string().required().messages({
+         'string.base': 'National ID should be a type of text',
+         'string.empty': 'National ID cannot be empty',
+         'any.required': 'National ID is required'
       }),
       gender: Joi.string().valid('Male', 'Female', 'Other').optional().messages({
          'string.base': 'Gender should be a type of text',
          'any.only': 'Gender must be one of [Male, Female, Other]',
       }),
-      religion: Joi.string().valid('Single', 'Married', 'Divorced', 'Widowed').optional().messages({
+
+      religion: Joi.string().valid('Hindu', 'Muslim', 'Christan', 'Buddha', 'Shikh', 'Athenic').optional().messages({
          'string.base': 'religion status should be a type of text',
          'any.only': 'religion status must be one of [Hindu, Muslim, Christan, Buddha,Shikh,Athenic]',
       }),

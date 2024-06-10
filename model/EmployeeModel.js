@@ -38,7 +38,7 @@ const employeeSchema = new mongoose.Schema({
         type: Date
     },
     national_id: {
-        type: Number,
+        type: String,
         unique: true,
         required: true
     },
@@ -65,7 +65,7 @@ const employeeSchema = new mongoose.Schema({
     // New Fields
     religion: {
         type: String,
-        enum: ['Muslim', 'Hindu+', 'Christan', 'Shikh'],
+        enum: ['Muslim', 'Hindu', 'Christan', 'Shikh', 'Buddha', "Athenic"],
         default: 'Muslim'
     },
 
@@ -94,6 +94,7 @@ const employeeSchema = new mongoose.Schema({
     spouse_profession: {
         type: Date
     },
+
     marriage_date: {
         type: Date
     },
