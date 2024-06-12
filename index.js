@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import connectDB from './dbConnection.js';
 import unitRoutes from "./routes/unitRoutes.js";
 import policyRoutes from "./routes/policyRoutes.js";
+import menuRoutes from "./routes/menuRoutes.js";
 import userRoutes from './auth/routes/userRoutes.js'
 import auth from './auth/middleware/authMiddleware.js';
 import groupRoutes from "./auth/routes/groupRoutes.js";
@@ -46,6 +47,7 @@ app.use(cors({
 // Router
 app.use('/api/v1/auth', userRoutes)
 app.use('/api/v1/unit', auth, unitRoutes)
+app.use('/api/v1/menu', auth, menuRoutes)
 app.use('/api/v1/policy', auth, policyRoutes)
 app.use('/api/v1/auth/group', auth, groupRoutes)
 app.use('/api/v1/division', auth, divisionRoutes)
