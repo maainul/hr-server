@@ -51,10 +51,9 @@ export const getMenuCtrl = async (req, res) => {
     try {
         //Fetch all menu from the database
         const menus = await MenuModel.find()
-
         return res.status(200).json({
             success: true,
-            ...menus,
+            data: menus,
             message: 'All menus retrieved successfully',
         });
     } catch (error) {
