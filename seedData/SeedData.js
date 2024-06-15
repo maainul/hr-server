@@ -77,6 +77,7 @@ const permissionSeedData = [
     { resource: 'unit', action: 'details' },
     { resource: 'unit', action: 'statusUpdate' },
 
+
 ]
 
 export default permissionSeedData

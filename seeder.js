@@ -13,6 +13,10 @@ import SalaryGradeModel from "./model/salaryGradeModel.js";
 import salaryGradeSeedData from './seedData/salaryGradeSeedData.js';
 import UnitModel from "./model/unitModel.js";
 import unitSeedData from './seedData/unitSeedData.js';
+import PermissionModel from "./auth/model/permissionModel.js";
+import GroupModel from "./auth/model/groupModel.js";
+import permissionSeedData from "./seedData/SeedData.js";
+import groupSeedData from "./seedData/groupSeedData.js";
 
 const seeder = async () => {
     // Configure env
@@ -65,10 +69,54 @@ const seeder = async () => {
         })
 
 
+
         console.log('Seeding Unit...');
         await UnitModel.deleteMany();
         await UnitModel.insertMany(unitSeededDataWithDivisions);
         console.log('Unit seeded successfully'.bgGreen);
+
+
+        // Salary Grade
+        console.log('Salary Grade...');
+        await SalaryGradeModel.deleteMany();
+        await SalaryGradeModel.insertMany(salaryGradeSeedData);
+        console.log('Salary Grade seeded successfully'.bgGreen);
+
+
+        // Permission Seeder
+        console.log('Permission...');
+        await PermissionModel.deleteMany();
+        const seededPermissions = await PermissionModel.insertMany(permissionSeedData);
+        console.log('Permission seeded successfully'.bgGreen);
+
+        // Create a lookup for permissions by resource and action
+        const permissionLookup = {};
+        seededPermissions.forEach(permission => {
+            const key = `${permission.resource}:${permission.action}`;
+            permissionLookup[key] = permission._id;
+        });
+
+        // Group
+        const groupSeedDataWithPermissionIds = groupSeedData.map(group => {
+            const permissions = group.permissions.map(perm => {
+                const permissionId = permissionLookup[perm]
+                if (!permissionId) {
+                    throw new Error(`Permission not found: ${permissionName}`);
+                }
+                return permissionId;
+            })
+            return {
+                name: group.name,
+                code: group.code,
+                permissions
+            }
+        })
+
+        // Seed Groups
+        console.log('Seeding groups...');
+        await GroupModel.deleteMany();
+        await GroupModel.insertMany(groupSeedDataWithPermissionIds);
+        console.log('Groups seeded successfully'.bgGreen);
 
         process.exit();
     } catch (error) {
