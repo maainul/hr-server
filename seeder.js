@@ -15,8 +15,10 @@ import UnitModel from "./model/unitModel.js";
 import unitSeedData from './seedData/unitSeedData.js';
 import PermissionModel from "./auth/model/permissionModel.js";
 import GroupModel from "./auth/model/groupModel.js";
+import UserModel from "./auth/model/userModel.js";
 import permissionSeedData from "./seedData/SeedData.js";
 import groupSeedData from "./seedData/groupSeedData.js";
+import userSeedData from "./seedData/userSeedData.js";
 
 const seeder = async () => {
     // Configure env
@@ -69,7 +71,6 @@ const seeder = async () => {
         })
 
 
-
         console.log('Seeding Unit...');
         await UnitModel.deleteMany();
         await UnitModel.insertMany(unitSeededDataWithDivisions);
@@ -117,6 +118,23 @@ const seeder = async () => {
         await GroupModel.deleteMany();
         await GroupModel.insertMany(groupSeedDataWithPermissionIds);
         console.log('Groups seeded successfully'.bgGreen);
+
+
+        // User Seeder
+        console.log('Seeding User : ')
+        await UserModel.deleteMany(); // Ensure you have a UserModel defined
+        for (const usd of userSeedData) {
+            const group = await GroupModel.findOne({ code: usd.group })
+            if (!group) {
+                throw new Error(`Group not found for user: ${usd.username}`);
+            }
+            await UserModel.create({
+                ...usd,
+                group: group._id
+            })
+        }
+
+        console.log('User seeded successfully'.bgGreen);
 
         process.exit();
     } catch (error) {
