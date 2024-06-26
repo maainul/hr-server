@@ -19,6 +19,7 @@ import UserModel from "./auth/model/userModel.js";
 import permissionSeedData from "./seedData/SeedData.js";
 import groupSeedData from "./seedData/groupSeedData.js";
 import userSeedData from "./seedData/userSeedData.js";
+import bcrypt from 'bcryptjs';
 
 const seeder = async () => {
     // Configure env
@@ -123,13 +124,18 @@ const seeder = async () => {
         // User Seeder
         console.log('Seeding User : ')
         await UserModel.deleteMany(); // Ensure you have a UserModel defined
-        for (const usd of userSeedData) {
-            const group = await GroupModel.findOne({ code: usd.group })
+        for (const userInfoObj of userSeedData) {
+            const group = await GroupModel.findOne({ code: userInfoObj.group })
             if (!group) {
-                throw new Error(`Group not found for user: ${usd.username}`);
+                throw new Error(`Group not found for user: ${userInfoObj.username}`);
             }
+
+            const salt = await bcrypt.genSalt()
+            const passWordHash = await bcrypt.hash(userInfoObj.password, salt)
+
             await UserModel.create({
-                ...usd,
+                name: userInfoObj.name,
+                password: passWordHash,
                 group: group._id
             })
         }
