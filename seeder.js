@@ -41,13 +41,13 @@ const seeder = async () => {
     console.log("Seeding designations...");
     await DesignationModel.deleteMany();
     await DesignationModel.insertMany(designationSeedData);
-    console.log("Designations seeded successfully".bgMagenta);
+    console.log("Designations seeded successfully".bgGreen);
 
     // Seed Divisions
     console.log("Seeding divisions...");
     await DivisionModel.deleteMany();
     const seededDivisions = await DivisionModel.insertMany(divisionSeedData);
-    console.log("Divisions seeded successfully".bgYellow);
+    console.log("Divisions seeded successfully".bgGreen);
 
     // Policy
     console.log("Seeding Policy...");

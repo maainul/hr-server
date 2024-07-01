@@ -3,15 +3,16 @@ import UserModel from "../model/userModel.js"
 import { validateUser } from "../validations/userValidation.js"
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken';
-import GroupModel from "../model/groupModel.js";
 
 
 export const registerUserCtrl = async (req, res) => {
     try {
         const { name, password, passwordVerify, group } = req.body
 
-        const { error, value } = validateUser(req.body)
+        console.log(req.body)
 
+        const { error, value } = validateUser(req.body)
+        console.log(error)
         if (error) {
             const formattedErrors = error.details.map(detail => {
                 return {
@@ -24,6 +25,7 @@ export const registerUserCtrl = async (req, res) => {
                 error: formattedErrors
             })
         }
+
 
         //Collect errors
         const errors = []
@@ -63,15 +65,20 @@ export const registerUserCtrl = async (req, res) => {
 
         const savedUser = await newUser.save()
 
-        // log the user in
-        const token = jwt.sign({
-            user: savedUser._id
-        }, process.env.JWT_PRIVATE_KEY)
-
-        // send the token in HTTP-only cookie
-        res.cookie("token", token, {
-            httpOnly: true,
-        }).send()
+        // // log the user in
+        // const token = jwt.sign({
+        //     user: savedUser._id
+        // }, process.env.JWT_PRIVATE_KEY)
+        // console.log("Passsssss", newUser)
+        // // send the token in HTTP-only cookie
+        // res.cookie("token", token, {
+        //     httpOnly: true,
+        // }).send()
+        return res.status(200).json({
+            success: true,
+            message: 'User Created Successfully',
+            data: savedUser
+        })
 
     } catch (error) {
         console.error("Error Creating User", error);
