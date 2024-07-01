@@ -12,6 +12,10 @@ const groupSchema = new mongoose.Schema({
     permissions: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Permission' // Reference to Permission model
+    }],
+    menus: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Menu' // Reference to Permission model
     }]
 }, { timestamps: true })
 

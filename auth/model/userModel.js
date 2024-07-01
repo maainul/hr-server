@@ -12,7 +12,13 @@ const userSchema = new mongoose.Schema({
     group: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Group',
-    }]
+    }],
+    menu: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Menu'
+        }
+    ]
 }, { timestamps: true })
 
 export default mongoose.model('User', userSchema)
