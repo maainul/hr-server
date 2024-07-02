@@ -1,10 +1,13 @@
 import mongoose from "mongoose"
 import GroupModel from "../model/groupModel.js"
 import PermissionModel from "../model/permissionModel.js"
+import MenuModel from "../model/menuModel.js"
+const { ObjectId } = mongoose.Types;
+
 
 export const createGroupCtrl = async (req, res) => {
     try {
-        const { name, code, permissions } = req.body
+        const { name, code, permissions, menus } = req.body
 
         //Collect errors
         const errors = []
@@ -23,7 +26,7 @@ export const createGroupCtrl = async (req, res) => {
             })
         }
 
-        const newGroup = GroupModel({ name, code, permissions: permissions })
+        const newGroup = GroupModel({ name, code, permissions: permissions, menus })
         const savedGroup = await newGroup.save()
 
         return res.status(201).json({
@@ -64,10 +67,9 @@ export const listGroupCtrl = async (req, res) => {
 
 export const getGroupCtrl = async (req, res) => {
     try {
+        const { id } = req.params;
 
-        const { id } = req.params
-
-        const getGrp = await GroupModel.findOne({ "_id": id })
+        const getGrp = await GroupModel.findOne({ "_id": id });
         if (!getGrp) {
             return res.status(404).json({
                 success: false,
@@ -76,16 +78,25 @@ export const getGroupCtrl = async (req, res) => {
         }
 
         // Fetch permission details
-        const permissions = await PermissionModel.find({ '_id': { $in: getGrp.permissions } })
+        const permissions = await PermissionModel.find({ '_id': { $in: getGrp.permissions } });
+
+
+        // Fetch Permission details
+        const menus = await MenuModel.find({
+            submenu: {
+                $elemMatch: { _id: { $in: getGrp.menus } }
+            }
+        })
 
         return res.status(201).json({
             success: true,
             getGrp: {
                 ...getGrp.toObject(),
-                permissions: permissions
+                permissions: permissions,
+                menus: menus
             },
             message: "All Group Details Successfully."
-        })
+        });
 
     } catch (error) {
         console.error("Error Get Group", error);
@@ -95,7 +106,8 @@ export const getGroupCtrl = async (req, res) => {
             error: error.message
         });
     }
-}
+};
+
 
 export const updateGroupCtrl = async (req, res) => {
     try {

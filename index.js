@@ -8,7 +8,7 @@ import cookieParser from 'cookie-parser';
 import connectDB from './dbConnection.js';
 import unitRoutes from "./routes/unitRoutes.js";
 import policyRoutes from "./routes/policyRoutes.js";
-import menuRoutes from "./routes/menuRoutes.js";
+import menuRoutes from "./auth/routes/menuRoutes.js";
 import userRoutes from './auth/routes/userRoutes.js'
 import auth from './auth/middleware/authMiddleware.js';
 import groupRoutes from "./auth/routes/groupRoutes.js";

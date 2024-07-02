@@ -6,7 +6,7 @@ import {
     updateMenuCtrl
 } from '../controllers/menuCtrl.js'
 
-import { checkPermission } from '../auth/middleware/checkPermission.js'
+import { checkPermission } from '../middleware/checkPermission.js'
 
 
 //router object
