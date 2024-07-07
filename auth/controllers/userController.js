@@ -97,36 +97,36 @@ export const loginUserCtrl = async (req, res) => {
         //Collect errors
         const errors = []
 
-        if (!name) {
+        if (!name || !password) {
             errors.push({
                 label: 'name',
-                message: `Please Enter Name`
-            })
-        }
-        if (!password) {
-            errors.push({
-                label: 'password',
-                message: `Please Enter Password`
+                message: `Please Enter Username and Pasword`
             })
         }
 
         //check if User already exists
-        const userExists = await UserModel.findOne({ 'name': name })
-        if (!userExists) {
-            errors.push({
-                label: 'userNotFound',
-                message: 'User Not Found'
-            })
+        let userPass = ''
+        if (name && password) {
+            const userExists = await UserModel.findOne({ 'name': name })
+            if (!userExists) {
+                errors.push({
+                    label: 'userNotFound',
+                    message: 'User Not Found'
+                })
+            } else {
+                userPass = userExists.password
+            }
         }
 
-
-        // check password
-        const passwordCorrect = await bcrypt.compare(password, userExists.password)
-        if (!passwordCorrect) {
-            errors.push({
-                label: 'wrongCred',
-                message: 'Wrong Credentials'
-            })
+        if (userPass) {
+            // check password
+            const passwordCorrect = await bcrypt.compare(password, userPass)
+            if (!passwordCorrect) {
+                errors.push({
+                    label: 'wrongCred',
+                    message: 'Wrong Credentials'
+                })
+            }
         }
 
         if (errors.length > 0) {
