@@ -105,7 +105,7 @@ export const loginUserCtrl = async (req, res) => {
         }
 
         //check if User already exists
-        let userPass = ''
+        let userId = ''
         if (name && password) {
             const userExists = await UserModel.findOne({ 'name': name })
             if (!userExists) {
@@ -114,18 +114,17 @@ export const loginUserCtrl = async (req, res) => {
                     message: 'User Not Found'
                 })
             } else {
-                userPass = userExists.password
-            }
-        }
-
-        if (userPass) {
-            // check password
-            const passwordCorrect = await bcrypt.compare(password, userPass)
-            if (!passwordCorrect) {
-                errors.push({
-                    label: 'wrongCred',
-                    message: 'Wrong Credentials'
-                })
+                userId = userExists._id
+                if (userExists.password) {
+                    // check password
+                    const passwordCorrect = await bcrypt.compare(password, userExists.password)
+                    if (!passwordCorrect) {
+                        errors.push({
+                            label: 'wrongCred',
+                            message: 'Wrong Credentials'
+                        })
+                    }
+                }
             }
         }
 
@@ -138,7 +137,7 @@ export const loginUserCtrl = async (req, res) => {
 
         // log the user in
         const token = jwt.sign({
-            user: userExists._id
+            user: userId,
         }, process.env.JWT_PRIVATE_KEY)
 
         // send the token in HTTP-only cookie
