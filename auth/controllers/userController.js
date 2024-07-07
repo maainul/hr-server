@@ -109,28 +109,30 @@ export const loginUserCtrl = async (req, res) => {
                 message: `Please Enter Password`
             })
         }
-        if (errors.length > 0) {
-            return res.status(400).json({
-                success: false,
-                error: errors
-            })
-        }
 
         //check if User already exists
         const userExists = await UserModel.findOne({ 'name': name })
         if (!userExists) {
-            return res.status(401).json({
-                success: false,
-                error: 'User Not Found'
+            errors.push({
+                label: 'userNotFound',
+                message: 'User Not Found'
             })
         }
+
 
         // check password
         const passwordCorrect = await bcrypt.compare(password, userExists.password)
         if (!passwordCorrect) {
-            return res.status(401).json({
+            errors.push({
+                label: 'wrongCred',
+                message: 'Wrong Credentials'
+            })
+        }
+
+        if (errors.length > 0) {
+            return res.status(400).json({
                 success: false,
-                error: 'Wrong Credentials'
+                error: errors
             })
         }
 
