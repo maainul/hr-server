@@ -19,10 +19,10 @@ export const validateEmployee = (data) => {
          'any.required': 'Phone Number is required'
       }),
 
-      bank_account: Joi.string().required().messages({
+      bank_account: Joi.string().optional().messages({
          'string.base': 'Bank Account Number should be a type of text',
       }),
-      bank_name: Joi.string().required().messages({
+      bank_name: Joi.string().optional().messages({
          'string.base': 'Bank Name should be a type of text',
       }),
       permanent_address: Joi.string().required().messages({
@@ -35,12 +35,12 @@ export const validateEmployee = (data) => {
          'string.empty': 'Present Addresscode cannot be empty',
          'any.required': 'Present Address code is required'
       }),
-      date_of_joining: Joi.date().required().messages({
+      date_of_joining: Joi.date().optional().messages({
          'string.base': 'joining date should be a type of date',
          'date.empty': 'joining date cannot be empty',
          'any.required': 'joining date code is required'
       }),
-      date_of_birth: Joi.date().required().messages({
+      date_of_birth: Joi.date().optional().messages({
          'string.base': 'Birth date should be a type of date',
          'date.empty': 'Birth date cannot be empty',
          'any.required': 'Birth date code is required'
