@@ -58,14 +58,17 @@ export const getAllUnitWithPaginationService = async ({ req }) => {
 
         const totalDataCount = await UnitModel.countDocuments(matchStage)
         const numberOfPages = Math.ceil(totalDataCount / limitNumber)
+        const upToPageTotalData = Math.min(pageNumber * limitNumber, totalDataCount)
+        const startPageData = skip + 1
 
         return {
-            success: true,
-            "currentPageData": unit.length,
-            "totalData": totalDataCount,
-            "totalNumberOfPages": numberOfPages,
-            "data": unit,
-            message: "All Employee retrieve successfully"
+
+            start: startPageData,
+            currentPageData: unit.length,
+            totalData: totalDataCount,
+            totalNumberOfPages: numberOfPages,
+            data: unit,
+            upToPageTotalData: upToPageTotalData
         }
     } catch (error) {
         throw new Error(`Error in getAllUnitWithPaginationService: ${error.message}`);

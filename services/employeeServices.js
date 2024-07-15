@@ -96,14 +96,17 @@ export const getAllEmployeeWithPaginationService = async ({ req }) => {
 
         const totalDataCount = await EmployeeModel.countDocuments(matchStage)
         const numberOfPages = Math.ceil(totalDataCount / limitNumber)
+        const upToPageTotalData = Math.min(pageNumber * limitNumber, totalDataCount)
+
+        const startPageData = skip + 1
 
         return {
-            success: true,
-            "currentPageData": employees.length,
-            "totalData": totalDataCount,
-            "totalNumberOfPages": numberOfPages,
-            "data": employees,
-            message: "All Employees retrieved successfully"
+            start: startPageData,
+            currentPageData: employees.length,
+            totalData: totalDataCount,
+            totalNumberOfPages: numberOfPages,
+            data: employees,
+            upToPageTotalData: upToPageTotalData
         }
     } catch (error) {
         throw new Error(`Error in getAllEmployeeWithPaginationService: ${error.message}`);
