@@ -3,7 +3,7 @@ import DivisionModel from "../model/divisionModel.js";
 export const getAllDivisionWithPaginationService = async ({ req }) => {
   try {
     // Query Param For Search
-    const { search = "", sort = "latest", page = 1, limit = 10 } = req.query;
+    const { search = "", sort = "latest", page, limit } = req.query;
 
     //Conditions for searching filters
     let queryObject = {};
@@ -28,33 +28,32 @@ export const getAllDivisionWithPaginationService = async ({ req }) => {
     if (sort === "a-z") queryResult = queryResult.sort("name");
     if (sort === "z-a") queryResult = queryResult.sort("-name");
 
-    //Pagination
-    const pageNumber = Number(page);
-    const limitNumber = Number(limit);
-    const skip = (pageNumber - 1) * limitNumber;
+    //Total Data Count
+    const totalDataCount = await DivisionModel.countDocuments(queryObject);
 
-    //Skip
-    queryResult = queryResult.skip(skip).limit(limitNumber);
+    //Pagination
+    let numberOfPages = 0;
+    let startPageData = 0;
+    let upToPageTotalData = 0;
+
+    if (page != undefined || limit != undefined) {
+      const pageNumber = Number(page);
+      const limitNumber = Number(limit);
+      const skip = (pageNumber - 1) * limitNumber;
+      //Skip
+      queryResult = queryResult.skip(skip).limit(limitNumber);
+      numberOfPages = Math.ceil(totalDataCount / limit);
+      // Calculate upToPageTotalData
+      upToPageTotalData = Math.min(pageNumber * limitNumber, totalDataCount);
+      // Calculate startPageData
+      startPageData = skip + 1; // Adjust for 1-based index
+    }
 
     //Per page Data Count = Total Data Count Based on Query Search
     const pageDataCount = await DivisionModel.countDocuments(queryResult);
 
-    //Total Data Count
-    const totalDataCount = await DivisionModel.countDocuments(queryObject);
-
-    //Number of Pages
-    const numberOfPages = Math.ceil(totalDataCount / limit);
-
     // Execute Query For List of Data
     const data = await queryResult;
-    // Calculate upToPageTotalData
-    const upToPageTotalData = Math.min(
-      pageNumber * limitNumber,
-      totalDataCount
-    );
-
-    // Calculate startPageData
-    const startPageData = skip + 1; // Adjust for 1-based index
 
     return {
       start: startPageData,
