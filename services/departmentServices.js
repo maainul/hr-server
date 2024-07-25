@@ -3,10 +3,9 @@ import { pagination } from './pagination.js';
 
 
 export const getAllDepartmentWithPaginationService = async ({ req }) => {
-    console.log(req.query)
     try {
         // Query Param For Search
-        const { search = '', sort = 'latest', page = 1, limit = 2 } = req.query;
+        const { search = '', sort = 'latest', page, limit } = req.query;
 
         //Conditions for searching filters
         let queryObject = {}
@@ -31,44 +30,10 @@ export const getAllDepartmentWithPaginationService = async ({ req }) => {
         if (sort === 'a-z') queryResult = queryResult.sort('name')
         if (sort === 'z-a') queryResult = queryResult.sort('-name')
 
+        const paginationResult = await pagination(page, limit, queryResult, queryObject, DepartmentModel)
 
-        //  const { start, currentPageData, totalData, totalNumberOfPages, data, upToPageTotalData } = pagination(page, limit, queryResult, queryObject, DepartmentModel)
+        return paginationResult
 
-        // Pagination
-        const pageNumber = Number(page)
-        const limitNumber = Number(limit)
-        const skip = (pageNumber - 1) * limitNumber
-
-        //Skip
-        queryResult = queryResult.skip(skip).limit(limit)
-
-        //Per page Data Count = Total Data Count Based on Query Search
-        const pageDataCount = await DepartmentModel.countDocuments(queryResult)
-
-        //Total Data Count
-        const totalDataCount = await DepartmentModel.countDocuments(queryObject)
-
-        //Number of Pages
-        const numberOfPages = Math.ceil(totalDataCount / limit)
-
-        // Execute Query For List of Data
-        const data = await queryResult
-        // Calculate upToPageTotalData
-        const upToPageTotalData = Math.min(
-            pageNumber * limitNumber,
-            totalDataCount
-        );
-        // Calculate startPageData
-        const startPageData = skip + 1; // Adjust for 1-based index
-
-        return {
-            start: startPageData,
-            currentPageData: pageDataCount,
-            totalData: totalDataCount,
-            totalNumberOfPages: numberOfPages,
-            data: data,
-            upToPageTotalData: upToPageTotalData,
-        }
     } catch (error) {
         throw new Error(`Error in getAllDepartmentWithPaginationService: ${error.message}`);
     }

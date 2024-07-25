@@ -1,4 +1,5 @@
 import SalaryGradeModel from "../model/salaryGradeModel.js"
+import { pagination } from "./pagination.js";
 
 
 export const getAllSalaryGradeWithPaginationService = async ({ req }) => {
@@ -28,38 +29,11 @@ export const getAllSalaryGradeWithPaginationService = async ({ req }) => {
         if (sort === 'oldest') queryResult = queryResult.sort('createdAt')
         if (sort === 'a-z') queryResult = queryResult.sort('grade_name')
         if (sort === 'z-a') queryResult = queryResult.sort('-grade_name')
+        const paginationResult = await pagination(page, limit, queryResult, queryObject, SalaryGradeModel)
 
-        //Pagination
-        const pageNumber = Number(page)
-        const limitNumber = Number(limit)
-        const skip = (pageNumber - 1) * limitNumber
+        return paginationResult
 
-        //Skip
-        queryResult = queryResult.skip(skip).limit(limit)
 
-        //Per page Data Count = Total Data Count Based on Query Search
-        const pageDataCount = await SalaryGradeModel.countDocuments(queryResult)
-
-        //Total Data Count
-        const totalDataCount = await SalaryGradeModel.countDocuments(queryObject)
-
-        //Number of Pages
-        const numberOfPages = Math.ceil(totalDataCount / limit)
-
-        // Execute Query For List of Data
-        const data = await queryResult
-        const upToPageTotalData = Math.min(pageNumber * limitNumber, totalDataCount)
-
-        const startPageData = skip + 1
-
-        return {
-            start: startPageData,
-            "currentPageData": pageDataCount,
-            "totalData": totalDataCount,
-            "totalNumberOfPages": numberOfPages,
-            "data": data,
-            upToPageTotalData: upToPageTotalData
-        }
     } catch (error) {
         throw new Error(`Error in getAllSalaryGradeWithPaginationService: ${error.message}`);
     }

@@ -1,4 +1,5 @@
 import DesignationModel from "../model/designationModel.js";
+import { pagination } from './pagination.js';
 
 export const getAllDesignationWithPaginationService = async ({ req }) => {
   try {
@@ -28,41 +29,9 @@ export const getAllDesignationWithPaginationService = async ({ req }) => {
     if (sort === "a-z") queryResult = queryResult.sort("name");
     if (sort === "z-a") queryResult = queryResult.sort("-name");
 
-    //Pagination
-    const pageNumber = Number(page);
-    const limitNumber = Number(limit);
-    const skip = (pageNumber - 1) * limitNumber;
+    const paginationResult = await pagination(page, limit, queryResult, queryObject, DesignationModel)
 
-    //Skip
-    queryResult = queryResult.skip(skip).limit(limit);
-
-    //Per page Data Count = Total Data Count Based on Query Search
-    const pageDataCount = await DesignationModel.countDocuments(queryResult);
-
-    //Total Data Count
-    const totalDataCount = await DesignationModel.countDocuments(queryObject);
-
-    //Number of Pages
-    const numberOfPages = Math.ceil(totalDataCount / limit);
-
-    // Execute Query For List of Data
-    const data = await queryResult;
-
-    const upToPageTotalData = Math.min(
-      pageNumber * limitNumber,
-      totalDataCount
-    );
-
-    const startPageData = skip + 1;
-
-    return {
-      start: startPageData,
-      currentPageData: pageDataCount,
-      totalData: totalDataCount,
-      totalNumberOfPages: numberOfPages,
-      data: data,
-      upToPageTotalData: upToPageTotalData,
-    };
+    return paginationResult;
   } catch (error) {
     throw new Error(
       `Error in getAllDesignationWithPaginationService: ${error.message}`

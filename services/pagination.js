@@ -1,27 +1,29 @@
 
 
 export const pagination = async (page, limit, queryResult, queryObject, model) => {
-    const pageNumber = Number(page)
-    const limitNumber = Number(limit)
-    const skip = (pageNumber - 1) * limitNumber
+    let numberOfPages = 0;
+    let startPageData = 0;
+    let upToPageTotalData = 0;
+    let totalDataCount = 0;
+    if (page !== undefined || limit !== undefined) {
+        const pageNumber = Number(page);
+        const limitNumber = Number(limit);
+        const skip = (pageNumber - 1) * limitNumber;
 
-    queryResult = queryResult.skip(skip).limit(limit)
-
-    // Total Data Count with search
+        queryResult = queryResult.skip(skip).limit(limitNumber)
+        totalDataCount = await model.countDocuments(queryObject)
+        numberOfPages = Math.ceil(totalDataCount / limit)
+        upToPageTotalData = Math.min(pageNumber * limitNumber, totalDataCount)
+        startPageData = skip + 1;
+    }
     const pageDataCount = await model.countDocuments(queryResult)
-    // Total Data Count
-    const totalDataCount = await model.countDocuments(queryObject)
-    // Number of Pages
-    const numberOfPages = Math.ceil(totalDataCount / limit)
-    const startPageData = skip + 1;
-    const upToPageTotalData = Math.min(pageNumber * limitNumber, totalDataCount)
     const data = await queryResult
 
     return {
         startPageData,
         pageDataCount,
-        totalDataCount,
         numberOfPages,
+        totalDataCount,
         data,
         upToPageTotalData,
     }

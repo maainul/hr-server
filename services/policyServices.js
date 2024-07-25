@@ -1,4 +1,5 @@
 import PolicyModel from "../model/policyModel.js"
+import { pagination } from "./pagination.js";
 
 
 export const getAllpolicyWithPaginationService = async ({ req }) => {
@@ -28,39 +29,9 @@ export const getAllpolicyWithPaginationService = async ({ req }) => {
         if (sort === 'oldest') queryResult = queryResult.sort('createdAt')
         if (sort === 'a-z') queryResult = queryResult.sort('name')
         if (sort === 'z-a') queryResult = queryResult.sort('-name')
+        const paginationResult = await pagination(page, limit, queryResult, queryObject, SalaryGradeModel)
 
-        //Pagination
-        const pageNumber = Number(page)
-        const limitNumber = Number(limit)
-        const skip = (pageNumber - 1) * limitNumber
-
-        //Skip
-        queryResult = queryResult.skip(skip).limit(limit)
-
-        //Per page Data Count = Total Data Count Based on Query Search
-        const pageDataCount = await PolicyModel.countDocuments(queryResult)
-
-        //Total Data Count
-        const totalDataCount = await PolicyModel.countDocuments(queryObject)
-
-        //Number of Pages
-        const numberOfPages = Math.ceil(totalDataCount / limit)
-
-        // Execute Query For List of Data
-        const data = await queryResult
-
-        const upToPageTotalData = Math.min(pageNumber * limitNumber, totalDataCount)
-
-        const startPageData = skip + 1
-
-        return {
-            start: startPageData,
-            currentPageData: pageDataCount,
-            totalData: totalDataCount,
-            totalNumberOfPages: numberOfPages,
-            data: data,
-            upToPageTotalData: upToPageTotalData
-        }
+        return paginationResult
     } catch (error) {
         throw new Error(`Error in getAllpolicyWithPaginationService: ${error.message}`);
     }
