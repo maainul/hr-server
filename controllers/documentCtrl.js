@@ -43,7 +43,6 @@ export const createDocumentCtrl = async (req, res) => {
         // Check Id Valid or Not
         if (req.body.department && !mongoose.Types.ObjectId.isValid(req.body.department)) {
             return res.status(400).json({ success: false, error: InvalidDepartmentID });
-
         }
 
         if (req.body.designation && !mongoose.Types.ObjectId.isValid(req.body.designation)) {
@@ -79,6 +78,7 @@ export const createDocumentCtrl = async (req, res) => {
                 });
             }
         }
+
         // Check Employee
         if (req.body.employee) {
             const empExists = await EmployeeModel.findOne({ '_id': req.body.employee });

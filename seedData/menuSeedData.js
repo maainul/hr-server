@@ -17,6 +17,21 @@ const menuSeedData = [
         label: "Employee List",
         url: "/employee",
       },
+      {
+        icon: "employee",
+        label: "Employee Add",
+        url: "/employee/add",
+      },
+      {
+        icon: "employeeLeave",
+        label: "Employee Leave List",
+        url: "/employee-leave",
+      },
+      {
+        icon: "employeeLeaveBalance",
+        label: "Leave Balance",
+        url: "/employee-leave-balance",
+      },
     ],
   },
   {
@@ -114,6 +129,18 @@ const menuSeedData = [
       },
     ],
   },
+  {
+    menuTitle: "Leave Type",
+    submenu: [
+      {
+        icon: "leaveType",
+        label: "Leave List",
+        url: "/leave-type",
+      },
+    ],
+  },
+
+
 ];
 
 export default menuSeedData;

@@ -2,10 +2,9 @@ import Joi from 'joi'
 
 export const validateDocument = (data) => {
    const documentSchema = Joi.object({
-      document_code: Joi.string().required().messages({
+      document_code: Joi.string().optional().messages({
          'string.base': 'document code should be a type of text',
          'string.empty': 'document code cannot be empty',
-         'any.required': 'document code is required'
       }),
       document_name: Joi.string().required().messages({
          'string.base': 'document name should be a type of text',
@@ -32,12 +31,10 @@ export const validateDocument = (data) => {
       issued_date: Joi.string().optional().messages({
          'string.base': 'document name should be a type of text',
          'string.empty': 'document name cannot be empty',
-         'any.required': 'document name code is required'
       }),
       expiry_date: Joi.string().optional().messages({
          'string.base': 'document name should be a type of text',
          'string.empty': 'document name cannot be empty',
-         'any.required': 'document name code is required'
       }),
       department: Joi.string().optional().messages({
          'string.base': 'Department should be a type of text',

@@ -1,14 +1,14 @@
-import { validateEmployee } from '../validations/employeeValidation.js'
 import EmployeeModel from '../model/EmployeeModel.js'
 import DepartmentModel from '../model/departmentModel.js'
 import DesignationModel from '../model/designationModel.js'
 import SalaryGradeModel from '../model/salaryGradeModel.js'
+import { validateEmployee } from '../validations/employeeValidation.js'
 import { getAllEmployeeWithPaginationService } from '../services/EmployeeServices.js';
 import mongoose from 'mongoose';
 
 export const createEmployeeCtrl = async (req, res) => {
     try {
-     
+
         //Joi Validation
         const { error, value } = validateEmployee(req.body)
 
@@ -101,12 +101,8 @@ export const createEmployeeCtrl = async (req, res) => {
             });
         }
 
-
-
-
         //Create New Employee
         const newEmployee = await EmployeeModel.create(value)
-
         return res.status(201).json({
             success: true,
             newEmployee,

@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 const documentSchema = new mongoose.Schema({
     document_code: {
         type: String,
-        required: true
     },
     document_name: {
         type: String,
@@ -51,10 +50,6 @@ const documentSchema = new mongoose.Schema({
     division: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Division'
-    },
-    employee: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Employee'
     },
     unit: {
         type: mongoose.Schema.Types.ObjectId,

@@ -8,10 +8,10 @@ const employeeSalarySchema = new mongoose.Schema({
         ref: 'Employee',
         required: true
     },
-    basic: { type: Number },
-    houseRent: { type: Number },
+    basic: { type: Number, required: true },
+    houseRent: { type: Number, required: true },
     conveyance: { type: Number },
-    medicalAllowance: { type: Number },
+    medicalAllowance: { type: Number, required: true },
     fuelAllowance: { type: Number },
     specialAllowance: { type: Number },
     grossSalary: { type: Number },

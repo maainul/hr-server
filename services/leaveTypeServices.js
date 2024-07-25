@@ -1,12 +1,10 @@
-import DepartmentModel from "../model/departmentModel.js"
-import { pagination } from './pagination.js';
+import LeaveTypeModel from "../model/leaveTypeModel.js"
 
 
-export const getAllDepartmentWithPaginationService = async ({ req }) => {
-    console.log(req.query)
+export const getAllLeaveTypeWithPaginationService = async ({ req }) => {
     try {
         // Query Param For Search
-        const { search = '', sort = 'latest', page = 1, limit = 2 } = req.query;
+        const { search = '', sort = 'latest', page = 1, limit = 10 } = req.query;
 
         //Conditions for searching filters
         let queryObject = {}
@@ -17,13 +15,12 @@ export const getAllDepartmentWithPaginationService = async ({ req }) => {
             queryObject = {
                 $or: [
                     { name: { $regex: search, $options: "i" } },
-                    { dptCode: { $regex: search, $options: "i" } }
                 ]
             }
         }
 
         // Build Mongoose Query Based on Search
-        let queryResult = DepartmentModel.find(queryObject)
+        let queryResult = LeaveTypeModel.find(queryObject)
 
         //Sorting
         if (sort === 'latest') queryResult = queryResult.sort('-createdAt')
@@ -31,10 +28,7 @@ export const getAllDepartmentWithPaginationService = async ({ req }) => {
         if (sort === 'a-z') queryResult = queryResult.sort('name')
         if (sort === 'z-a') queryResult = queryResult.sort('-name')
 
-
-        //  const { start, currentPageData, totalData, totalNumberOfPages, data, upToPageTotalData } = pagination(page, limit, queryResult, queryObject, DepartmentModel)
-
-        // Pagination
+        //Pagination
         const pageNumber = Number(page)
         const limitNumber = Number(limit)
         const skip = (pageNumber - 1) * limitNumber
@@ -43,10 +37,10 @@ export const getAllDepartmentWithPaginationService = async ({ req }) => {
         queryResult = queryResult.skip(skip).limit(limit)
 
         //Per page Data Count = Total Data Count Based on Query Search
-        const pageDataCount = await DepartmentModel.countDocuments(queryResult)
+        const pageDataCount = await LeaveTypeModel.countDocuments(queryResult)
 
         //Total Data Count
-        const totalDataCount = await DepartmentModel.countDocuments(queryObject)
+        const totalDataCount = await LeaveTypeModel.countDocuments(queryObject)
 
         //Number of Pages
         const numberOfPages = Math.ceil(totalDataCount / limit)
@@ -70,6 +64,6 @@ export const getAllDepartmentWithPaginationService = async ({ req }) => {
             upToPageTotalData: upToPageTotalData,
         }
     } catch (error) {
-        throw new Error(`Error in getAllDepartmentWithPaginationService: ${error.message}`);
+        throw new Error(`Error in getAllLeaveTypeWithPaginationService: ${error.message}`);
     }
 }

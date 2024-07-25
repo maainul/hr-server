@@ -7,7 +7,6 @@ import { getAllEmployeeSalaryWithPaginationService } from '../services/employeeS
 
 export const createEmployeeSalaryCtrl = async (req, res) => {
     try {
-
         //Joi Validation
         const { error, value } = validateEmployeeSalary(req.body)
         if (error) {

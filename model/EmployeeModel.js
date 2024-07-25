@@ -1,7 +1,19 @@
 import mongoose from "mongoose";
 
 const employeeSchema = new mongoose.Schema({
+    employeeID: {
+        type: String,
+        required: true
+    },
     full_name: {
+        type: String,
+        required: true
+    },
+    father_name: {
+        type: String,
+        required: true
+    },
+    mother_name: {
         type: String,
         required: true
     },
@@ -92,7 +104,7 @@ const employeeSchema = new mongoose.Schema({
     },
 
     spouse_profession: {
-        type: Date
+        type: String
     },
 
     marriage_date: {

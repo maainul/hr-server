@@ -7,50 +7,22 @@ export const validateEmployeeSalary = (data) => {
          'string.empty': 'employee name cannot be empty',
          'any.required': 'employee name is required'
       }),
-      basic: Joi.number().optional().message({
-         'number.base': ' allowance should be a type of number',
+
+      basic: Joi.number().required().messages({
+         'number.base': 'basic salary should be a type of number',
+         'any.required': ' basic salary is requiured',
       }),
-      houseRent: Joi.number().optional().message({
-         'number.base': ' allowance should be a type of number',
+      houseRent: Joi.number().required().messages({
+         'number.base': 'house rent should be a type of number',
+         'any.required': 'house rent is requiured',
       }),
-      conveyance: Joi.number().optional().message({
-         'number.base': ' allowance should be a type of number',
+      medicalAllowance: Joi.number().required().messages({
+         'number.base': 'medica Allowance should be a type of number',
+         'any.required': 'medical Allowance is requiured',
       }),
-      medicalAllowance: Joi.number().optional().message({
-         'number.base': ' allowance should be a type of number',
-      }),
-      fuelAllowance: Joi.number().optional().message({
-         'number.base': ' allowance should be a type of number',
-      }),
-      specialAllowance: Joi.number().optional().message({
-         'number.base': ' allowance should be a type of number',
-      }),
-      grossSalary: Joi.number().optional().message({
-         'number.base': ' allowance should be a type of number',
-      }),
-      overtimePayment: Joi.number().optional().message({
-         'number.base': ' allowance should be a type of number',
-      }),
-      arrearAdjustment: Joi.number().optional().message({
-         'number.base': ' allowance should be a type of number',
-      }),
-      compensation: Joi.number().optional().message({
-         'number.base': ' allowance should be a type of number',
-      }),
-      festivalAllowance: Joi.number().optional().message({
-         'number.base': ' allowance should be a type of number',
-      }),
-      utilityAllowance: Joi.number().optional().message({
-         'number.base': ' allowance should be a type of number',
-      }),
-      leaveEncashment: Joi.number().optional().message({
-         'number.base': ' allowance should be a type of number',
-      }),
-      otherAdjustment: Joi.number().optional().message({
-         'number.base': ' allowance should be a type of number',
-      }),
-      grossPay: Joi.number().optional().message({
-         'number.base': ' allowance should be a type of number',
+      specialAllowance: Joi.number().optional().messages({
+         'number.base': 'medica Allowance should be a type of number',
+         'any.required': 'medical Allowance is requiured',
       }),
 
    })

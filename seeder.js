@@ -1,27 +1,31 @@
 import colors from "colors";
 import dotenv from "dotenv";
-import connectDB from "./dbConnection.js";
-import DepartmentModel from "./model/departmentModel.js";
-import DivisionModel from "./model/divisionModel.js";
-import DesignationModel from "./model/designationModel.js";
-import PolicyModel from "./model/policyModel.js";
-import divisionSeedData from "./seedData/divisionSeedData.js";
-import departmentSeedData from "./seedData/departmentSeedData.js";
-import designationSeedData from "./seedData/designationSeedData.js";
-import policySeedData from "./seedData/policySeedData.js";
-import SalaryGradeModel from "./model/salaryGradeModel.js";
-import salaryGradeSeedData from "./seedData/salaryGradeSeedData.js";
-import UnitModel from "./model/unitModel.js";
-import unitSeedData from "./seedData/unitSeedData.js";
-import PermissionModel from "./auth/model/permissionModel.js";
-import GroupModel from "./auth/model/groupModel.js";
-import UserModel from "./auth/model/userModel.js";
-import permissionSeedData from "./seedData/SeedData.js";
-import groupSeedData from "./seedData/groupSeedData.js";
-import userSeedData from "./seedData/userSeedData.js";
 import bcrypt from "bcryptjs";
-import MenuModel from "./model/menuModel.js";
+import connectDB from "./dbConnection.js";
+import UnitModel from "./model/unitModel.js";
+import PolicyModel from "./model/policyModel.js";
+import UserModel from "./auth/model/userModel.js";
+import MenuModel from "./auth/model/menuModel.js";
+import GroupModel from "./auth/model/groupModel.js";
+// import EmployeeModel from "./model/EmployeeModel.js";
+import DivisionModel from "./model/divisionModel.js";
 import menuSeedData from "./seedData/menuSeedData.js";
+import unitSeedData from "./seedData/unitSeedData.js";
+import userSeedData from "./seedData/userSeedData.js";
+import LeaveTypeModel from "./model/leaveTypeModel.js";
+import groupSeedData from "./seedData/groupSeedData.js";
+import DepartmentModel from "./model/departmentModel.js";
+import policySeedData from "./seedData/policySeedData.js";
+import DesignationModel from "./model/designationModel.js";
+import SalaryGradeModel from "./model/salaryGradeModel.js";
+import PermissionModel from "./auth/model/permissionModel.js";
+import divisionSeedData from "./seedData/divisionSeedData.js";
+import employeeSeedData from './seedData/employeeSeedData.js';
+import leaveTypeSeedData from "./seedData/leaveTypeSeedData.js";
+import departmentSeedData from "./seedData/departmentSeedData.js";
+import permissionSeedData from "./seedData/permissionSeedData.js";
+import designationSeedData from "./seedData/designationSeedData.js";
+import salaryGradeSeedData from "./seedData/salaryGradeSeedData.js";
 
 const seeder = async () => {
   // Configure env
@@ -106,7 +110,7 @@ const seeder = async () => {
       const permissions = group.permissions.map((perm) => {
         const permissionId = permissionLookup[perm];
         if (!permissionId) {
-          throw new Error(`Permission not found: ${permissionName}`);
+          throw new Error(`Permission not found`);
         }
         return permissionId;
       });
@@ -141,14 +145,29 @@ const seeder = async () => {
         group: group._id,
       });
     }
-
     console.log("User seeded successfully".bgGreen);
+
+    // leave Seeder
+    console.log("Seeding Leave Type ...");
+    await LeaveTypeModel.deleteMany();
+    await LeaveTypeModel.insertMany(leaveTypeSeedData);
+    console.log("Leave Type seeded successfully".bgGreen);
 
     // Menu Seeder
     console.log("Seeding Sidebar Menu...");
     await MenuModel.deleteMany();
     await MenuModel.insertMany(menuSeedData);
     console.log("Sidebar Menu seeded successfully".bgGreen);
+
+    // Employee Data Seed
+    // console.log("Seeding Employee Data.......")
+    // await EmployeeModel.deleteMany();
+    // const employeeData = employeeSeedData.map((emp) => {
+    //   const dptExsts = await DepartmentModel.findOne({ 'dptCode': emp.department_code });
+    //   const dsgExsts = await DesignationModel.findOne({ 'name': emp.designation_name });
+    //   const salaryGradeExts = await SalaryGradeModel.findOne({ 'name': emp.salary_grade_name });
+    // })
+    // console.log("Seeding Employee Data Successfully.......")
 
     process.exit();
   } catch (error) {
@@ -158,3 +177,23 @@ const seeder = async () => {
 };
 
 seeder();
+
+
+/*
+
+   //unit seed
+    const unitSeededDataWithDivisions = unitSeedData.map((unit) => {
+      const division = seededDivisions.find(
+        (div) => div.name === unit.divisionName
+      );
+      if (!division) {
+        throw new Error(`Division Not Found For Unit : ${unit.name}`);
+      }
+      return {
+        ...unit,
+        division: division._id,
+      };
+    });
+
+
+  */

@@ -2,10 +2,25 @@ import Joi from 'joi'
 
 export const validateEmployee = (data) => {
    const employeeSchema = Joi.object({
+      employeeID: Joi.string().optional().messages({
+         'string.base': 'employeeID should be a type of text',
+         'string.empty': 'employeeID cannot be empty',
+         'any.required': 'employeeID is required'
+      }),
       full_name: Joi.string().required().messages({
          'string.base': 'Full name should be a type of text',
          'string.empty': 'Full name cannot be empty',
          'any.required': 'Full name is required'
+      }),
+      father_name: Joi.string().required().messages({
+         'string.base': 'Father name should be a type of text',
+         'string.empty': 'Father name cannot be empty',
+         'any.required': 'Father name is required'
+      }),
+      mother_name: Joi.string().required().messages({
+         'string.base': 'Mother name should be a type of text',
+         'string.empty': 'Mother name cannot be empty',
+         'any.required': 'Mother name is required'
       }),
       email: Joi.string().required().messages({
          'string.base': 'Email code should be a type of text',
@@ -95,7 +110,7 @@ export const validateEmployee = (data) => {
          'date.base': 'spouse date of birth should be a type of date',
       }),
       spouse_profession: Joi.string().optional().messages({
-         'string.base': 'spouse date of birth should be a type of text',
+         'string.base': 'spouse profession should be text',
       }),
       marriage_date: Joi.date().optional().messages({
          'date.base': 'marriage date of birth should be a type of date',

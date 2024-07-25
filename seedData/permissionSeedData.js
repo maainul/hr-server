@@ -46,6 +46,7 @@ const permissionSeedData = [
   { resource: "employee", action: "update" },
   { resource: "employee", action: "details" },
   { resource: "employee", action: "statusUpdate" },
+
   // Employee Salary
   { resource: "employeeSalary", action: "create" },
   { resource: "employeeSalary", action: "list" },
@@ -89,6 +90,24 @@ const permissionSeedData = [
   { resource: "user", action: "update" },
   { resource: "user", action: "details" },
   { resource: "user", action: "statusUpdate" },
+
+  // Leave Type
+  { resource: "leave-type", action: "create" },
+  { resource: "leave-type", action: "list" },
+  { resource: "leave-type", action: "update" },
+  { resource: "leave-type", action: "details" },
+
+
+  // Leave Type
+  { resource: "employee-leave", action: "create" },
+  { resource: "employee-leave", action: "list" },
+  { resource: "employee-leave", action: "update" },
+  { resource: "employee-leave", action: "details" },
+
+  // Leave Type
+  { resource: "employee-leave-balance", action: "create" },
+  { resource: "employee-leave-balance", action: "list" },
+  { resource: "employee-leave-balance", action: "update" },
 ];
 
 export default permissionSeedData;
