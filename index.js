@@ -58,7 +58,7 @@ app.use('/api/v1/division', auth, divisionRoutes)
 app.use('/api/v1/employee', auth, employeeRoutes)
 app.use('/api/v1/document', auth, documentRoutes)
 app.use('/api/v1/leave-type', auth, leaveTypeRoutes)
-app.use('/api/v1/department', auth, departmentRoutes)
+app.use('/api/v1/department', departmentRoutes)
 app.use('/api/v1/designation', auth, designationRoutes)
 app.use('/api/v1/salary-grade', auth, salaryGradeRoutes)
 app.use('/api/v1/auth/permission', auth, permissionRoutes)
@@ -76,3 +76,6 @@ app.listen(PORT, () => {
             .white
     );
 });
+
+
+export default app;

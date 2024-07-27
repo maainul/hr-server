@@ -12,6 +12,9 @@ export const validateDepartment = (data) => {
          'string.empty': 'Department code cannot be empty',
          'any.required': 'Department code is required'
       }),
+      dptLocation:Joi.string().optional().messages({
+         'string.base': 'Department code should be a type of text',
+      }),
       status: Joi.number()
 
    })

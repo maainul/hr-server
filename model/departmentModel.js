@@ -3,9 +3,11 @@ import mongoose from "mongoose";
 const departmentSchema = new mongoose.Schema({
     name: {
         type: String,
+        require:true
     },
     dptCode: {
-        type: String
+        type: String,
+        require:true
     },
 
     dptLocation: {

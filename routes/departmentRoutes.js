@@ -14,7 +14,7 @@ const router = express.Router()
 
 
 // CREATE 
-router.post("/create", checkPermission('department', 'create'), createDepartmentCtrl)
+router.post("/create", createDepartmentCtrl)
 
 // UPDATE || Update Department Status
 router.get("/status", checkPermission('department', 'statusUpdate'), updateDepartmentStatusCtrl)
