@@ -3,8 +3,8 @@ import PolicyModel from '../model/policyModel.js'
 import EmployeeModel from '../model/EmployeeModel.js'
 import EmployeePolicyModel from '../model/employeePolicyModel.js'
 import { validateEmployeePolicy } from '../validations/employeePolicyValidation.js'
-import { getAllemployeePolicyWithPaginationService } from '../services/employeePolicyServices.js'
 import { EmployeeNotExists, InvalidEmployeeID, InvalidPolicyID, PolicyNotExists } from '../utils/errorMessage.js';
+import { getAllemployeePolicyWithPaginationService } from './../services/employeePolicyServices';
 
 
 export const createEmployeePolicyCtrl = async (req, res) => {
