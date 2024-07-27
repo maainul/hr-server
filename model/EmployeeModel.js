@@ -83,7 +83,7 @@ const employeeSchema = new mongoose.Schema({
 
     blood_group: {
         type: String,
-        enum: ['O+', 'AB+', 'AB-', 'O-'],
+        enum: ['O+', 'AB+', 'AB-', 'O-', 'B+', 'B-'],
         default: 'O+'
     },
 

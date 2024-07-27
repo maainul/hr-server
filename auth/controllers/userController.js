@@ -223,9 +223,6 @@ export const getUserProfileCtrl = async (req, res) => {
                 }
             });
 
-        console.log("###############")
-        console.log(userInfo.group)
-        console.log("###############")
 
         // Check if userInfo exists and has groups
         if (userInfo && userInfo.group) {

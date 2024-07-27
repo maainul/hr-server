@@ -1,3 +1,4 @@
+
 import mongoose from "mongoose";
 
 const employeeLeaveSchema = new mongoose.Schema({
@@ -39,6 +40,10 @@ const employeeLeaveSchema = new mongoose.Schema({
     },
     HRStatus: {
         type: Number,
+    },
+    purpose: {
+        type: String,
+        required: true,
     }
 
 }, { timestamps: true });

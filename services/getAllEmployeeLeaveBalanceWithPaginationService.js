@@ -1,48 +1,37 @@
+import mongoose from "mongoose";
+import EmployeeLeaveModel from "../model/employeeLeaveModel.js";
 import EmployeeLeaveBalanceModel from "../model/employeeLeaveBalanceModel.js";
-
+import { pagination } from "./pagination.js";
 
 export const getAllEmployeeLeaveBalanceWithPaginationService = async ({ req }) => {
     try {
-        const { search = '', sort = 'latest', page = 1, limit = 10 } = req.query
-        let queryObject = {}
+        const { search = '', sort = 'latest', page, limit } = req.query;
+        let queryObject = {};
 
-        let queryResult = EmployeeLeaveBalanceModel.find(queryObject)
-
-        if (sort === 'latest') queryResult = queryResult.sort('-createdAt')
-        if (sort === 'oldest') queryResult = queryResult.sort('-createdAt')
-
-        const pageNumber = Number(page)
-        const limitNumber = Number(limit)
-        const skip = (pageNumber - 1) * limit
-
-        queryResult = queryResult.skip(skip).limit(limit)
-        //Per page Data Count = Total Data Count Based on Query Search
-        const pageDataCount = await EmployeeLeaveBalanceModel.countDocuments(queryResult)
-
-        //Total Data Count
-        const totalDataCount = await EmployeeLeaveBalanceModel.countDocuments(queryObject)
-
-        //Number of Pages
-        const numberOfPages = Math.ceil(totalDataCount / limit)
-        // Execute Query For List of Data
-        const data = await queryResult
-
-        // Calculate upToPageTotalData
-        const upToPageTotalData = Math.min(pageNumber * limitNumber, totalDataCount);
-
-        // Calculate startPageData
-        const startPageData = skip + 1; // Adjust for 1-based index
-
-
-        return {
-            start: startPageData,
-            currentPageData: pageDataCount,
-            totalData: totalDataCount,
-            totalNumberOfPages: numberOfPages,
-            data: data,
-            upToPageTotalData: upToPageTotalData,
+        // Add search filters if needed
+        if (search) {
+            queryObject = {
+                ...queryObject,
+                $or: [
+                    { 'employee.full_name': { $regex: search, $options: 'i' } },
+                    { 'leaveType.name': { $regex: search, $options: 'i' } }
+                ]
+            };
         }
 
+        let queryResult = EmployeeLeaveBalanceModel.find(queryObject)
+            .populate({ path: 'employee', model: 'Employee' })
+            .populate({ path: 'leaveType', model: 'LeaveType' });
+
+        if (sort === 'latest') queryResult = queryResult.sort('-createdAt');
+        if (sort === 'oldest') queryResult = queryResult.sort('createdAt');
+
+        // Pagination
+        const paginationResult = await pagination(page, limit, queryResult, queryObject, EmployeeLeaveBalanceModel);
+
+        return {
+            ...paginationResult,
+        };
 
     } catch (error) {
         throw new Error(`Error in getAllEmployeeLeaveBalanceWithPaginationService: ${error.message}`);

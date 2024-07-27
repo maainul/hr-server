@@ -12,6 +12,18 @@ export const validateEmployeeLeave = (data) => {
          'string.empty': 'Leave type ID code cannot be empty',
          'any.required': 'Leave type ID code is required'
       }),
+      purpose: Joi.string().required().messages({
+         'string.base': 'purpose should be a type of text',
+         'string.empty': 'purpose cannot be empty',
+         'any.required': 'purpose is required'
+      }),
+      supervisorEmail: Joi.string().optional().messages({
+         'string.base': 'supervisorEmail should be a type of text',
+      }),
+      dptHeadEmail: Joi.string().optional().messages({
+         'string.base': 'dptHeadEmail should be a type of text',
+      }),
+
       numberOfDays: Joi.number().required().messages({
          'number.base': 'Days should be a type of number',
          'any.required': 'Days is requiured',
@@ -27,6 +39,7 @@ export const validateEmployeeLeave = (data) => {
          'date.empty': 'Start date cannot be empty',
          'any.required': 'Birth date code is required'
       }),
+
       superVisiorStatus: Joi.number().optional().messages({
          'string.base': 'dptHeadStatus should be a type of number',
       }),

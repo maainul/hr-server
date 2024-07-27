@@ -12,7 +12,6 @@ export const getAllLeaveTypeWithPaginationService = async ({ req }) => {
 
         //Check Search for Query
         if (search) {
-            //Search by name or dptCode
             queryObject = {
                 $or: [
                     { name: { $regex: search, $options: "i" } },
@@ -29,7 +28,7 @@ export const getAllLeaveTypeWithPaginationService = async ({ req }) => {
         if (sort === 'a-z') queryResult = queryResult.sort('name')
         if (sort === 'z-a') queryResult = queryResult.sort('-name')
 
-        const paginationResult = await pagination(page, limit, queryResult, queryObject, SalaryGradeModel)
+        const paginationResult = await pagination(page, limit, queryResult, queryObject, LeaveTypeModel)
 
         return paginationResult
     } catch (error) {

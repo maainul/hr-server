@@ -17,7 +17,7 @@ export const validateEmployeeLeaveBalance = (data) => {
          'any.required': 'totalLeave is requiured',
       }),
       totalLeaveTaken: Joi.number().optional().messages({
-         'number.base': 'totalLeave should be a type of number',
+         'number.base': 'totalLeave taken should be a type of number',
       }),
       leaveBalance: Joi.number().optional().messages({
          'number.base': 'leaveBalance should be a type of number',

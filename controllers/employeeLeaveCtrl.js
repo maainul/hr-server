@@ -2,71 +2,80 @@ import mongoose from 'mongoose';
 import LeaveType from '../model/leaveTypeModel.js'
 import EmployeeModel from '../model/EmployeeModel.js'
 import EmployeeLeaveModel from '../model/employeeLeaveModel.js'
+import EmployeeLeaveBalanceModel from '../model/employeeLeaveBalanceModel.js';
 import { getAllEmployeeLeaveWithPaginationService } from './../services/employeeLeaveServices.js';
 import { EmployeeNotExists, InvalidEmployeeID, InvalidLeaveTypeID, LeaveTypeNotExists } from '../utils/errorMessage.js';
 import { validateEmployeeLeave } from './../validations/employeeLeaveValidation.js';
 
 
+
 export const createEmployeeLeaveCtrl = async (req, res) => {
     try {
-        //Joi Validation
-        const { error, value } = validateEmployeeLeave(req.body)
+        // Joi Validation
+        const { error, value } = validateEmployeeLeave(req.body);
         if (error) {
-            const formattedErrors = error.details.map(detail => {
-                return {
-                    label: detail.context.label,
-                    message: detail.message.replace(/"/g, '') // Corrected the replace method
-                }
-            })
+            const formattedErrors = error.details.map(detail => ({
+                label: detail.context.label,
+                message: detail.message.replace(/"/g, '') // Corrected the replace method
+            }));
             return res.status(400).json({
                 success: false,
                 error: formattedErrors
-            })
+            });
         }
 
-        //  Check Id Valid or Not
-        if (!mongoose.Types.ObjectId.isValid(req.body.employee)) {
-            return res.status(400).json({ success: false, error: InvalidEmployeeID })
+        // Check Id Valid or Not
+        const { employee, leaveType, numberOfDays } = req.body;
+
+        if (!mongoose.Types.ObjectId.isValid(employee)) {
+            return res.status(400).json({ success: false, error: InvalidEmployeeID });
         }
-        if (!mongoose.Types.ObjectId.isValid(req.body.leaveType)) {
-            return res.status(400).json({ success: false, error: InvalidLeaveTypeID })
+        if (!mongoose.Types.ObjectId.isValid(leaveType)) {
+            return res.status(400).json({ success: false, error: InvalidLeaveTypeID });
         }
 
-        const errors = []
+        const errors = [];
 
-        //check exists
-        const emp = await EmployeeModel.findOne({ '_id': req.body.employee })
+        // Check if employee exists
+        const emp = await EmployeeModel.findById(employee);
         if (!emp) {
             errors.push({
                 label: 'employee',
                 message: EmployeeNotExists
-            })
+            });
         }
 
-        const leave_type = await LeaveType.findOne({ '_id': req.body.leaveType })
+        // Check if leave type exists
+        const leave_type = await LeaveType.findById(leaveType);
         if (!leave_type) {
             errors.push({
                 label: 'leaveType',
                 message: LeaveTypeNotExists
-            })
+            });
         }
 
-        // return error if exists
+        // Return error if exists
         if (errors.length > 0) {
             return res.status(400).json({
                 success: false,
                 error: errors
-            })
+            });
         }
 
-        //Create New EmployeeLeave
-        const newEmployeeLeave = await EmployeeLeaveModel.create(value)
-
+        // Create New EmployeeLeave
+        const newEmployeeLeave = await EmployeeLeaveModel.create(value);
+        // leave balance calculation
+        const leaveBalanceDetails = await EmployeeLeaveBalanceModel.findOne({ employee, leaveType });
+        if (leaveBalanceDetails) {
+            leaveBalanceDetails.totalLeaveTaken = Number(leaveBalanceDetails.totalLeaveTaken) + Number(numberOfDays)
+            leaveBalanceDetails.leaveBalance = Number(leaveBalanceDetails.totalLeave) - Number(leaveBalanceDetails.totalLeaveTaken)
+        }
+        await leaveBalanceDetails.save()
         return res.status(201).json({
             success: true,
             newEmployeeLeave,
             message: "New Employee Leave Added Successfully"
-        })
+        });
 
     } catch (error) {
         console.error("Error Creating EmployeeLeave:", error);

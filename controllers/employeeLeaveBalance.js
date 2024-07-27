@@ -9,6 +9,7 @@ import { getAllEmployeeLeaveBalanceWithPaginationService } from './../services/g
 export const createEmployeeLeaveBalanceCtrl = async (req, res) => {
     try {
         const { error, value } = validateEmployeeLeaveBalance(req.body)
+
         if (error) {
             const formattedErrors = error.details.map(detail => {
                 return {
