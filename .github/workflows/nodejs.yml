@@ -21,6 +21,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
+
+      - name: Set Up MongoDB Server
+        run: npm install mongodb-memory-server --save-dev     
       - name: Clean workspace
         run: |
           rm -rf node_modules package-lock.json
