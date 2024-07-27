@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import PolicyModel from '../model/policyModel.js'
-import EmployeeModel from '../model/EmployeeModel.js'
+import Employee from '../model/EmployeeModel.js'
 import EmployeePolicyModel from '../model/employeePolicyModel.js'
 import { validateEmployeePolicy } from '../validations/employeePolicyValidation.js'
 import { EmployeeNotExists, InvalidEmployeeID, InvalidPolicyID, PolicyNotExists } from '../utils/errorMessage.js';
@@ -34,7 +34,7 @@ export const createEmployeePolicyCtrl = async (req, res) => {
 
         const errors = []
         //check exists
-        const emp = await EmployeeModel.findOne({ '_id': req.body.employee })
+        const emp = await Employee.findOne({ '_id': req.body.employee })
         if (!emp) {
             errors.push({
                 label: 'emmployee',

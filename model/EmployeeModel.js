@@ -133,5 +133,4 @@ const employeeSchema = new mongoose.Schema({
 
 }, { timestamps: true })
 
-const Employee = mongoose.models.Employee || mongoose.model('Employee', employeeSchema);
-export default Employee
+export default mongoose.model('Employee', employeeSchema)
