@@ -15,21 +15,21 @@ jobs:
     #     image: mongo:4.4
     #     ports:
     #       - 27017:27017
-    
+
     strategy:
       matrix:
-        node-version: [12.x,14.x,16.x]
+        node-version: [12.x, 14.x, 16.x]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version}}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{matrix.node-version}} # or the version you are using
-        cache: 'npm'
-    - name: Install dependencies
-    - run: npm ci
-    - run: npm test
-      # env:
-      #   MONGODB_URI: mongodb://localhost:27017/testdb # adjust according to your setup
-      # run: npm test
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }} # or the version you are using
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: Run tests
+        run: npm test
+        # env:
+        #   MONGODB_URI: mongodb://localhost:27017/testdb # adjust according to your setup
