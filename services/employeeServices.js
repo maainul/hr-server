@@ -1,8 +1,5 @@
 import mongoose from "mongoose";
 import EmployeeModel from "../model/EmployeeModel.js"
-import DepartmentModel from "../model/departmentModel.js";
-import DesignationModel from "../model/designationModel.js";
-import SalaryGradeModel from "../model/salaryGradeModel.js";
 
 
 export const getAllEmployeeWithPaginationService = async ({ req }) => {

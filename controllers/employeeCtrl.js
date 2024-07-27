@@ -3,7 +3,7 @@ import DepartmentModel from '../model/departmentModel.js'
 import DesignationModel from '../model/designationModel.js'
 import SalaryGradeModel from '../model/salaryGradeModel.js'
 import { validateEmployee } from '../validations/employeeValidation.js'
-import { getAllEmployeeWithPaginationService } from '../services/EmployeeServices.js';
+import { getAllEmployeeWithPaginationService } from '../services/employeeServices.js';
 import mongoose from 'mongoose';
 
 export const createEmployeeCtrl = async (req, res) => {
