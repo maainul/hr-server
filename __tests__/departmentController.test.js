@@ -36,13 +36,13 @@ afterAll(async () => {
 beforeEach(async () => {
     // Clear the database before each test
     await DepartmentModel.deleteMany({});
-});
+},10000);
 
 afterEach(async () => {
     // Ensure that no connections or open handles are left
     jest.clearAllTimers();
     await DepartmentModel.deleteMany({});
-});
+},10000);
 
 
 describe(`POST ${url}`, () => {
