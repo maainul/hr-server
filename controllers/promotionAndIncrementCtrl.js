@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import EmployeeModel from '../model/employeeModel.js';
+import EmployeeModel from '../model/EmployeeModel.js';
 import PromotionsAndIncrementModel from '../model/promotionsAndIncrementModel.js'
 import { validatePromotionsAndIncrement } from '../validations/promotionAndIncrementValidation.js'
 import { getAllPromotionsAndIncrementWithPaginationService } from '../services/promotionAndIncrementServices.js';
