@@ -16,7 +16,9 @@ beforeAll(async () => {
     if (mongoose.connection.readyState === 0) { // 0 means disconnected
         await mongoose.connect(uri, {
             useNewUrlParser: true,
-            useUnifiedTopology: true
+            useUnifiedTopology: true,
+            serverSelectionTimeoutMS: 20000, // Increase timeout for server selection
+            socketTimeoutMS: 45000 // Increase socket timeout
         });
     }
 });
