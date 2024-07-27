@@ -4,7 +4,7 @@ import EmployeeModel from '../model/EmployeeModel.js'
 import EmployeePolicyModel from '../model/employeePolicyModel.js'
 import { validateEmployeePolicy } from '../validations/employeePolicyValidation.js'
 import { EmployeeNotExists, InvalidEmployeeID, InvalidPolicyID, PolicyNotExists } from '../utils/errorMessage.js';
-import { getAllemployeePolicyWithPaginationService } from '../services/employeePolicyServices.js';
+//import { getAllemployeePolicyWithPaginationService } from '../services/employeePolicyServices.js';
 
 
 export const createEmployeePolicyCtrl = async (req, res) => {
@@ -81,7 +81,7 @@ export const createEmployeePolicyCtrl = async (req, res) => {
 export const getEmployeePolicyCtrl = async (req, res) => {
     try {
         //Fetch all employeePolicy from the database
-        const employeePolicys = await getAllemployeePolicyWithPaginationService({ req });
+        const employeePolicys = await EmployeePolicyModel.find();
 
         return res.status(200).json({
             success: true,
