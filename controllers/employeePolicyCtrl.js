@@ -4,7 +4,7 @@ import EmployeeModel from '../model/EmployeeModel.js'
 import EmployeePolicyModel from '../model/employeePolicyModel.js'
 import { validateEmployeePolicy } from '../validations/employeePolicyValidation.js'
 import { EmployeeNotExists, InvalidEmployeeID, InvalidPolicyID, PolicyNotExists } from '../utils/errorMessage.js';
-import { getAllemployeePolicyWithPaginationService } from './../services/employeePolicyServices';
+import { getAllemployeePolicyWithPaginationService } from './../services/employeePolicyServices.js';
 
 
 export const createEmployeePolicyCtrl = async (req, res) => {
