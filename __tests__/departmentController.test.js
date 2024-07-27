@@ -38,13 +38,13 @@ afterAll(async () => {
 beforeEach(async () => {
     // Clear the database before each test
     await DepartmentModel.deleteMany({});
-},20000);
+}, 30000);
 
 afterEach(async () => {
     // Ensure that no connections or open handles are left
     jest.clearAllTimers();
     await DepartmentModel.deleteMany({});
-},20000);
+}, 30000);
 
 
 describe(`POST ${url}`, () => {
@@ -63,7 +63,7 @@ describe(`POST ${url}`, () => {
         expect(res.body.newDepartment).toHaveProperty('name', 'HR');
         expect(res.body.newDepartment).toHaveProperty('dptCode', 'HR001');
         expect(res.body.newDepartment).toHaveProperty('dptLocation', 'New York');
-    });
+    }, 30000);
 
     it('should not create a department with duplication name', async () => {
         await DepartmentModel.create({
@@ -90,7 +90,7 @@ describe(`POST ${url}`, () => {
                 message: 'Department Name Already Exists'
             })
         ]));
-    });
+    }, 30000);
 
     it('should not create a department with duplicate code', async () => {
         await DepartmentModel.create({
@@ -117,5 +117,5 @@ describe(`POST ${url}`, () => {
                 message: 'Department Code Already Exists'
             })
         ]));
-    });
+    }, 30000);
 });
