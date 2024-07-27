@@ -15,7 +15,9 @@ beforeAll(async () => {
     // Check if mongoose is already connected to avoid multiple connections
     if (mongoose.connection.readyState === 0) { // 0 means disconnected
         await mongoose.connect(uri, {
-            useNewUrlParser: true,
+            useNewUrlParser:true,
+            useCreateIndex:true,
+            useFindAndModify:true,
             useUnifiedTopology: true,
             serverSelectionTimeoutMS: 20000, // Increase timeout for server selection
             socketTimeoutMS: 45000 // Increase socket timeout

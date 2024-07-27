@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "jest",
+    "test": "jest --config jest.config.mjs",
     "hr": "nodemon index.js",
     "start": "node index.js"
   },
