@@ -148,7 +148,9 @@ export const createEmployeeWithTransactionCtrl = async (req, res) => {
   // session.startTransaction();
 
   try {
-    const { employeeData } = req.body;
+    const { employeeData, documentData, salaryData, leaveData, policyData } =
+      req.body;
+
     const { error: employeeError, value: employeeValue } =
       validateEmployeeTransaction(employeeData);
 
@@ -172,17 +174,17 @@ export const createEmployeeWithTransactionCtrl = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(employeeValue.department)) {
       return res
         .status(400)
-        .json({ success: false, error: InvalidDepartmentID });
+        .json({ success: false, error: "InvalidDepartmentID" });
     }
     if (!mongoose.Types.ObjectId.isValid(employeeValue.designation)) {
       return res
         .status(400)
-        .json({ success: false, error: InvalidDesignationID });
+        .json({ success: false, error: "InvalidDesignationID" });
     }
     if (!mongoose.Types.ObjectId.isValid(employeeValue.salary_grade)) {
       return res
         .status(400)
-        .json({ success: false, error: InvalidSalaryGradeID });
+        .json({ success: false, error: "InvalidSalaryGradeID" });
     }
 
     // Check if Employee phone already exists
@@ -225,7 +227,7 @@ export const createEmployeeWithTransactionCtrl = async (req, res) => {
     if (!dptExists) {
       errors.push({
         label: "department",
-        message: DepartmentNotExists,
+        message: "DepartmentNotExists",
       });
     }
 
@@ -236,7 +238,7 @@ export const createEmployeeWithTransactionCtrl = async (req, res) => {
     if (!desExists) {
       errors.push({
         label: "designation",
-        message: DesignationNotExists,
+        message: "DesignationNotExists",
       });
     }
 
@@ -247,7 +249,7 @@ export const createEmployeeWithTransactionCtrl = async (req, res) => {
     if (!grdExists) {
       errors.push({
         label: "salary_grade",
-        message: SalryGradeNotExists,
+        message: "SalaryGradeNotExists",
       });
     }
 
@@ -263,30 +265,30 @@ export const createEmployeeWithTransactionCtrl = async (req, res) => {
     const newEmployee = await EmployeeModel.create(employeeValue);
     const employeeID = newEmployee._id;
 
-    // create Employee Document
+    // Create Employee Document
     const documentInput = {
-      document_name: employeeValue.documentData.document_name,
-      longdescription: employeeValue.documentData.longdescription,
-      shortdescription: employeeValue.documentData.shortdescription,
-      document_link: employeeValue.documentData.document_link,
-      document_type: employeeValue.documentData.document_type,
-      status: employeeValue.status,
+      document_name: documentData.document_name,
+      longdescription: documentData.longdescription,
+      shortdescription: documentData.shortdescription,
+      document_link: documentData.document_link,
+      document_type: documentData.document_type,
+      status: documentData.status,
     };
     await DocumentModel.create(documentInput);
 
-    // // Create Employee Salary
+    // Create Employee Salary
     const employeeSalaryInput = {
       employee: employeeID,
-      basic: employeeValue.employeeSalary.basic,
-      houseRent: employeeValue.employeeSalary.houseRent,
-      medicalAllowance: employeeValue.employeeSalary.medicalAllowance,
-      specialAllowance: employeeValue.employeeSalary.specialAllowance,
+      basic: salaryData.basic,
+      houseRent: salaryData.houseRent,
+      medicalAllowance: salaryData.medicalAllowance,
+      specialAllowance: salaryData.specialAllowance,
     };
     await EmployeeSalaryModel.create(employeeSalaryInput);
 
     // Create Employee Policy
-    if (employeeValue.policyData && employeeValue.policyData.length > 0) {
-      const policyPromises = employeeValue.policyData.map(async (policy) => {
+    if (policyData && policyData.length > 0) {
+      const policyPromises = policyData.map(async (policy) => {
         return await EmployeePolicyModel.create({
           employee: employeeID,
           policy: policy.policy,
@@ -296,19 +298,17 @@ export const createEmployeeWithTransactionCtrl = async (req, res) => {
     }
 
     // Employee Leave Balance Data Update
-    if (employeeValue.leaveTypeData && employeeValue.leaveTypeData.length > 0) {
-      const employeeLeaveBalance = employeeValue.leaveTypeData.map(
-        async (eld) => {
-          return await EmployeeLeaveBalanceModel.create({
-            employee: employeeID,
-            leaveType: eld.leaveType,
-            totalLeave: eld.totalLeave,
-            totalLeaveTaken: 0,
-            leaveBalance: eld.totalLeave,
-            leavePending: 0,
-          });
-        }
-      );
+    if (leaveData && leaveData.length > 0) {
+      const employeeLeaveBalance = leaveData.map(async (eld) => {
+        return await EmployeeLeaveBalanceModel.create({
+          employee: employeeID,
+          leaveType: eld.leaveType,
+          totalLeave: eld.totalLeave,
+          totalLeaveTaken: 0,
+          leaveBalance: eld.totalLeave,
+          leavePending: 0,
+        });
+      });
       await Promise.all(employeeLeaveBalance);
     }
 
