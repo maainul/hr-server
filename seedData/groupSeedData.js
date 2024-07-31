@@ -15,8 +15,9 @@ const groupSeedData = [
             'salaryGrade:create', 'salaryGrade:list', 'salaryGrade:update', 'salaryGrade:details', 'salaryGrade:statusUpdate',
             'unit:create', 'unit:list', 'unit:update', 'unit:details', 'unit:statusUpdate', 'unit:create',
             'leave-type:create', 'leave-type:list', 'leave-type:update', 'leave-type:details',
-            'employee-leave:create', 'employee-leave:list', 'employee-leave:update', 'employee-leave:details',
-            'employee-leave-balance:create', 'employee-leave-balance:list', 'employee-leave-balance:update'
+            'employee-leave:create', 'employee-leave:list', 'employee-leave:update', 'employee-leave:details', 'employee-leave:leave-request-action',
+            'employee-leave-balance:create', 'employee-leave-balance:list', 'employee-leave-balance:update',
+
         ]
     },
 ]

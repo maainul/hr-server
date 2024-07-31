@@ -1,6 +1,6 @@
 import express from 'express'
 import { checkPermission } from '../auth/middleware/checkPermission.js'
-import { createEmployeeLeaveCtrl, getEmployeeLeaveCtrl, getSingleEmployeeLeaveCtrl, updateEmployeeLeaveCtrl } from '../controllers/employeeLeaveCtrl.js';
+import { createEmployeeLeaveCtrl, getEmployeeLeaveCtrl, getSingleEmployeeLeaveCtrl, leaveRequestActionCtrl, updateEmployeeLeaveCtrl } from '../controllers/employeeLeaveCtrl.js';
 
 
 //router object
@@ -19,6 +19,8 @@ router.get("/:id", checkPermission('employee-leave', 'details'), getSingleEmploy
 
 // PUT || Update LeaveType Details
 router.put("/:id", checkPermission('employee-leave', 'update'), updateEmployeeLeaveCtrl)
+
+router.post("/leave-request-action", checkPermission('employee-leave', 'leave-request-action'), leaveRequestActionCtrl)
 
 
 
