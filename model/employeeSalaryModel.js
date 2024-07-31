@@ -6,7 +6,6 @@ const employeeSalarySchema = new mongoose.Schema({
     employee: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Employee',
-        required: true
     },
     basic: { type: Number, required: true },
     houseRent: { type: Number, required: true },

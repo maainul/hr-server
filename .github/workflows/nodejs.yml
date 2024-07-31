@@ -23,7 +23,7 @@ jobs:
           cache: "npm"
 
       - name: Set Up MongoDB Server
-        run: npm install mongodb-memory-server --save-dev     
+        run: npm install mongodb-memory-server --save-dev
       - name: Clean workspace
         run: |
           rm -rf node_modules package-lock.json
@@ -31,3 +31,31 @@ jobs:
         run: npm install
       - name: Run tests
         run: npm test
+
+      - name: Notify Slack on success
+        if: success()
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "channel": "#hr-server",
+              "username": "github-actions",
+              "text": "✅ CI build successful for commit <${{ github.event.head_commit.url }}|${{ github.event.head_commit.message }}> by <${{ github.event.head_commit.author.name }}>",
+              "icon_emoji": ":white_check_mark:"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Notify Slack on failure
+        if: failure()
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "channel": "#hr-server",
+              "username": "github-actions",
+              "text": "❌ CI build failed for commit <${{ github.event.head_commit.url }}|${{ github.event.head_commit.message }}> by <${{ github.event.head_commit.author.name }}>",
+              "icon_emoji": ":x:"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
