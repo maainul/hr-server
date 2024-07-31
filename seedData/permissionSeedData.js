@@ -90,6 +90,7 @@ const permissionSeedData = [
   { resource: "user", action: "update" },
   { resource: "user", action: "details" },
   { resource: "user", action: "statusUpdate" },
+  { resource: "user", action: "profile" },
 
   // Leave Type
   { resource: "leave-type", action: "create" },

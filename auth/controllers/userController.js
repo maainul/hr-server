@@ -212,7 +212,6 @@ export const userListCtrl = async (req, res) => {
 export const getUserProfileCtrl = async (req, res) => {
     try {
         const { id } = req.params
-
         const userInfo = await UserModel.findById(id)
             .populate({
                 path: 'group',
