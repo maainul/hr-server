@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
-import MenuModel from "../model/menuModel.js";
-//import { getAllMenuWithPaginationService } from '../services/menuServices.js';
+import SubMenuModel from "../model/submenuModel.js";
 
-export const createMenuCtrl = async (req, res) => {
+export const createSubMenuCtrl = async (req, res) => {
   try {
     // Collect errors
     const errors = [];
@@ -10,13 +9,13 @@ export const createMenuCtrl = async (req, res) => {
     console.log(req.body);
 
     // Check if menu name already exists
-    const menuTitleExists = await MenuModel.findOne({
-      menuTitle: req.body.menuTitle,
+    const menuTitleExists = await SubMenuModel.findOne({
+      menuTitle: req.body.label,
     });
     if (menuTitleExists) {
       errors.push({
-        label: "menuTitle",
-        message: "Menu Title Already Exists",
+        label: "label",
+        message: "SubMenu Already Exists",
       });
     }
 
@@ -28,28 +27,28 @@ export const createMenuCtrl = async (req, res) => {
       });
     }
 
-    //Create New Menu
-    const newMenu = await MenuModel.create(req.body);
+    //Create New SubMenu
+    const newSubMenu = await SubMenuModel.create(req.body);
 
     return res.status(201).json({
       success: true,
-      newMenu,
-      message: "New Menu Added Successfully",
+      newSubMenu,
+      message: "New SubMenu Added Successfully",
     });
   } catch (error) {
-    console.error("Error Creating Menu:", error);
+    console.error("Error Creating SubMenu:", error);
     return res.status(500).json({
       success: false,
-      message: "Error Creating Menu",
+      message: "Error Creating SubMenu",
       error: error.message,
     });
   }
 };
 
-export const getMenuCtrl = async (req, res) => {
+export const getSubMenuCtrl = async (req, res) => {
   try {
     //Fetch all menu from the database
-    const menus = await MenuModel.find();
+    const menus = await SubMenuModel.find();
     return res.status(200).json({
       success: true,
       data: menus,
@@ -65,14 +64,14 @@ export const getMenuCtrl = async (req, res) => {
   }
 };
 
-//Get Single Menu Details
-export const getSingleMenuCtrl = async (req, res) => {
+//Get Single SubMenu Details
+export const getSingleSubMenuCtrl = async (req, res) => {
   try {
     const { id } = req.params;
     console.log(id);
     //Validate the ID
     if (!id) {
-      return res.status(400).json({ error: "Menu ID is Required" });
+      return res.status(400).json({ error: "SubMenu ID is Required" });
     }
 
     // Validate the ID format before processing
@@ -89,22 +88,22 @@ export const getSingleMenuCtrl = async (req, res) => {
     }
 
     // Find the menu by ID
-    const menu = await MenuModel.findById(id);
+    const menu = await SubMenuModel.findById(id);
     console.log("###########");
     console.log(menu);
     console.log("###########");
     if (!menu) {
-      return res.status(404).json({ error: "Menu not Found" });
+      return res.status(404).json({ error: "SubMenu not Found" });
     }
 
     // Return the menu details
     return res.status(200).json({
       success: true,
-      message: "Menu Data Found",
+      message: "SubMenu Data Found",
       data: menu,
     });
   } catch (error) {
-    console.error("Error in getSingleMenuCtrl:", error);
+    console.error("Error in getSingleSubMenuCtrl:", error);
     return res.status(500).json({
       success: false,
       message: "Error in fetching menu details",
@@ -113,8 +112,8 @@ export const getSingleMenuCtrl = async (req, res) => {
   }
 };
 
-// Update Menu Details
-export const updateMenuCtrl = async (req, res) => {
+// Update SubMenu Details
+export const updateSubMenuCtrl = async (req, res) => {
   try {
     const { id } = req.params;
     const updatedData = req.body;
@@ -127,9 +126,9 @@ export const updateMenuCtrl = async (req, res) => {
     }
 
     // Check if the menu exists
-    const menu = await MenuModel.findById(id);
+    const menu = await SubMenuModel.findById(id);
     if (!menu) {
-      return res.status(404).json({ success: false, error: "Menu not found" });
+      return res.status(404).json({ success: false, error: "SubMenu not found" });
     }
 
     // Update the menu details
@@ -137,17 +136,17 @@ export const updateMenuCtrl = async (req, res) => {
     if (updatedData.dptCode) menu.dptCode = updatedData.dptCode;
     if (updatedData.status) menu.status = updatedData.status;
 
-    // Save the update Menu
+    // Save the update SubMenu
     const data = await menu.save();
 
     // Return the updated menu details
     return res.status(200).json({
       success: true,
       data,
-      message: "Update Menu Data.",
+      message: "Update SubMenu Data.",
     });
   } catch (error) {
-    console.error("Error in updateMenuCtrl:", error);
+    console.error("Error in updateSubMenuCtrl:", error);
     return res.status(500).json({
       success: false,
       message: "Error in updating menu details",

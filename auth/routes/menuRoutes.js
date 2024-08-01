@@ -6,9 +6,6 @@ import {
     updateMenuCtrl
 } from '../controllers/menuCtrl.js'
 
-import { checkPermission } from '../middleware/checkPermission.js'
-
-
 //router object
 const router = express.Router()
 
@@ -20,10 +17,10 @@ router.post("/create", createMenuCtrl)
 router.get("/list", getMenuCtrl)
 
 // GET || Get Single Menu Details
-router.get("/:id", checkPermission('menu', 'details'), getSingleMenuCtrl)
+router.get("/:id", getSingleMenuCtrl)
 
 // PUT || Update Menu Details
-router.put("/:id", checkPermission('menu', 'update'), updateMenuCtrl)
+router.put("/:id", updateMenuCtrl)
 
 
 

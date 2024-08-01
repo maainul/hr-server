@@ -1,22 +1,27 @@
 import mongoose from "mongoose";
 
-const submenuSchema = new mongoose.Schema({
+// const submenuSchema = new mongoose.Schema({
+//     icon: {
+//         type: String
+//     },
+//     label: {
+//         type: String
+//     },
+//     url: {
+//         type: String
+//     }
+// })
+
+const menuSchema = new mongoose.Schema(
+  {
     icon: {
-        type: String
+      type: String,
     },
-    label: {
-        type: String
-    },
-    url: {
-        type: String
-    }
-})
-
-const menuSchema = new mongoose.Schema({
     menuTitle: {
-        type: String,
+      type: String,
     },
-    submenu: [submenuSchema],
-}, { timestamps: true })
+  },
+  { timestamps: true }
+);
 
-export default mongoose.model('Menu', menuSchema)
+export default mongoose.model("Menu", menuSchema);

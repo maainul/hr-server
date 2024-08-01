@@ -1,6 +1,7 @@
 import unitRoutes from "./routes/unitRoutes.js";
 import policyRoutes from "./routes/policyRoutes.js";
 import menuRoutes from "./auth/routes/menuRoutes.js";
+import subMenuRoutes from "./auth/routes/subMenuRoutes.js";
 import userRoutes from "./auth/routes/userRoutes.js";
 import auth from "./auth/middleware/authMiddleware.js";
 import groupRoutes from "./auth/routes/groupRoutes.js";
@@ -22,6 +23,7 @@ const setupRoutes = (app) => {
   app.use("/api/v1/auth", userRoutes);
   app.use("/api/v1/unit", auth, unitRoutes);
   app.use("/api/v1/menu", auth, menuRoutes);
+  app.use("/api/v1/submenu", auth, subMenuRoutes);
   app.use("/api/v1/policy", auth, policyRoutes);
   app.use("/api/v1/auth/group", auth, groupRoutes);
   app.use("/api/v1/division", auth, divisionRoutes);

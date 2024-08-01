@@ -1,23 +1,29 @@
 import mongoose from "mongoose";
 
-const groupSchema = new mongoose.Schema({
+const groupSchema = new mongoose.Schema(
+  {
     name: {
-        type: String,
-        require: true
+      type: String,
+      require: true,
     },
     code: {
-        type: String,
-        require: true
+      type: String,
+      require: true,
     },
-    permissions: [{
+    permissions: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Permission' // Reference to Permission model
-    }],
-    menus: [{
+        ref: "Permission",
+      },
+    ],
+    subMenus: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Menu' // Reference to Permission model
-    }]
-}, { timestamps: true })
+        ref: "SubMenu",
+      },
+    ],
+  },
+  { timestamps: true }
+);
 
-export default mongoose.model('Group', groupSchema)
-
+export default mongoose.model("Group", groupSchema);
