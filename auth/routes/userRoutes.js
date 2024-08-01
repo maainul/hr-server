@@ -1,4 +1,5 @@
 import express from 'express'
+import { checkPermission } from './../middleware/checkPermission.js';
 import {
     registerUserCtrl,
     loginUserCtrl,

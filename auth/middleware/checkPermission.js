@@ -4,8 +4,9 @@ import UserModel from '../model/userModel.js'
 export const checkPermission = (resource, action) => {
     return async (req, res, next) => {
         try {
-
-            const user = await UserModel.findById(req.user).populate({
+            const { id } = req.params
+            console.log("====>", id)
+            const user = await UserModel.findById(id).populate({
                 path: 'group',
                 model: 'Group',
                 populate: {

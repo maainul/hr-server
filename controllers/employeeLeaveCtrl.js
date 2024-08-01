@@ -258,3 +258,37 @@ export const getSingleEmployeeLeaveByEmployeeIDCtrl = async (req, res) => {
         });
     }
 }
+
+// Leave Request Action
+export const leaveRequestActionCtrl = async (req, res) => {
+    try {
+
+        const { leaveId, status } = req.query
+
+        if (!leaveId) {
+            return res.status(400).json({ error: "EmployeeLeave ID is Required" })
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(leaveId)) {
+            return res.status(400).json({ success: false, error: InvalidLeaveTypeID });
+        }
+
+        const empLeaveInfo = await EmployeeLeaveModel.find({ _id: leaveId })
+        console.log(empLeaveInfo)
+        if (!empLeaveInfo) {
+            return res.status(404).json({ success: false, error: "Leave requrest not found" })
+        }
+
+        empLeaveInfo.superVisiorStatus = status || empLeaveInfo.superVisiorStatus
+        await empLeaveInfo.save()
+
+        console.log(empLeaveInfo)
+        return res.status(200).json({
+            success: true,
+            message: "Employee Leave Info Updated",
+            data: empLeaveInfo
+        })
+    } catch {
+
+    }
+}

@@ -90,6 +90,7 @@ const permissionSeedData = [
   { resource: "user", action: "update" },
   { resource: "user", action: "details" },
   { resource: "user", action: "statusUpdate" },
+  { resource: "user", action: "profile" },
 
   // Leave Type
   { resource: "leave-type", action: "create" },
@@ -103,6 +104,7 @@ const permissionSeedData = [
   { resource: "employee-leave", action: "list" },
   { resource: "employee-leave", action: "update" },
   { resource: "employee-leave", action: "details" },
+  { resource: "employee-leave", action: "leave-request-action" },
 
   // Leave Type
   { resource: "employee-leave-balance", action: "create" },
