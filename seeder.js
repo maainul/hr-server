@@ -6,10 +6,12 @@ import UnitModel from "./model/unitModel.js";
 import PolicyModel from "./model/policyModel.js";
 import UserModel from "./auth/model/userModel.js";
 import MenuModel from "./auth/model/menuModel.js";
+import SubMenuModel from "./auth/model/subMenuModel.js";
 import GroupModel from "./auth/model/groupModel.js";
 // import EmployeeModel from "./model/EmployeeModel.js";
 import DivisionModel from "./model/divisionModel.js";
 import menuSeedData from "./seedData/menuSeedData.js";
+import subMenuSeedData from "./seedData/subMenuSeedData.js";
 import unitSeedData from "./seedData/unitSeedData.js";
 import userSeedData from "./seedData/userSeedData.js";
 import LeaveTypeModel from "./model/leaveTypeModel.js";
@@ -20,7 +22,7 @@ import DesignationModel from "./model/designationModel.js";
 import SalaryGradeModel from "./model/salaryGradeModel.js";
 import PermissionModel from "./auth/model/permissionModel.js";
 import divisionSeedData from "./seedData/divisionSeedData.js";
-import employeeSeedData from './seedData/employeeSeedData.js';
+import employeeSeedData from "./seedData/employeeSeedData.js";
 import leaveTypeSeedData from "./seedData/leaveTypeSeedData.js";
 import departmentSeedData from "./seedData/departmentSeedData.js";
 import permissionSeedData from "./seedData/permissionSeedData.js";
@@ -159,6 +161,23 @@ const seeder = async () => {
     await MenuModel.insertMany(menuSeedData);
     console.log("Sidebar Menu seeded successfully".bgGreen);
 
+    // Sub Menu
+    console.log("Seeding Submenu");
+    await SubMenuModel.deleteMany();
+    for (const item of subMenuSeedData) {
+      const menu = await MenuModel.findOne({ menuTitle: item.menuTitle });
+      if (menu) {
+        await SubMenuModel.create({
+          lable: item.label,
+          icon: item.icon,
+          url: item.url,
+          menuID: menu._id,
+        });
+      }
+    }
+
+    console.log("Seeding Submenu Successfully...");
+
     // Employee Data Seed
     // console.log("Seeding Employee Data.......")
     // await EmployeeModel.deleteMany();
@@ -177,7 +196,6 @@ const seeder = async () => {
 };
 
 seeder();
-
 
 /*
 

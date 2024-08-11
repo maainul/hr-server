@@ -1,17 +1,5 @@
 import mongoose from "mongoose";
 
-// const submenuSchema = new mongoose.Schema({
-//     icon: {
-//         type: String
-//     },
-//     label: {
-//         type: String
-//     },
-//     url: {
-//         type: String
-//     }
-// })
-
 const menuSchema = new mongoose.Schema(
   {
     icon: {

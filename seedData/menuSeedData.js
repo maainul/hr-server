@@ -1,146 +1,52 @@
 const menuSeedData = [
   {
-    menuTitle: "Division",
-    submenu: [
-      {
-        icon: "division",
-        label: "Division List",
-        url: "/divisions",
-      },
-    ],
+    menuTitle: "Permission",
+    icon: "ri-folder-2-fill",
   },
   {
     menuTitle: "Employee",
-    submenu: [
-      {
-        icon: "employee",
-        label: "Employee List",
-        url: "/employee",
-      },
-      {
-        icon: "employee",
-        label: "Employee Add",
-        url: "/employee/add",
-      },
-      {
-        icon: "employeeLeave",
-        label: "Employee Leave List",
-        url: "/employee-leave",
-      },
-      {
-        icon: "employeeLeaveBalance",
-        label: "Leave Balance",
-        url: "/employee-leave-balance",
-      },
-    ],
+    icon: "ri-folder-line",
   },
   {
-    menuTitle: "Departments",
-    submenu: [
-      {
-        icon: "department",
-        label: "Department List",
-        url: "/departments",
-      },
-    ],
+    menuTitle: "Department",
+    icon: "ri-folder-shared-fill",
   },
   {
     menuTitle: "Designation",
-    submenu: [
-      {
-        icon: "designations",
-        label: "Designation List",
-        url: "/designations",
-      },
-    ],
+    icon: "ri-briefcase-line",
   },
   {
     menuTitle: "Unit",
-    submenu: [
-      {
-        icon: "Unit",
-        label: "Unit List",
-        url: "/units",
-      },
-    ],
+    icon: "ri-folder-add-line",
   },
   {
     menuTitle: "Profile",
-    submenu: [
-      {
-        icon: "profile",
-        label: "Profile",
-        url: "/profile",
-      },
-    ],
+    icon: "ri-folder-add-line",
   },
   {
     menuTitle: "Group",
-    submenu: [
-      {
-        icon: "group",
-        label: "Group List",
-        url: "/groups",
-      },
-    ],
+    icon: "ri-folder-add-line",
   },
   {
     menuTitle: "Salary Grade",
-    submenu: [
-      {
-        icon: "salary-grade",
-        label: "Salary Grade List",
-        url: "/salary-grade",
-      },
-    ],
+    icon: "ri-folder-add-line",
   },
   {
     menuTitle: "policy",
-    submenu: [
-      {
-        icon: "policy",
-        label: "Policy List",
-        url: "/policy",
-      },
-    ],
+    icon: "ri-folder-add-line",
   },
   {
     menuTitle: "Menu",
-    submenu: [
-      {
-        icon: "Menu",
-        label: "Menu List",
-        url: "/menu",
-      },
-    ],
+    icon: "ri-folder-add-line",
   },
   {
     menuTitle: "User",
-    submenu: [
-      {
-        icon: "User",
-        label: "User List",
-        url: "/users",
-      },
-      {
-        icon: "User",
-        label: "User Create",
-        url: "/user/create",
-      },
-    ],
+    icon: "ri-folder-add-line",
   },
   {
     menuTitle: "Leave Type",
-    submenu: [
-      {
-        icon: "leaveType",
-        label: "Leave List",
-        url: "/leave-type",
-      },
-    ],
+    icon: "ri-folder-add-line",
   },
-
-
 ];
 
 export default menuSeedData;
