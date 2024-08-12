@@ -43,7 +43,7 @@ const menuSeedData = [
   },
   {
     label: "policy",
-    url: "policy",
+    url: "/policy",
     icon: "ri-folder-add-line",
     menuTitle: "Policy",
   },

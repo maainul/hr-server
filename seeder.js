@@ -95,38 +95,54 @@ const seeder = async () => {
     // Permission Seeder
     console.log("Permission...");
     await PermissionModel.deleteMany();
-    const seededPermissions = await PermissionModel.insertMany(
-      permissionSeedData
-    );
+    await PermissionModel.insertMany(permissionSeedData);
     console.log("Permission seeded successfully".bgGreen);
 
-    // Create a lookup for permissions by resource and action
-    const permissionLookup = {};
-    seededPermissions.forEach((permission) => {
-      const key = `${permission.resource}:${permission.action}`;
-      permissionLookup[key] = permission._id;
-    });
-
-    // Group
-    const groupSeedDataWithPermissionIds = groupSeedData.map((group) => {
-      const permissions = group.permissions.map((perm) => {
-        const permissionId = permissionLookup[perm];
-        if (!permissionId) {
-          throw new Error(`Permission not found`);
+    // Group Seeder
+    const groupArray = [];
+    for (const group of groupSeedData) {
+      const permissions = group.permissions;
+      const permissionArray = [];
+      for (const permission of permissions) {
+        const [resource, action] = permission.split(":");
+        const permissionData = await PermissionModel.findOne({
+          resource,
+          action,
+        });
+        if (permission) {
+          const id = permissionData._id;
+          permissionArray.push(id);
+        } else {
+          console.log("Permission Not Found");
         }
-        return permissionId;
-      });
-      return {
+      }
+
+      // SubMenu
+      const subMenuURLArray = [];
+      const subMenuURLs = group.subMenus;
+      for (const singleURL of subMenuURLs) {
+        const subMenuData = await SubMenuModel.findOne({ url: singleURL });
+        if (subMenuData) {
+          const id = subMenuData._id;
+          subMenuURLArray.push(id);
+        } else {
+          console.error(`Submenu with URL '${singleURL}' not found.`);
+          continue;
+        }
+      }
+      let groupObj = {
         name: group.name,
         code: group.code,
-        permissions,
+        permissions: permissionArray,
+        subMenus: subMenuURLArray,
       };
-    });
+      groupArray.push(groupObj);
+    }
 
     // Seed Groups
     console.log("Seeding groups...");
     await GroupModel.deleteMany();
-    await GroupModel.insertMany(groupSeedDataWithPermissionIds);
+    await GroupModel.insertMany(groupArray);
     console.log("Groups seeded successfully".bgGreen);
 
     // User Seeder
@@ -196,22 +212,3 @@ const seeder = async () => {
 };
 
 seeder();
-
-/*
-
-   //unit seed
-    const unitSeededDataWithDivisions = unitSeedData.map((unit) => {
-      const division = seededDivisions.find(
-        (div) => div.name === unit.divisionName
-      );
-      if (!division) {
-        throw new Error(`Division Not Found For Unit : ${unit.name}`);
-      }
-      return {
-        ...unit,
-        division: division._id,
-      };
-    });
-
-
-  */
