@@ -1,42 +1,43 @@
-
-import UserModel from '../model/userModel.js'
+import UserModel from "../model/userModel.js";
 
 export const checkPermission = (resource, action) => {
-    return async (req, res, next) => {
-        try {
-            const { id } = req.params
-            console.log("====>", id)
-            const user = await UserModel.findById(id).populate({
-                path: 'group',
-                model: 'Group',
-                populate: {
-                    path: 'permissions',
-                    model: 'Permission'
-                }
-            })
+  return async (req, res, next) => {
+    try {
+      const { id } = req.params;
 
-            if (!user) return res.status(401).send('User not found');
+      const user = await UserModel.findById(id).populate({
+        path: "group",
+        model: "Group",
+        populate: {
+          path: "permissions",
+          model: "Permission",
+        },
+      });
 
-            // Check if the user has the required permission
-            let hasPermission = false
+      if (!user) return res.status(401).send("User not found");
 
-            for (let group of user.group) {
-                for (let permission of group.permissions) {
-                    if (permission.resource === resource && permission.action === action) {
-                        hasPermission = true
-                        break
-                    }
-                }
-                if (hasPermission) break
-            }
+      // Check if the user has the required permission
+      let hasPermission = false;
 
-            if (!hasPermission) return res.status(403).send(`You Don't Have Permission In this API`)
-
-            next(); // Add this line to proceed to the next middleware/controller
-
-
-        } catch (error) {
-            res.status(500).send('Server Error')
+      for (let group of user.group) {
+        for (let permission of group.permissions) {
+          if (
+            permission.resource === resource &&
+            permission.action === action
+          ) {
+            hasPermission = true;
+            break;
+          }
         }
+        if (hasPermission) break;
+      }
+
+      if (!hasPermission)
+        return res.status(403).send(`You Don't Have Permission In this API`);
+
+      next(); // Add this line to proceed to the next middleware/controller
+    } catch (error) {
+      res.status(500).send("Server Error");
     }
-}
+  };
+};
