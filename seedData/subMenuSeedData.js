@@ -1,4 +1,4 @@
-const menuSeedData = [
+const subMenuSeedData = [
   {
     label: "Permission",
     icon: "ri-folder-2-fill",
@@ -91,4 +91,4 @@ const menuSeedData = [
   },
 ];
 
-export default menuSeedData;
+export default subMenuSeedData;

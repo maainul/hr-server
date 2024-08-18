@@ -6,7 +6,6 @@ import UnitModel from "./model/unitModel.js";
 import PolicyModel from "./model/policyModel.js";
 import UserModel from "./auth/model/userModel.js";
 import MenuModel from "./auth/model/menuModel.js";
-import SubMenuModel from "./auth/model/subMenuModel.js";
 import GroupModel from "./auth/model/groupModel.js";
 // import EmployeeModel from "./model/EmployeeModel.js";
 import DivisionModel from "./model/divisionModel.js";
@@ -28,6 +27,7 @@ import departmentSeedData from "./seedData/departmentSeedData.js";
 import permissionSeedData from "./seedData/permissionSeedData.js";
 import designationSeedData from "./seedData/designationSeedData.js";
 import salaryGradeSeedData from "./seedData/salaryGradeSeedData.js";
+import SubmenuModel from "./auth/model/submenuModel.js";
 
 const seeder = async () => {
   // Configure env
@@ -98,6 +98,30 @@ const seeder = async () => {
     await PermissionModel.insertMany(permissionSeedData);
     console.log("Permission seeded successfully".bgGreen);
 
+    // Menu Seeder
+    console.log("Seeding Sidebar Menu...");
+    await MenuModel.deleteMany();
+    await MenuModel.insertMany(menuSeedData);
+    console.log("Sidebar Menu seeded successfully".bgGreen);
+
+    // Sub Menu
+    console.log("Seeding Submenu");
+    await SubmenuModel.deleteMany();
+    for (const item of subMenuSeedData) {
+      const menu = await MenuModel.findOne({ menuTitle: item.menuTitle });
+
+      if (menu) {
+        await SubmenuModel.create({
+          label: item.label,
+          icon: item.icon,
+          url: item.url,
+          menuID: menu._id,
+        });
+      }
+    }
+
+    console.log("Seeding Submenu Successfully...");
+
     // Group Seeder
     const groupArray = [];
     for (const group of groupSeedData) {
@@ -121,7 +145,7 @@ const seeder = async () => {
       const subMenuURLArray = [];
       const subMenuURLs = group.subMenus;
       for (const singleURL of subMenuURLs) {
-        const subMenuData = await SubMenuModel.findOne({ url: singleURL });
+        const subMenuData = await SubmenuModel.findOne({ url: singleURL });
         if (subMenuData) {
           const id = subMenuData._id;
           subMenuURLArray.push(id);
@@ -170,29 +194,6 @@ const seeder = async () => {
     await LeaveTypeModel.deleteMany();
     await LeaveTypeModel.insertMany(leaveTypeSeedData);
     console.log("Leave Type seeded successfully".bgGreen);
-
-    // Menu Seeder
-    console.log("Seeding Sidebar Menu...");
-    await MenuModel.deleteMany();
-    await MenuModel.insertMany(menuSeedData);
-    console.log("Sidebar Menu seeded successfully".bgGreen);
-
-    // Sub Menu
-    console.log("Seeding Submenu");
-    await SubMenuModel.deleteMany();
-    for (const item of subMenuSeedData) {
-      const menu = await MenuModel.findOne({ menuTitle: item.menuTitle });
-      if (menu) {
-        await SubMenuModel.create({
-          lable: item.label,
-          icon: item.icon,
-          url: item.url,
-          menuID: menu._id,
-        });
-      }
-    }
-
-    console.log("Seeding Submenu Successfully...");
 
     // Employee Data Seed
     // console.log("Seeding Employee Data.......")

@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import GroupModel from "../model/groupModel.js";
 import PermissionModel from "../model/permissionModel.js";
 import MenuModel from "../model/menuModel.js";
-const { ObjectId } = mongoose.Types;
 
 export const createGroupCtrl = async (req, res) => {
   try {
@@ -52,7 +51,7 @@ export const listGroupCtrl = async (req, res) => {
   try {
     const { userGroup } = req.query;
     const plist = userGroup
-      ? await GroupModel.find({ code: userGroup })
+      ? await GroupModel.findOne({ code: userGroup })
           .populate("permissions")
           .populate({
             path: "subMenus",
