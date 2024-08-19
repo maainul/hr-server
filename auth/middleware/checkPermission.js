@@ -3,8 +3,7 @@ import UserModel from "../model/userModel.js";
 export const checkPermission = (resource, action) => {
   return async (req, res, next) => {
     try {
-      const { id } = req.params;
-
+      const id = req.user;
       const user = await UserModel.findById(id).populate({
         path: "group",
         model: "Group",
@@ -13,7 +12,6 @@ export const checkPermission = (resource, action) => {
           model: "Permission",
         },
       });
-
       if (!user) return res.status(401).send("User not found");
 
       // Check if the user has the required permission
