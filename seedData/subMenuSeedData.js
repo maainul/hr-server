@@ -31,7 +31,7 @@ const subMenuSeedData = [
   },
   {
     label: "Group",
-    url: "/group",
+    url: "/groups",
     icon: "ri-folder-add-line",
     menuTitle: "Group",
   },
