@@ -99,7 +99,7 @@ const groupSeedData = [
     ],
   },
   {
-    name: "Super Admin",
+    name: "Admin",
     code: "AD001",
     permissions: [
       "permission:create",
