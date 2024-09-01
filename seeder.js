@@ -173,6 +173,7 @@ const seeder = async () => {
     console.log("Seeding User : ");
     await UserModel.deleteMany(); // Ensure you have a UserModel defined
     for (const userInfoObj of userSeedData) {
+      console.log(userInfoObj)
       const group = await GroupModel.findOne({ code: userInfoObj.group });
       if (!group) {
         throw new Error(`Group not found for user: ${userInfoObj.username}`);
