@@ -80,8 +80,12 @@ const groupSeedData = [
       "employee-leave-balance:create",
       "employee-leave-balance:list",
       "employee-leave-balance:update",
+      "stocktransaction-type:create",
+      "stocktransaction-type:list",
+      "stocktransaction-type:update",
     ],
     subMenus: [
+      "/stocktransaction-type/list",
       "/permission",
       "/departments",
       "/designations",

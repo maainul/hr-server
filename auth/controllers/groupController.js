@@ -52,24 +52,26 @@ export const listGroupCtrl = async (req, res) => {
     const { userGroup } = req.query;
     const plist = userGroup
       ? await GroupModel.findOne({ code: userGroup })
-        .populate("permissions")
-        .populate({
-          path: "subMenus",
-          populate: {
-            path: "menuID",
-            model: "Menu",
-          },
-        })
+          .populate("permissions")
+          .populate({
+            path: "subMenus",
+            populate: {
+              path: "menuID",
+              model: "Menu",
+            },
+          })
       : await GroupModel.find()
-        .populate("permissions")
-        .populate({
-          path: "subMenus",
-          populate: {
-            path: "menuID",
-            model: "Menu",
-          },
-        });
-
+          .populate("permissions")
+          .populate({
+            path: "subMenus",
+            populate: {
+              path: "menuID",
+              model: "Menu",
+            },
+          });
+    console.log("###############");
+    console.log(plist);
+    console.log("###############");
     return res.status(201).json({
       success: true,
       plist,

@@ -9,6 +9,8 @@ import MenuModel from "./auth/model/menuModel.js";
 import GroupModel from "./auth/model/groupModel.js";
 // import EmployeeModel from "./model/EmployeeModel.js";
 import DivisionModel from "./model/divisionModel.js";
+import StockTransactionTypeModel from "./model/stockTransactionTypeModel.js"
+
 import menuSeedData from "./seedData/menuSeedData.js";
 import subMenuSeedData from "./seedData/subMenuSeedData.js";
 import unitSeedData from "./seedData/unitSeedData.js";
@@ -27,6 +29,7 @@ import departmentSeedData from "./seedData/departmentSeedData.js";
 import permissionSeedData from "./seedData/permissionSeedData.js";
 import designationSeedData from "./seedData/designationSeedData.js";
 import salaryGradeSeedData from "./seedData/salaryGradeSeedData.js";
+import stockTransactionTypeSeedData from "./seedData/stockTransactionTypeSeedData.js"
 import SubmenuModel from "./auth/model/submenuModel.js";
 
 const seeder = async () => {
@@ -173,7 +176,7 @@ const seeder = async () => {
     console.log("Seeding User : ");
     await UserModel.deleteMany(); // Ensure you have a UserModel defined
     for (const userInfoObj of userSeedData) {
-      console.log(userInfoObj)
+      console.log(userInfoObj);
       const group = await GroupModel.findOne({ code: userInfoObj.group });
       if (!group) {
         throw new Error(`Group not found for user: ${userInfoObj.username}`);
@@ -205,6 +208,12 @@ const seeder = async () => {
     //   const salaryGradeExts = await SalaryGradeModel.findOne({ 'name': emp.salary_grade_name });
     // })
     // console.log("Seeding Employee Data Successfully.......")
+
+    // Stock Trans Type Seeder
+    console.log("Seeding Stock Trans Type ...");
+    await StockTransactionTypeModel.deleteMany();
+    await StockTransactionTypeModel.insertMany(stockTransactionTypeSeedData);
+    console.log(" Stock Trans Type seeded successfully".bgGreen);
 
     process.exit();
   } catch (error) {

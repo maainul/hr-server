@@ -32,6 +32,10 @@ const menuSeedData = [
     icon: "ri-folder-add-line",
   },
   {
+    menuTitle: "Stock Transaction Type",
+    icon: "ri-folder-add-line",
+  },
+  {
     menuTitle: "policy",
     icon: "ri-folder-add-line",
   },

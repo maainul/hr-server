@@ -45,7 +45,7 @@ const permissionSeedData = [
   { resource: "employeePolicy", action: "details" },
   { resource: "employeePolicy", action: "statusUpdate" },
   { resource: "employeePolicy", action: "getByEmpID" },
-  
+
   // Employee
   { resource: "employee", action: "create" },
   { resource: "employee", action: "list" },
@@ -120,6 +120,11 @@ const permissionSeedData = [
   { resource: "employee-leave-balance", action: "create" },
   { resource: "employee-leave-balance", action: "list" },
   { resource: "employee-leave-balance", action: "update" },
+
+  // Stock Transaction Type
+  { resource: "stocktransaction-type", action: "create" },
+  { resource: "stocktransaction-type", action: "list" },
+  { resource: "stocktransaction-type", action: "update" },
 ];
 
 export default permissionSeedData;

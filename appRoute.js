@@ -39,6 +39,7 @@ const setupRoutes = (app) => {
   app.use("/api/v1/employee-salary", auth, employeeSalaryRoutes);
   app.use("/api/v1/promotion-increment", auth, promotionAndIncrementRoutes);
   app.use("/api/v1/employee-leave-balance", auth, employeeLeaveBalanceRoutes);
+  app.use("/api/v1/employee-leave-balance", auth, employeeLeaveBalanceRoutes);
 };
 
 export default setupRoutes;

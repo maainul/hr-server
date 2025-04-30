@@ -89,6 +89,12 @@ const subMenuSeedData = [
     url: "/employee-leave-balance",
     menuTitle: "Employee",
   },
+  {
+    label: "Stock Transaction Type",
+    icon: "ri-folder-line",
+    url: "/stocktransaction-type/list",
+    menuTitle: "Stock Transaction Type",
+  },
 ];
 
 export default subMenuSeedData;

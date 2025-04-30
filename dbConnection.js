@@ -5,11 +5,10 @@ const connectDB = async () => {
     console.log("Trying to Connect Mongo DB ....".bgYellow.bold);
     let CT = "";
     if (process.env.DEV_MODE === "production") {
-      CT = process.env.CONNECTION_STRING;
+      CT = process.env.MONGO_PRODUCTION_URL;
     } else {
-      CT = process.env.MONGO_LOCAL_URL;
+      CT = process.env.MONGO_DEVELOPMENT_URL;
     }
-
     const conn = await mongoose.connect(CT);
     console.log(
       `Conneted To Mongodb Database ${conn.connection.host}`.bgMagenta.white
